@@ -17,5 +17,5 @@ urlpatterns = (
     path('api/stadiums/', get_stadiums, name='stadiums-list'),
     path('api/events/', get_events, name='events-list'),
     path('api/teams/', get_teams, name='teams-list'),
-    path('api/tickets/', get_tickets, name='tickets-list'),
+    path('api/tickets/<ticket_id>/', get_tickets, name='ticket'),
 )

@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from mainapp.models import Stadium, Event, Team, Ticket
 
 def get_stadiums(request):
@@ -57,12 +57,12 @@ def get_teams(request):
     return response
 
 
-def get_tickets(request):
-    tickets = Ticket.objects.all()
-    
-    ticket_list = []
-    
-    for ticket in tickets:
+
+
+def get_tickets(request, ticket_id):
+    try:
+        ticket = Ticket.objects.get(id=ticket_id)
+
         ticket_data = {
             "ID": ticket.id,
             "event_id": ticket.event_id,
@@ -71,9 +71,10 @@ def get_tickets(request):
             "price": ticket.price,
             "currency": ticket.currency,
         }
-        ticket_list.append(ticket_data)
-    data = {"tickets": ticket_list}  
-    response = JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
-    return response
 
+        response = JsonResponse(ticket_data, safe=False, json_dumps_params={'indent': 2})
+        return response
+    except Ticket.DoesNotExist:
+        return HttpResponseNotFound("Ticket not found")
 
+#id ticket pour test : 0783f40c-1f31-4f93-aa23-63576c0e8074
