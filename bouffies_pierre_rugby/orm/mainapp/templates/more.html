@@ -1,19 +1,45 @@
-{% extends "_base.html" %}
+{% extends '_base.html' %}
 {% load static %}
 
-{% block title %}More{% endblock %}
+{% block title %}
+More
+{% endblock %}
 
 {% block content %}
-<h2>En Savoir plus</h2>
-<p>La Coupe du monde de rugby à XV 2023 Écouter a lieu en France du 8 septembre au 28 octobre 2023. Par rapport à l'édition précédente, 
-    le comité d'organisation et World Rugby ont ajouté une semaine afin « d'augmenter le nombre de jours de repos pour les joueurs »1.
-    C'est la dixième édition de cette compétition disputée tous les quatre ans depuis 1987. La France organise la Coupe du monde pour 
-    la seconde fois, après celle de 2007. C'est également la quatrième édition avec des matchs disputés en France après celles de 1991 
-    et de 1999, respectivement organisées par l'Angleterre et le Pays de Galles.
-    Cette édition est marquée par la toute première participation de l'équipe du Chili, qui devient ainsi la troisième nation sud-américaine
-    à se qualifier pour une phase finale de coupe du monde. Sept des huit meilleures nations au classement World Rugby sont présentes au stade 
-    des quarts de finale. La surprise vient de l'élimination de l'Australie double championne du monde, dès la phase de poules. Le France, pays
-    hôte, est éliminée d'un point par l'Afrique du Sud (28-29) en quarts de finale. Les Springboks affrontent l'Angleterre en demi-finale, 
-    tandis que la Nouvelle-Zélande et l'Argentine se disputent l'autre place en finale. Cette dernière oppose finalement les All Blacks aux 
-    Springboks : à son issue l'une des deux équipes deviendra alors quadruple championne du monde.</p>
+<div class="container">
+    <h2><strong>En</strong> savoir plus</h2>
+    {% if message %}
+    <div class="alert alert-primary" role="alert">
+        {{ message }}
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Description du tournoi</h3>
+            <p>La Rugby Tropical Cup est un événement sportif palpitant qui se déroule dans un cadre exotique, où les équipes de rugby du 
+                monde entier se réunissent pour célébrer leur passion pour ce sport fascinant. Ce tournoi unique est une fusion parfaite de 
+                compétition sportive intense et de l'environnement tropical spectaculaire, offrant aux joueurs et aux spectateurs une expérience 
+                inoubliable.</p>
+        </div>
+        <div class="col-md-6">
+            <h3>Emplacement</h3>
+            <p>La Rugby Tropical Cup se déroule dans une destination tropicale de rêve, située sur une île paradisiaque bordée de plages de 
+                sable fin et entourée par une eau cristalline. L'emplacement change chaque année pour offrir une variété de décors exotiques 
+                à explorer.</p>
+        </div>
+        <div class="col-md-6">
+            <h3>Format du tournoi</h3>
+            <p>Le tournoi est ouvert aux équipes de rugby de tous niveaux, des amateurs passionnés aux professionnels chevronnés. Les équipes 
+                sont réparties en plusieurs catégories en fonction de leur niveau de compétence, garantissant ainsi une compétition équitable 
+                et passionnante.</p>
+        </div>
+        <div class="col-md-6">
+            <h3>Durée du tournoi</h3>
+            <p>Le tournoi se déroule sur une semaine, avec des matchs passionnants disputés sur des terrains de rugby spécialement aménagés 
+                pour l'occasion. En plus des matchs traditionnels, des variantes du rugby, telles que le beach rugby, le rugby à toucher, et
+                d'autres activités connexes sont également organisées pour ajouter de la diversité à l'événement.</p>
+        </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

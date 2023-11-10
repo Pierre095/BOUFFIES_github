@@ -15,6 +15,7 @@ SECRET_KEY = "velicyjh0)jmde&@qj=_)hzik!&sw4ml8b92ni&!y@=cu(-hj8"
 INSTALLED_APPS = [
     # On explicite l"usage de notre application pour que les templates
     # soient détectés automatiquement par Django
+    "corsheaders",
     "mainapp.apps.MainappConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -25,6 +26,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -112,3 +114,5 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/fr/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CORS_ALLOW_ALL_ORIGINS = True
