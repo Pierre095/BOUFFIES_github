@@ -29,7 +29,7 @@ fetch(url_api)
                         <p class='local'>Local : ${event.team_home_id}</p>
                         <p class='visiteur'>Visiteur : ${event.team_away_id}</p>
                     </div>
-                    <p class='date_heure'>Heure : ${formattedTime}  Date : ${formattedDate}</p>`;
+                    <p class='date_heure'>Date : ${formattedDate} Heure : ${formattedTime}</p>`;
 
 
                 itemDiv.classList.add('event');
