@@ -1,0 +1,46 @@
+
+html, body {
+    margin: 0;
+}
+
+body {
+    color: white;
+    font-family: sans-serif;
+    background: black;
+}
+
+header nav {
+    display: flex;
+}
+
+header nav a {
+    flex: 1;
+    height: 2em;
+    color: white;
+    line-height: 2em;
+    text-align: center;
+}
+
+.event{
+    border: solid 10px;
+    border-radius: 10px 40px 40px 10px;
+    display : wrap;
+    flex-wrap : wrap;
+}
+.stade{
+    display: flex;
+    justify-content: center;
+}
+/* .local{
+    display: flex;
+    justify-content: center;
+} */
+.visiteur{
+    display: flex;
+    justify-content: center;
+}
+.match{
+    display : flex;
+    justify-content: space-around;
+}
+
