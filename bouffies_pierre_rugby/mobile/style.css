@@ -22,25 +22,34 @@ header nav a {
 }
 
 .event{
-    border: solid 10px;
-    border-radius: 10px 40px 40px 10px;
+    border: solid 2px;
+    border-radius: 30px;
     display : wrap;
     flex-wrap : wrap;
 }
+
 .stade{
     display: flex;
     justify-content: center;
 }
-/* .local{
+
+.local{
     display: flex;
     justify-content: center;
-} */
+}
+
 .visiteur{
     display: flex;
     justify-content: center;
 }
+
 .match{
     display : flex;
     justify-content: space-around;
+}
+
+.date_heure{
+    display: flex;
+    justify-content: center;
 }
 

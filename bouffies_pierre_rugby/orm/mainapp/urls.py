@@ -14,8 +14,8 @@ urlpatterns = (
     path("more", MoreView.as_view(), name="more"),
     # Dans un cadre de projet réel, il serait préférable d'utiliser une URL moins prévisible que "admin"
     path("admin", admin.site.urls),
-    path('api/stadiums/', get_stadiums, name='stadiums-list'),
+    path('api/stadiums/<stadium_id>', get_stadiums, name='stadiums-list'),
     path('api/events/', get_events, name='events-list'),
-    path('api/teams/', get_teams, name='teams-list'),
+    path('api/teams/<team_id>', get_teams, name='teams-list'),
     path('api/tickets/<ticket_id>/', get_tickets, name='ticket'),
 )

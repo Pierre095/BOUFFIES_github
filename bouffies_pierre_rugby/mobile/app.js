@@ -11,13 +11,37 @@ fetch(url_api)
             items.forEach(event => {
                 const itemDiv = document.createElement('div');
                 
-                itemDiv.innerHTML = `
-                    <p class='stade'>${event.stadium_id}</p>
-                        <p class='local'>${event.team_home_id}</p>
-                        <p class='visiteur>${event.team_away_id}</p>
-                    <p class='date_heure'>${event.start}</p>`;
+                // Formater la date et l'heure côté client
+                const eventDate = new Date(event.start);
+                const formattedDate = eventDate.toLocaleDateString();
+                const formattedTime = eventDate.toLocaleTimeString();
+
+
+                itemDiv.innerHTML =
+                    // `<p class='stade'>Stade : Tokyo</p>
+                    // <div class='match'>
+                    //     <p class='local'>Local : Angleterre</p>
+                    //     <p class='visiteur'>Visiteur : Fidji</p>
+                    // </div>
+                    // <p class='date_heure'>Heure : 19h30  Date : 12/07/2023</p>`;
+                    `<p class='stade'>Stade : ${event.stadium_id}</p>
+                    <div class='match'>
+                        <p class='local'>Local : ${event.team_home_id}</p>
+                        <p class='visiteur'>Visiteur : ${event.team_away_id}</p>
+                    </div>
+                    <p class='date_heure'>Heure : ${formattedTime}  Date : ${formattedDate}</p>`;
+
 
                 itemDiv.classList.add('event');
+
+                itemDiv.setAttribute('data-stadium', event.stadium_id);
+                itemDiv.setAttribute('data-team-home', event.team_home_id);
+                itemDiv.setAttribute('data-team-away', event.team_away_id);
+                itemDiv.setAttribute('data-start', event.start);
+
+
+
+                itemDiv.addEventListener('click', loadEvent);
 
                 contentDiv.appendChild(itemDiv);
             });
@@ -29,6 +53,24 @@ fetch(url_api)
         console.error('Erreur lors de la récupération des données :', error);
     });
 
+
+
+
+
+function loadEvent(event) {
+    // Accéder aux attributs personnalisés pour obtenir des informations spécifiques
+    const stadium = event.currentTarget.getAttribute('data-stadium');
+    const teamHome = event.currentTarget.getAttribute('data-team-home');
+    const teamAway = event.currentTarget.getAttribute('data-team-away');
+    const start = event.currentTarget.getAttribute('data-start');
+
+    // Exemple d'utilisation des informations spécifiques à chaque événement
+    console.log(`Événement chargé - Stade: ${stadium}, Local: ${teamHome}, Visiteur: ${teamAway}, Heure: ${start}`);
+}
+
+
+
+    // const url_api = `http://127.0.0.1:8000/api/${page}/`;
 
 function loadPage(page) {
     // Construire l'URL de l'API en fonction de la page sélectionnée
