@@ -1,5 +1,5 @@
-const url_api = `http://127.0.0.1:8000/api/events/`;
-fetch(url_api)
+const url_api_event = `http://127.0.0.1:8000/api/events/`;
+fetch(url_api_event)
     .then(response => response.json())
     .then(data => {
         // Construire le HTML en fonction des données reçues
@@ -11,6 +11,14 @@ fetch(url_api)
             items.forEach(event => {
                 const itemDiv = document.createElement('div');
                 
+
+                Promise.all([
+                    fetch(`http://127.0.0.1:8000/api/stadiums/${event.stadium_id}`),
+                    fetch(`http://127.0.0.1:8000/api/teams/${event.team_home_id}`),
+                    fetch(`http://127.0.0.1:8000/api/teams/${event.team_away_id}`)
+                ])
+                .then(responses => Promise.all(responses.map(response => response.json())))
+                .then(([stadiumData, teamHomeData, teamAwayData]) => {
                 // Formater la date et l'heure côté client
                 const eventDate = new Date(event.start);
                 const formattedDate = eventDate.toLocaleDateString();
@@ -24,25 +32,19 @@ fetch(url_api)
                     //     <p class='visiteur'>Visiteur : Fidji</p>
                     // </div>
                     // <p class='date_heure'>Heure : 19h30  Date : 12/07/2023</p>`;
-                    `<p class='stade'>Stade : ${event.stadium_id}</p>
+                    `<p class='stade'>Stade : ${stadiumData.name}</p>
                     <div class='match'>
-                        <p class='local'>Local : ${event.team_home_id}</p>
-                        <p class='visiteur'>Visiteur : ${event.team_away_id}</p>
+                        <p class='local'>Local : ${teamHomeData.country}</p>
+                        <p class='visiteur'>Visiteur : ${teamAwayData.country}</p>
                     </div>
                     <p class='date_heure'>Date : ${formattedDate} Heure : ${formattedTime}</p>`;
-
-
+                })
                 itemDiv.classList.add('event');
-
                 itemDiv.setAttribute('data-stadium', event.stadium_id);
                 itemDiv.setAttribute('data-team-home', event.team_home_id);
                 itemDiv.setAttribute('data-team-away', event.team_away_id);
                 itemDiv.setAttribute('data-start', event.start);
-
-
-
                 itemDiv.addEventListener('click', loadEvent);
-
                 contentDiv.appendChild(itemDiv);
             });
         } else {
@@ -52,6 +54,9 @@ fetch(url_api)
     .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
     });
+
+
+    
 
 
 
@@ -89,6 +94,11 @@ function loadPage(page) {
                 const items = data[page];
                 items.forEach(item => {
                     const itemDiv = document.createElement('div');
+
+
+                // Appeler des API supplémentaires pour obtenir des détails sur les stades et les équipes
+                
+
                     itemDiv.innerHTML = `<h2>${item.id}</h2>
                                 <p>${item.name}</p>
                                 <p>${item.location}</p>
