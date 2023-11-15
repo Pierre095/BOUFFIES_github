@@ -33,7 +33,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url "teams" %}" {% if request.resolver_match.url_name == "teams" %}class="active"{% endif %}>
+                        <a target = "_blank" href="{% url "teams" %}" {% if request.resolver_match.url_name == "teams" %}class="active"{% endif %}>
                             Équipes
                         </a>
                     </li>
@@ -45,6 +45,11 @@
                     <li>
                         <a href="{% url "more" %}" {% if request.resolver_match.url_name == "more" %}class="active"{% endif %}>
                             En Savoir Plus
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url "matchs" %}" {% if request.resolver_match.url_name == "more" %}class="active"{% endif %}>
+                            Matchs
                         </a>
                     </li>
                 </ul>

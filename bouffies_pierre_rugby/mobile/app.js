@@ -30,12 +30,13 @@ fetch(url_api_event)
                             const formattedTime = eventDate.toLocaleTimeString();
 
                             itemDiv.innerHTML =
-                                `<a id="map" target="_blank" class='stade'>Stade : ${stadiumData.name}</a>
+                                `<a id="map" target="_blank" class='stade'><strong>Stade</strong> : ${stadiumData.name}</a>
                                 <div class='match'>
-                                    <p class='local'>Local : ${teamHomeData.country}</p>
-                                    <p class='visiteur'>Visiteur : ${teamAwayData.country}</p>
+                                    <p class='local'>Local : <strong> ${teamHomeData.country}</strong></p>
+                                    <p class='visiteur'>Visiteur : <strong> ${teamAwayData.country}</strong></p>
                                 </div>
-                                <p class='date_heure'>Date : ${formattedDate} Heure : ${formattedTime}</p>`;
+                                <p class='date'>Date : <strong> ${formattedDate}</strong></p>
+                                <p class='heure'>Heure : <strong> ${formattedTime}</strong></p>`
                             itemDiv.classList.add('event');
                             itemDiv.setAttribute('data-stadium', event.stadium_id);
                             itemDiv.setAttribute('data-team-home', event.team_home_id);
@@ -66,6 +67,13 @@ fetch(url_api_event)
     .catch(error => {
         console.error('Erreur lors de la récupération des données :', error);
     });
+
+
+
+
+
+
+
 
 function loadEvent(uniqueClass) {
     // Vous pouvez maintenant utiliser uniqueClass comme nécessaire...

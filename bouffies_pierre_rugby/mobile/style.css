@@ -4,41 +4,40 @@ html, body {
 }
 
 body {
-    color: white;
+    color : black;
     font-family: sans-serif;
-    background: black;
+    background-color: rgb(230, 230, 230);
 }
 
-header nav {
-    display: flex;
-}
-
-header nav a {
-    flex: 1;
-    height: 2em;
-    color: white;
-    line-height: 2em;
-    text-align: center;
+.titre_event{
+    margin-left : 20px;
 }
 
 .event{
-    border: solid 2px;
-    border-radius: 30px;
+    background: rgb(230, 230, 230);
+
+    margin : 20px ;
+    border: solid 2px rgb(206, 206, 206);
+    border-radius: 10px;
+    box-shadow: 0px 3px 3px rgb(206, 206, 206);
     display : wrap;
     flex-wrap : wrap;
 }
 
 .stade{
+    margin : 20px ;
     display: flex;
     justify-content: center;
 }
 
 .local{
+    margin : 20px ;
     display: flex;
     justify-content: center;
 }
 
 .visiteur{
+    margin : 20px ;
     display: flex;
     justify-content: center;
 }
@@ -48,7 +47,13 @@ header nav a {
     justify-content: space-around;
 }
 
-.date_heure{
+.date{
+    margin : 20px ;
+    display: flex;
+    justify-content: center;
+}
+.heure{
+    margin : 20px ;
     display: flex;
     justify-content: center;
 }
@@ -56,4 +61,7 @@ header nav a {
 .hide{
     display : none ;
 }
+
+
+
 

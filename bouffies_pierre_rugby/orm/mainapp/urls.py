@@ -2,7 +2,7 @@ from django.urls import path
 # Import des URLs de l'interface d'administration
 from django.contrib import admin
 # Import des vues qui sont déclarées dans leur propre module (dossier)
-from .views import HomeView, StadiumsView, TeamsView, NewsletterView, UpdateView, MoreView
+from .views import HomeView, StadiumsView, TeamsView, NewsletterView, UpdateView, MoreView, MatchsView
 from .views import get_stadiums, get_teams, get_events, get_tickets
 
 urlpatterns = (
@@ -12,6 +12,7 @@ urlpatterns = (
     path("newsletter", NewsletterView.as_view(), name="newsletter"),
     path("update", UpdateView.as_view(), name="update"),
     path("more", MoreView.as_view(), name="more"),
+    path("matchs", MatchsView.as_view(), name="matchs"),
     # Dans un cadre de projet réel, il serait préférable d'utiliser une URL moins prévisible que "admin"
     path("admin", admin.site.urls),
     path('api/stadiums/<stadium_id>', get_stadiums, name='stadiums-list'),
