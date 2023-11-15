@@ -53,3 +53,7 @@ header nav a {
     justify-content: center;
 }
 
+.hide{
+    display : none ;
+}
+
