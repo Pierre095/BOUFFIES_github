@@ -80,7 +80,7 @@ INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_
 INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (2, '2023-07-13 19:30:00.000000', 1, 3, 4);
 INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (3, '2023-07-14 19:00:00.000000', 2, 5, 6);
 INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (4, '2023-07-15 19:30:00.000000', 2, 7, 8);
-INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (5, '2023-07-18 19:30:00.000000', 3, NULL, NULL);
+INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (5, '2023-07-18 19:30:00.000000', 3, 5, 7);
 INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (6, '2023-07-20 19:30:00.000000', 4, NULL, NULL);
 INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (7, '2023-07-22 18:30:00.000000', 3, NULL, NULL);
 INSERT INTO `mainapp_event` (`id`, `start`, `stadium_id`, `team_away_id`, `team_home_id`) VALUES (8, '2023-07-22 20:00:00.000000', 4, NULL, NULL);
