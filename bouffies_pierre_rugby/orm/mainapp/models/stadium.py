@@ -5,7 +5,7 @@ class Stadium(models.Model):
     location = models.CharField(max_length=100)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
-
+    map = models.CharField(max_length=256, db_collation='utf8mb4_unicode_ci', blank=True, null=True)
     def __str__(self):
         return f"{self.name} ({self.location})"
 
