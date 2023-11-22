@@ -6,4 +6,5 @@ from .newsletter import *
 from .update import *
 from .teams import *
 from .more import *
+from .matchs import*
 from .view import *
