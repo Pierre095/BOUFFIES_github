@@ -27,17 +27,29 @@ fetch(url_api_event)
                         const eventDate = new Date(event.start);
                         const formattedDate = eventDate.toLocaleDateString();
                         const formattedTime = eventDate.toLocaleTimeString();
-                        const teamHomeCountry = teamHomeData ? teamHomeData.country : 'Informations non disponibles';
-                        const teamAwayCountry = teamAwayData ? teamAwayData.country : 'Informations non disponibles';
+                        const teamHomeCountry = teamHomeData ? teamHomeData.country : 'Non-défini';
+                        const teamAwayCountry = teamAwayData ? teamAwayData.country : 'Non-défini';
+                        const teamHomeColorFirst = teamHomeData ? teamHomeData.color_first : '414141';
+                        const teamHomeColorSecond = teamHomeData ? teamHomeData.color_second : 'cbcbcb';
+                        const teamAwayColorFirst = teamAwayData ? teamAwayData.color_first : 'cbcbcb';
+                        const teamAwayColorSecond = teamAwayData ? teamAwayData.color_second : 'a8a8a8';
+
 
                         itemDiv.innerHTML = `
+                        
+                            <div class="team-color" style="background : linear-gradient(0.25turn,#${teamHomeColorFirst},#${teamHomeColorSecond},#${teamAwayColorFirst},#${teamAwayColorSecond} )"></div>
+                            
                             <a id="map" target="_blank" class='stade'><strong>Stade</strong> : ${stadiumData ? stadiumData.name : 'Informations non disponibles'}</a>
                             <div class='match'>
-                                <p class='local'>Local : <strong>${teamHomeCountry}</strong></p>
-                                <p class='visiteur'>Visiteur : <strong>${teamAwayCountry}</strong></p>
+                                <div class ='local'>
+                                    <p><strong>${teamHomeCountry}</strong></p>
+                                </div>
+                                <div class ='visiteur'>
+                                    <p><strong>${teamAwayCountry}</strong></p>
+                                </div>
                             </div>
-                            <p class='date'>Date : <strong>${formattedDate}</strong></p>
-                            <p class='heure'>Heure : <strong>${formattedTime}</strong>`;
+                            <p class='date'>Date <strong>: ${formattedDate}</strong></p>
+                            <p class='heure'>Heure <strong>: ${formattedTime}</strong>`;
 
                         itemDiv.classList.add('event', uniqueClass);
                         itemDiv.setAttribute('data-stadium', stadiumData ? stadiumData.name : 'N/A');
@@ -45,35 +57,15 @@ fetch(url_api_event)
                         itemDiv.setAttribute('data-team-away', teamAwayCountry);
                         itemDiv.setAttribute('data-start', event.start);
                         itemDiv.addEventListener('click', function () {
-                        loadEvent(uniqueClass);
+                            loadEvent(uniqueClass);
                         });
                         contentDiv.appendChild(itemDiv);
                     })
                     .catch(error => {
                         console.error('Erreur lors de la récupération des données :', error);
-                        const eventDate = new Date(event.start);
-                        const formattedDate = eventDate.toLocaleDateString();
-                        const formattedTime = eventDate.toLocaleTimeString();
 
-                        itemDiv.innerHTML = `
-                            <a id="map" target="_blank" class='stade'><strong>Stade</strong> : ${event.stadium_id}</a>
-                            <div class='match'>
-                                <p class='local'>Local : Informations non disponibles</p>
-                                <p class='visiteur'>Visiteur : Informations non disponibles</p>
-                            </div>
-                            <p class='date'>Date : <strong>${formattedDate}</strong></p>
-                            <p class='heure'>Heure : <strong>${formattedTime}</strong>`;
-
-                        itemDiv.classList.add('event', uniqueClass);
-                        itemDiv.setAttribute('data-stadium', event.stadium_id);
-                        itemDiv.setAttribute('data-team-home', 'N/A');
-                        itemDiv.setAttribute('data-team-away', 'N/A');
-                        itemDiv.setAttribute('data-start', event.start);
-                        itemDiv.addEventListener('click', function () {
-                            loadEvent(uniqueClass);
-                        });
-                        contentDiv.appendChild(itemDiv);
                     });
+                contentDiv.appendChild(itemDiv);
             });
         } else {
             contentDiv.innerHTML = '<p>Aucune donnée disponible.</p>';

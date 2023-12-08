@@ -56,6 +56,19 @@ body {
     flex-wrap : wrap;
 }
 
+.team-color{
+    display : flex;
+    justify-content: center;
+    border-radius : 10px;
+    overflow : hidden;
+    height : 10%;
+}
+
+.eclaire{
+    width : 50%;
+    transform : rotate(-70deg);
+}
+
 .stade{
     margin : 20px ;
     display: flex;
@@ -63,20 +76,23 @@ body {
 }
 
 .local{
-    margin : 20px ;
     display: flex;
     justify-content: center;
+    width : 50%;
+    left : 100px;
 }
 
 .visiteur{
-    margin : 20px ;
     display: flex;
     justify-content: center;
+    width : 50%;
 }
+
 
 .match{
     display : flex;
-    justify-content: space-around;
+    justify-content: center;
+    
 }
 
 .date{
