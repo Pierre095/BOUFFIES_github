@@ -12,6 +12,18 @@ header h1 {
     font-size: 1.3rem;
 }
 
+
+#scanner{
+    display: flex;
+    justify-content: center;
+    Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+    cursor: pointer;
+    background-color: rgb(230, 230, 230);
+    box-shadow: 3px 3px 3px 3px rgb(186, 186, 186);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 1%;
+}
 #content{
     background: rgb(230, 230, 230);
     margin : 20px ;
