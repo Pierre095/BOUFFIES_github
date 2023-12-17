@@ -1,56 +1,57 @@
-// Attendez que le DOM soit chargé
-document.addEventListener('DOMContentLoaded', () => {
-    const imageInput = document.getElementById('imageInput');
-    const startButton = document.getElementById('start');
-    const resultsSection = document.getElementById('results');
+// function scan(){
+//     let varinput=document.getElementById("scan-img");
+//     let imginput=varinput.files[0];
+//     if(imginput) {
+//         QrScanner.scanImage(imginput)
+//         .then(async result => {alert(result)})}
+// }
 
-    // Écoutez le changement de fichier pour l'entrée d'image
-    imageInput.addEventListener('change', handleImageChange);
 
-    // Écoutez le clic sur le bouton Démarrer
-    startButton.addEventListener('click', startScanner);
+function scan() {
+    let varinput = document.getElementById("scan-img");
+    let imginput = varinput.files[0];
 
-    function handleImageChange(event) {
-        const file = event.target.files[0];
+    if (imginput) {
+        QrScanner.scanImage(imginput)
+            .then(async result => {
+                // Appelez l'API avec l'ID extrait du QR code
+                const ticketId = result;
+                const apiUrl = `http://127.0.0.1:8000/api/tickets/${ticketId}`;
 
-        if (file) {
-            // Lisez le contenu du fichier image
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const image = new Image();
-                image.src = e.target.result;
+                try {
+                    const response = await fetch(apiUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
 
-                // Détectez et décodez le code QR dans l'image
-                const decodedQR = decodeQRCode(image);
-                displayResult(decodedQR);
-            };
-            reader.readAsDataURL(file);
-        }
+                    const ticketData = await response.json();
+                    displayTicketInfo(ticketData);
+                } catch (error) {
+                    console.error('Error fetching ticket information:', error);
+                    alert('Erreur lors de la récupération des informations du billet.');
+                }
+            });
     }
+}
 
-    function startScanner() {
-        // Déclenchez le changement de fichier pour l'entrée d'image
-        imageInput.click();
-    }
+function displayTicketInfo(ticketData) {
+    const contentDiv = document.getElementById("content");
+    contentDiv.innerHTML = `
+        <div class='event'>
+            <div class ='event-id'>
+                <p>Event ID: <strong>${ticketData.event_id}</strong></p>
+            </div>
+            <div class ='category'>
+                <p>Category: <strong>${ticketData.category}</strong></p>
+            </div>
+        <p class='seat'>Seat:  <strong>${ticketData.seat}</strong></p>
+        <p class='price'>Price : ${ticketData.price}<strong> ${ticketData.currency}</strong></p>`;
+}
 
-    function decodeQRCode(image) {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = image.width;
-        canvas.height = image.height;
-        context.drawImage(image, 0, 0, image.width, image.height);
 
-        // Obtenez les données de l'image
-        const imageData = context.getImageData(0, 0, image.width, image.height);
-
-        // Décodez le code QR à partir des données de l'image
-        const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-        return code ? code.data : 'Aucun code QR détecté.';
-    }
-
-    function displayResult(result) {
-        // Affichez le résultat dans la section des résultats
-        resultsSection.innerHTML = `<p>Résultat du scan : ${result}</p>`;
-    }
-});
+//team away
+//team local
+//date-heure
+//stadiums 
+//prix
+//place

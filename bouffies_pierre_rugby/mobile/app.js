@@ -80,46 +80,48 @@ fetch(url_api_event)
 
 
 
-
-function loadEvent(uniqueClass) {
-    console.log(`Événement chargé pour la classe : ${uniqueClass}`);
-    const itemDiv = document.querySelector(`.${uniqueClass}`);
-    const stadium = itemDiv.getAttribute('data-stadium');
-    const teamHome = itemDiv.getAttribute('data-team-home');
-    const teamAway = itemDiv.getAttribute('data-team-away');
-    const start = itemDiv.getAttribute('data-start');
-
-    console.log(`Événement chargé - Stade: ${stadium}, Local: ${teamHome}, Visiteur: ${teamAway}, Heure: ${start}`);
-
-    const clicContentDiv = document.querySelector('.content_details_hide');
-    const flecheRetour = document.querySelector('.fleche_retour_hide');
-    clicContentDiv.classList.add('content_details_show');
-    clicContentDiv.classList.remove('content_details_hide');
-    flecheRetour.classList.add('fleche_retour_show');
-    flecheRetour.classList.remove('fleche_retour_hide');
-
-    const detailsDiv = document.getElementById('content_details_show');
-    detailsDiv.innerHTML = `
-        <a id="map" target="_blank" class='stade'><strong>Stade</strong> : ${stadium}</a>
-        <div class='match'>
-            <p class='local'>Local : <strong> ${teamHome}</strong></p>
-            <p class='visiteur'>Visiteur : <strong> ${teamAway}</strong></p>
-        </div>
-        <p class='date'>Date : <strong> ${start}</strong></p>
-        <p class='heure'>Heure : <strong> ${start}</strong>`;
-}
+// pas au point mais je garde pour amélioration
 
 
+// function loadEvent(uniqueClass) {
+//     console.log(`Événement chargé pour la classe : ${uniqueClass}`);
+//     const itemDiv = document.querySelector(`.${uniqueClass}`);
+//     const stadium = itemDiv.getAttribute('data-stadium');
+//     const teamHome = itemDiv.getAttribute('data-team-home');
+//     const teamAway = itemDiv.getAttribute('data-team-away');
+//     const start = itemDiv.getAttribute('data-start');
 
+//     console.log(`Événement chargé - Stade: ${stadium}, Local: ${teamHome}, Visiteur: ${teamAway}, Heure: ${start}`);
 
+//     const clicContentDiv = document.querySelector('.content_details_hide');
+//     const flecheRetour = document.querySelector('.fleche_retour_hide');
+//     clicContentDiv.classList.add('content_details_show');
+//     clicContentDiv.classList.remove('content_details_hide');
+//     flecheRetour.classList.add('fleche_retour_show');
+//     flecheRetour.classList.remove('fleche_retour_hide');
+
+//     const detailsDiv = document.getElementById('content_details_show');
+//     detailsDiv.innerHTML = `
+//         <a id="map" target="_blank" class='stade'><strong>Stade</strong> : ${stadium}</a>
+//         <div class='match'>
+//             <p class='local'>Local : <strong> ${teamHome}</strong></p>
+//             <p class='visiteur'>Visiteur : <strong> ${teamAway}</strong></p>
+//         </div>
+//         <p class='date'>Date : <strong> ${start}</strong></p>
+//         <p class='heure'>Heure : <strong> ${start}</strong>`;
+// }
 
 
 
-function retour() {
-    const clicContentDiv = document.querySelector('.content_details_show');
-    const flecheRetour = document.querySelector('.fleche_retour_show');
-    clicContentDiv.classList.add('content_details_hide');
-    clicContentDiv.classList.remove('content_details_show');
-    flecheRetour.classList.add('fleche_retour_hide');
-    flecheRetour.classList.remove('fleche_retour_show');
-}
+
+
+// complémentaire avec la fonction loadevent
+
+// function retour() {
+//     const clicContentDiv = document.querySelector('.content_details_show');
+//     const flecheRetour = document.querySelector('.fleche_retour_show');
+//     clicContentDiv.classList.add('content_details_hide');
+//     clicContentDiv.classList.remove('content_details_show');
+//     flecheRetour.classList.add('fleche_retour_hide');
+//     flecheRetour.classList.remove('fleche_retour_show');
+// }

@@ -1,13 +1,12 @@
-<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
     <title>Rugby Tropical Cup 2023</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.0.0/dist/jsQR.js"></script>
 </head>
-
 <body>
     <header>
         <img src="logo_horizontal.svg">
@@ -15,19 +14,16 @@
     </header>
 
     <section id="scanner">
-        <input type="file" accept="image/*" id="imageInput">
-        <button id="start">Démarrer</button>
+        <input type="file" accept="image/*" id="scan-img" onchange="scan()">
     </section>
 
     <section id="results">
-
+        <div id="qr-data"></div>
     </section>
+
+    <div id="content"></div>
 
     <script src="qr-scanner.umd.min.js"></script>
     <script src="app.js"></script>
-    <!-- <script type="module">
-        import QrScanner from 'path/to/qr-scanner.min.js';
-    </script> -->
 </body>
-
 </html>
