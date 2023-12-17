@@ -42,16 +42,17 @@ function displayTicketInfo(ticketData) {
                 <p>Event ID: <strong>${ticketData.event_id}</strong></p>
             </div>
             <div class ='category'>
-                <p>Category: <strong>${ticketData.category}</strong></p>
+                <p>Categorie: <strong>${ticketData.category}</strong></p>
             </div>
-        <p class='seat'>Seat:  <strong>${ticketData.seat}</strong></p>
-        <p class='price'>Price : ${ticketData.price}<strong> ${ticketData.currency}</strong></p>`;
+        </div>
+        <p class='seat'>Place:  <strong>${ticketData.seat}</strong></p>
+        <p class='price'>Prix : ${ticketData.price}<strong> ${ticketData.currency}</strong></p>`;
 }
 
 
 //team away
 //team local
 //date-heure
-//stadiums 
+//stadiums
 //prix
 //place
