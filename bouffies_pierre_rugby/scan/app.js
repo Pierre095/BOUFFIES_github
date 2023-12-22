@@ -1,12 +1,3 @@
-// function scan(){
-//     let varinput=document.getElementById("scan-img");
-//     let imginput=varinput.files[0];
-//     if(imginput) {
-//         QrScanner.scanImage(imginput)
-//         .then(async result => {alert(result)})}
-// }
-
-
 function scan() {
     let varinput = document.getElementById("scan-img");
     let imginput = varinput.files[0];
