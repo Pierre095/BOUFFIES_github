@@ -1,0 +1,202 @@
+html {
+    Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: rgb(240, 240, 240);
+    margin: 0;
+    margin-bottom: 50%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+
+}
+
+.logo {
+    background-color: rgba(240, 240, 240, 0.164);
+    border-radius: 30px;;
+    position: fixed;
+    width: 6%;
+    top: 0px;
+    padding : 5px;    
+}
+
+
+
+
+
+.background-menu {
+    position: fixed;
+    background-color: #0a0a0a;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 1;
+    display : flex;
+    align-items: center;
+    transition: all 0.5 ease-in-out;
+}
+
+.menu {
+    position: fixed;
+    width: 85%;
+    height: 50px;
+    background-color: transparent;
+    display: flex;
+    justify-content: end;
+    align-items: flex-end;
+    gap: 5%;
+    list-style: none;
+    transition: all 0.25s ease-in-out;
+}
+
+
+.menu .menu-titre .lien-mobile {
+    display: none;
+}
+
+
+.menu .menu-titre .lien a {
+    display: block;
+    color: rgb(255, 255, 255);
+    position: relative;
+    text-decoration: none;
+    font-size: x-large;
+    transition: all 0.25s ease;
+}
+
+.menu.scroll .menu-titre .lien a {
+    color: rgb(0, 0, 0);
+}
+
+.menu .menu-titre .lien a:hover:before {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    opacity: 1;
+}
+
+.menu .menu-titre .lien a:hover {
+    color: rgb(214, 0, 64);
+    padding: 3px 0px 3px 0px;
+}
+
+.menu .menu-titre .lien a:active {
+    color: rgb(114, 114, 114);
+}
+
+
+
+
+@function em($pixels) {
+    @if not (unit($pixels)=='px') {
+        @error 'Value #{$pixels} must have `px` unit.';
+    }
+
+    @return $pixels / 16px * 1em;
+}
+
+.toggle-container {
+    width: 70px;
+    right: 0;
+    top: 20px;
+    --inactive-color: #a5a5a5;
+    position: fixed;
+    z-index: 10;
+    aspect-ratio: 292 / 142;
+    height: em(30px);
+    background-color: transparent;
+    transition: all 0.1s ease-in-out;
+
+    &:nth-child(1) {
+        --active-color: #0a0a0a;
+    }
+
+}
+
+.toggle-container:hover {
+    width: 75px;
+}
+
+.toggle-input {
+    appearance: none;
+    margin: 0;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.toggle {
+    width: 80%;
+    height: 80%;
+    overflow: visible;
+}
+
+.toggle-background {
+    fill: var(--inactive-color);
+    transition: fill .4s;
+
+    .toggle-input:checked+.toggle & {
+        fill: var(--active-color);
+    }
+}
+
+.toggle-circle-center {
+    transform-origin: center;
+    transition: transform .6s;
+
+    .toggle-input:checked+.toggle & {
+        transform: translateX(150px);
+    }
+}
+
+.toggle-circle {
+    transform-origin: center;
+    backface-visibility: hidden;
+    transition: transform .45s;
+
+    &.left {
+        transform: scale(1);
+
+        .toggle-input:checked+.toggle & {
+            transform: scale(0);
+        }
+    }
+
+    &.right {
+        transform: scale(0);
+
+        .toggle-input:checked+.toggle & {
+            transform: scale(1);
+        }
+    }
+}
+
+.toggle-icon {
+    transition: fill .4s;
+
+    &.on {
+        fill: var(--inactive-color);
+
+        .toggle-input:checked+.toggle & {
+            fill: #fff;
+        }
+    }
+
+    &.off {
+        fill: #eaeaec;
+
+        .toggle-input:checked+.toggle & {
+            fill: var(--active-color);
+        }
+    }
+}
+
+
