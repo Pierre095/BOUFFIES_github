@@ -19,34 +19,11 @@ def get_stadiums(request, stadium_id):
         return response
     except Team.DoesNotExist:
         return HttpResponseNotFound("Team not found")
-    
-
-
-    # stadiums = Stadium.objects.all()
-    
-    # stadium_list = []
-    
-    # for stadium in stadiums:
-    #     stadium_data = {
-    #         "ID": stadium.id,
-    #         "name": stadium.name,
-    #         "location": stadium.location,
-    #         "latitude": stadium.latitude,
-    #         "longitude": stadium.longitude,
-    #     }
-    #     stadium_list.append(stadium_data)
-    # data = {"stadiums": stadium_list}  
-    # response = JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
-    # return response
-
-
 
 
 
 def get_events(request):
     events = Event.objects.all()
-    # data = {"liste des stades :" : list(events.values())}
-    # return JsonResponse(data)
     event_list = []
     
     for event in events:
@@ -61,8 +38,6 @@ def get_events(request):
     data = {"events": event_list}  
     response = JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
     return response
-
-
 
 
 
@@ -84,26 +59,6 @@ def get_teams(request, team_id):
         return response
     except Team.DoesNotExist:
         return HttpResponseNotFound("Team not found")
-    
-
-    # teams = Team.objects.all()
-    # team_list = []
-    
-    # for team in teams:
-    #     team_data = {
-    #         "ID": team.id,
-    #         "country": team.country,
-    #         "country_alpha2": team.country_alpha2,
-    #         "nickname": team.nickname,
-    #         "color_first": team.color_first,
-    #         "color_second": team.color_second,
-    #     }
-    #     team_list.append(team_data)
-    # data = {"stadiums": team_list}  
-    # response = JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
-    # return response
-
-
 
 
 
