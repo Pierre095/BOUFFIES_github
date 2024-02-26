@@ -63,6 +63,11 @@ body {
     height : 10%;
 }
 
+.eclaire{
+    width : 50%;
+    transform : rotate(-70deg);
+}
+
 .stade{
     margin : 20px ;
     display: flex;
@@ -86,7 +91,9 @@ body {
 .match{
     display : flex;
     justify-content: center;
+    color : #cbcbcb
     
+
 }
 
 .date{
