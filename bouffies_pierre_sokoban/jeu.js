@@ -1,34 +1,47 @@
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext('2d');
 
-const boxSize = 30; // Taille du côté du carré
-const cols = 10; // Nombre de colonnes
-const rows = 10; // Nombre de rangées
-
-canvas.width = cols * boxSize; // Ajuster la largeur du canvas
-canvas.height = rows * boxSize; // Ajuster la hauteur du canvas
+const boxSize = 1000; // Taille du côté du carré
 
 let PJ = [];
-PJ[0] = { x: Math.floor(2) * boxSize, y: Math.floor(2) * boxSize }; // Positionner le personnage au centre du canvas
-
-let d;
-let pushing = false; // Variable pour indiquer si le joueur pousse un bloc
-
-// Créer un tableau pour stocker les positions des obstacles
 let obstacles = [];
-obstacles.push({ x: 5 * boxSize, y: 1 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 2 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 3 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 4 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 5 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 6 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 7 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 8 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 9 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 10 * boxSize });
-obstacles.push({ x: 5 * boxSize, y: 0 * boxSize });
+let obstacles_immobiles = []
+
+const map = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1 ,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1 ,1],
+    [1, 1, 1, 0, 0, 0, 1, 1, 1 ,1],
+    [1, 1, 1, 2, 0, 2, 1, 1, 1, 1],
+    [1, 2, 1, 2, 0, 0, 1, 0, 1, 1],
+    [2, 0, 0, 2, 2, 2, 0, 0, 0, 1],
+    [0, 2, 2, 2, 0, 0, 2, 2, 0, 1],
+    [1, 4, 0, 2, 0, 0, 2, 0, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1 ,1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1 ,1],
+];
+
+canvas.width = map[0].length * boxSize; // Ajuster la largeur du canvas
+canvas.height = map.length * boxSize; // Ajuster la hauteur du canvas
+
+generateObstacles(map);
+
+function generateObstacles(map) {
+    for (let row = 0; row < map.length; row++) {
+        for (let col = 0; col < map[row].length; col++) {
+            if (map[row][col] === 2) {
+                obstacles.push({ x: col * boxSize, y: row * boxSize });
+            } else if (map[row][col] === 4) {
+                PJ.push({ x: col * boxSize, y: row * boxSize });
+            } else if (map[row][col] === 1) {
+                obstacles_immobiles.push({ x: col * boxSize, y: row * boxSize });
+            } 
+        }
+    }
+}
 
 document.addEventListener("keydown", moov);
+
+let d;
 
 function moov(event) {
     let key = event.keyCode;
@@ -67,9 +80,11 @@ function movePlayer() {
     let newX = PJ[0].x + dx;
     let newY = PJ[0].y + dy;
 
+    let obstacleIndex = getObstacleIndex(newX, newY);
+    let obstacleIndexImmobile = getObstacleImmobileIndex(newX, newY);
+    
     // Vérifier si la nouvelle position est valide et qu'il n'y a pas d'obstacle
-    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height) {
-        let obstacleIndex = getObstacleIndex(newX, newY);
+    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1) {
         if (obstacleIndex === -1) {
             PJ[0].x = newX;
             PJ[0].y = newY;
@@ -91,6 +106,16 @@ function getObstacleIndex(x, y) {
     return -1;
 }
 
+// Vérifier s'il y a un obstacle immobile aux coordonnées données
+function getObstacleImmobileIndex(x, y) {
+    for (let i = 0; i < obstacles_immobiles.length; i++) {
+        if (obstacles_immobiles[i].x === x && obstacles_immobiles[i].y === y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 // Pousser l'obstacle s'il est possible
 function pushObstacle(index, dx, dy) {
     let newX = obstacles[index].x + dx;
@@ -98,7 +123,8 @@ function pushObstacle(index, dx, dy) {
     // Vérifier si la nouvelle position est valide et qu'il n'y a pas d'obstacle
     if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height) {
         let obstacleIndex = getObstacleIndex(newX, newY);
-        if (obstacleIndex === -1) {
+        let obstacleIndexImmobile = getObstacleImmobileIndex(newX, newY);
+        if (obstacleIndex === -1 && obstacleIndexImmobile === -1) {
             obstacles[index].x = newX;
             obstacles[index].y = newY;
             return true;
@@ -109,11 +135,11 @@ function pushObstacle(index, dx, dy) {
 
 const image_personnage = new Image();
 const image_obstacle = new Image();
-image_personnage.src = 'photoID.png';
+image_personnage.src = 'PJ.png';
 image_obstacle.src = 'bloc.png';
 
-image_personnage.onload = function() {
-    image_obstacle.onload = function() {
+image_personnage.onload = function () {
+    image_obstacle.onload = function () {
         draw(); // Redessiner une fois les images chargées
     };
 };
@@ -123,6 +149,11 @@ function draw() {
 
     for (let i = 0; i < obstacles.length; i++) {
         context.drawImage(image_obstacle, obstacles[i].x, obstacles[i].y, boxSize, boxSize);
+    }
+
+    for (let i = 0; i < obstacles_immobiles.length; i++) {
+        context.fillStyle = "black"; // Couleur noire pour les obstacles immobiles
+        context.fillRect(obstacles_immobiles[i].x, obstacles_immobiles[i].y, boxSize, boxSize);
     }
 
     // Dessiner le personnage
