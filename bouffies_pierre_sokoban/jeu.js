@@ -135,7 +135,7 @@ function pushObstacle(index, dx, dy) {
 
 const image_personnage = new Image();
 const image_obstacle = new Image();
-image_personnage.src = 'PJ.png';
+image_personnage.src = 'PJ2.png';
 image_obstacle.src = 'bloc.png';
 
 image_personnage.onload = function () {
