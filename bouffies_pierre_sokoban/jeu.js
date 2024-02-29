@@ -3,6 +3,8 @@ const context = canvas.getContext('2d');
 
 const boxSize = 100; // Ajustement pour l'exemple, ajustez selon la taille de votre canvas
 
+key_game_check = false ;
+
 let PJ = [];
 let obstacles = [];
 let obstacles_immobiles = [];
@@ -15,9 +17,9 @@ const map = [
     [1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
     [1, 1, 1, 2, 5, 2, 1, 1, 1, 1],
     [1, 2, 1, 2, 0, 0, 1, 0, 1, 1],
-    [2, 0, 0, 2, 2, 2, 0, 0, 4, 1],
+    [2, 0, 0, 2, 2, 2, 0, 0, 0, 1],
     [0, 2, 2, 2, 0, 0, 2, 2, 0, 1],
-    [1, 3, 0, 2, 0, 0, 2, 0, 1, 1],
+    [1, 3, 0, 2, 4, 0, 2, 0, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
@@ -103,9 +105,22 @@ function movePlayer() {
 
     let obstacleIndex = getObstacleIndex(newX, newY);
     let obstacleIndexImmobile = getObstacleImmobileIndex(newX, newY);
-    let DoorIndex = getDoorIndex(newX, newY);
+    let doorIndex = getDoorIndex(newX, newY);
+    let keyIndex = getKeyIndex(newX, newY); 
     
-    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && DoorIndex === -1) {
+    if (keyIndex !== -1 && !isObstacleOnKey(key_game[keyIndex])) {
+        key_game.splice(keyIndex, 1); // Supprimez la clé de l'array pour qu'elle ne soit plus dessinée
+        key_game_check = true; // Le joueur a maintenant la clé
+    } 
+    else if (doorIndex !== -1 && key_game_check === true){
+        door.splice(doorIndex, 1)
+        PJ[0].x = newX;
+        PJ[0].y = newY;
+    }
+
+    
+    
+    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && doorIndex === -1) {
         if (obstacleIndex === -1) {
             PJ[0].x = newX;
             PJ[0].y = newY;
@@ -141,9 +156,28 @@ function getObstacleImmobileIndex(x, y) {
     return -1;
 }
 
+function getKeyIndex(x, y) {
+    for (let i = 0; i < key_game.length; i++) {
+        if (key_game[i].x === x && key_game[i].y === y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function isObstacleOnKey(keyPosition) {
+    for (let i = 0; i < obstacles.length; i++) {
+        if (obstacles[i].x === keyPosition.x && obstacles[i].y === keyPosition.y ) {
+            return true; // Un obstacle est sur la clé
+        } 
+    }
+    return false; // Aucun obstacle sur la clé
+}
+
+
 function getDoorIndex(x, y) {
     for (let i = 0; i < door.length; i++) {
-        if (door[i].x === x && door[i].y === y) {
+        if (door[i].x === x && door[i].y === y && key_game_check === false) {
             return i;
         }
     }
@@ -153,10 +187,24 @@ function getDoorIndex(x, y) {
 function pushObstacle(index, dx, dy) {
     let newX = obstacles[index].x + dx;
     let newY = obstacles[index].y + dy;
-    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && getObstacleIndex(newX, newY) === -1 && getObstacleImmobileIndex(newX, newY) === -1 && getDoorIndex(newX, newY) === -1) {
-        obstacles[index].x = newX;
-        obstacles[index].y = newY;
-        return true;
+    let doorIndex = door.findIndex(d => d.x === newX && d.y === newY);
+
+    if (doorIndex !== -1) {
+        // Empêche l'obstacle de se déplacer si le nouvel emplacement est la porte
+        return false;
+    }
+
+    // Vérifie les autres conditions pour déplacer l'obstacle
+    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height) {
+        let obstacleAtNewLocationIndex = obstacles.findIndex(o => o.x === newX && o.y === newY);
+        let immobileObstacleAtNewLocationIndex = obstacles_immobiles.findIndex(o => o.x === newX && o.y === newY);
+        // Empêche le déplacement si un autre obstacle se trouve déjà à l'emplacement cible,
+        // ou si c'est un obstacle immobile
+        if (obstacleAtNewLocationIndex === -1 && immobileObstacleAtNewLocationIndex === -1) {
+            obstacles[index].x = newX;
+            obstacles[index].y = newY;
+            return true;
+        }
     }
     return false;
 }
