@@ -1,0 +1,36 @@
+.case {
+	width: 25px;
+	height: 25px;
+	border: 1px solid black;
+}
+
+.wall {
+	background-color: black;
+}
+
+.arrivedBox {
+	color: green;
+}
+.arrival span {
+	transform: rotate(45deg);
+}
+
+#grid {
+	display: flex;
+	flex-wrap: wrap;
+	margin: auto;
+}
+
+#caseType {
+	margin-top: 20px;
+	display: flex;
+	gap: 10px;
+}
+
+#caseType .case:hover {
+	cursor: pointer;
+	box-shadow: 0 0 5px 0px;
+}
+#caseType .case.selected {
+	box-shadow: 0 0 5px 0px;
+}
