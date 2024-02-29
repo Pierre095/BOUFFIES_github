@@ -103,8 +103,9 @@ function movePlayer() {
 
     let obstacleIndex = getObstacleIndex(newX, newY);
     let obstacleIndexImmobile = getObstacleImmobileIndex(newX, newY);
+    let DoorIndex = getDoorIndex(newX, newY);
     
-    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1) {
+    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && DoorIndex === -1) {
         if (obstacleIndex === -1) {
             PJ[0].x = newX;
             PJ[0].y = newY;
@@ -140,10 +141,19 @@ function getObstacleImmobileIndex(x, y) {
     return -1;
 }
 
+function getDoorIndex(x, y) {
+    for (let i = 0; i < door.length; i++) {
+        if (door[i].x === x && door[i].y === y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 function pushObstacle(index, dx, dy) {
     let newX = obstacles[index].x + dx;
     let newY = obstacles[index].y + dy;
-    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && getObstacleIndex(newX, newY) === -1 && getObstacleImmobileIndex(newX, newY) === -1) {
+    if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && getObstacleIndex(newX, newY) === -1 && getObstacleImmobileIndex(newX, newY) === -1 && getDoorIndex(newX, newY) === -1) {
         obstacles[index].x = newX;
         obstacles[index].y = newY;
         return true;
