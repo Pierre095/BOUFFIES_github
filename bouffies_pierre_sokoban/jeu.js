@@ -5,40 +5,43 @@ const boxSize = 100; // Ajustement pour l'exemple, ajustez selon la taille de vo
 
 key_game_check = false;
 
-let PJ = [];
-let obstacles = [];
-let obstacles_immobiles = [];
-let key_game = []
-let door = []
-let finish = []
-let mob = []
+// Vide : 0
+let PJ = []; // 3
+let obstacles = []; // 2
+let obstacles_immobiles = []; // 1
+let key_game = [] // 4
+let door = [] // 5
+let finish = [] // 6
+let mob = [] // 7
 
 // const map = [
 //     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 //     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 //     [1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
 //     [1, 1, 1, 2, 5, 2, 1, 1, 1, 1],
-//     [1, 2, 1, 2, 7, 0, 1, 0, 1, 1],
-//     [2, 0, 0, 2, 2, 2, 0, 0, 0, 1],
+//     [1, 2, 1, 2, 0, 0, 1, 0, 1, 1],
+//     [2, 0, 0, 2, 2, 2, 0, 0, 4, 1],
 //     [0, 2, 2, 2, 0, 0, 2, 2, 0, 1],
-//     [1, 3, 0, 2, 4, 0, 2, 0, 1, 1],
+//     [1, 3, 0, 2, 0, 0, 2, 0, 1, 1],
 //     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 //     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 // ];
 
+
+
+
 const map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [3, 1, 4, 0, 2, 1, 1, 1, 1, 1],
-    [0, 2, 0, 2, 0, 5, 0, 1, 1, 1],
-    [2, 0, 2, 0, 2, 2, 0, 6, 1, 1],
-    [0, 2, 0, 2, 0, 2, 2, 0, 1, 1],
-    [0, 0, 2, 0, 2, 0, 0, 1, 1, 1],
+    [3, 0, 0, 5, 6, 1, 1, 1, 1, 1],
+    [4, 0, 7, 4, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],        
 ];
-
 
 canvas.width = map[0].length * boxSize;
 canvas.height = map.length * boxSize;
@@ -64,11 +67,11 @@ let pushing = false;
 function generateObstacles(map) {
     for (let row = 0; row < map.length; row++) {
         for (let col = 0; col < map[row].length; col++) {
-            if (map[row][col] === 2) {
+            if (map[row][col] === 2) { //obstacle mobiles
                 obstacles.push({ x: col * boxSize, y: row * boxSize });
-            } else if (map[row][col] === 3) {
+            } else if (map[row][col] === 3) { // Perosnnage
                 PJ.push({ x: col * boxSize, y: row * boxSize });
-            } else if (map[row][col] === 1) {
+            } else if (map[row][col] === 1) { //obstacles immobile
                 obstacles_immobiles.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 4) {
                 key_game.push({ x: col * boxSize, y: row * boxSize });
@@ -126,40 +129,50 @@ function movePlayer() {
     let newX = PJ[0].x + dx;
     let newY = PJ[0].y + dy;
 
-    // Vérifiez si le joueur a atteint la clé
-    let keyIndex = getKeyIndex(newX, newY); 
-    if (keyIndex !== -1) {
-        key_game.splice(keyIndex, 1); // Supprimez la clé
+    let obstacleIndex = getObstacleIndex(newX, newY);
+    let obstacleIndexImmobile = getObstacleImmobileIndex(newX, newY);
+    let doorIndex = getDoorIndex(newX, newY);
+    let keyIndex = getKeyIndex(newX, newY);
+    let mobIndex = getMobIndex(newX, newY);
+
+    // Collecter la clé si disponible
+    if (keyIndex !== -1 && !isObstacleOnKey(key_game[keyIndex]) && !isMobOnKey(key_game[keyIndex])) {
+        key_game.splice(keyIndex, 1); // Supprimez la clé de l'array pour qu'elle ne soit plus dessinée
         key_game_check = true; // Le joueur a maintenant la clé
     }
 
-    // Vérifiez si le joueur essaie d'entrer dans la porte avec la clé
-    let doorIndex = getDoorIndex(newX, newY);
-    if (doorIndex !== -1 && key_game_check===true) {
-        door.splice(doorIndex, 1); // Supprime la porte
-        PJ[0].x = newX; // Met à jour la position du joueur pour montrer qu'il a passé la porte
+    // Ouvrir la porte si le joueur a la clé
+    if (doorIndex !== -1 && key_game_check === true) {
+        door.splice(doorIndex, 1); // Supprime la porte de l'array
+        PJ[0].x = newX; // Met à jour la position du joueur pour être sur la porte
         PJ[0].y = newY;
-    } else {
-        // Gérez le mouvement dans les cas où le joueur ne tente pas d'entrer dans la porte
-        let obstacleIndex = getObstacleIndex(newX, newY);
-        let obstacleIndexImmobile = getObstacleImmobileIndex(newX, newY);
-
-        if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && obstacleIndex === -1) {
-            // Le mouvement est valide (pas hors de la map, pas sur un obstacle)
+    } else if (mobIndex !== -1) {
+        // Si un mob est présent, tentez de le pousser
+        if (pushMob(mobIndex, dx, dy)) {
+            pushing = true; // Le personnage pousse un bloc
+            setTimeout(() => {
+                pushing = false; // Arrêtez de montrer l'image de poussée
+                draw(); // Redessinez avec l'image normale
+            }, 250); // Délai pour afficher l'image de poussée
+        }
+        // Si le mob ne peut pas être poussé, le joueur reste sur place (ne faites rien)
+    } else if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && doorIndex === -1) {
+        if (obstacleIndex === -1) {
+            // Si aucun obstacle n'est sur le chemin, déplacez le joueur
             PJ[0].x = newX;
             PJ[0].y = newY;
-        } else if (obstacleIndex !== -1) {
-            // Tentative de pousser un bloc si possible
+        } else {
+            // Tentative de pousser un obstacle
             if (pushObstacle(obstacleIndex, dx, dy)) {
                 pushing = true; // Le personnage pousse un bloc
                 setTimeout(() => {
-                    pushing = false; // Arrête de montrer l'image de poussée après un délai
+                    pushing = false; // Arrêtez de montrer l'image de poussée
                     draw(); // Redessinez avec l'image normale
-                }, 250);
+                }, 250); // Délai pour afficher l'image de poussée
             }
         }
     }
-    draw(); // Dessinez l'état actuel du jeu après le mouvement
+    draw(); // Redessinez l'état actuel du jeu
 }
 
 
@@ -199,10 +212,19 @@ function isObstacleOnKey(keyPosition) {
     return false; // Aucun obstacle sur la clé
 }
 
+function isMobOnKey(keyPosition) {
+    for (let i = 0; i < mob.length; i++) {
+        if (mob[i].x === keyPosition.x && mob[i].y === keyPosition.y) {
+            return true; // Un obstacle est sur la clé
+        }
+    }
+    return false; // Aucun obstacle sur la clé
+}
+
 
 function getDoorIndex(x, y) {
     for (let i = 0; i < door.length; i++) {
-        if (door[i].x === x && door[i].y === y && key_game_check === false) {
+        if (door[i].x === x && door[i].y === y) {
             return i;
         }
     }
@@ -227,10 +249,12 @@ function getMobIndex(x, y) {
     return -1;
 }
 
+
+
 function pushObstacle(index, dx, dy) {
     let newX = obstacles[index].x + dx;
     let newY = obstacles[index].y + dy;
-    let doorIndex = door.findIndex(d => d.x === newX && d.y === newY);
+    
 
     if (doorIndex !== -1) {
         // Empêche l'obstacle de se déplacer si le nouvel emplacement est la porte
@@ -243,7 +267,7 @@ function pushObstacle(index, dx, dy) {
         let immobileObstacleAtNewLocationIndex = obstacles_immobiles.findIndex(o => o.x === newX && o.y === newY);
         // Empêche le déplacement si un autre obstacle se trouve déjà à l'emplacement cible,
         // ou si c'est un obstacle immobile
-        if (obstacleAtNewLocationIndex === -1 && immobileObstacleAtNewLocationIndex === -1) {
+        if (obstacleAtNewLocationIndex === -1 && immobileObstacleAtNewLocationIndex === -1 && mobAtNewLocationIndex === -1 && doorAtNewLocationIndex === -1) {
             obstacles[index].x = newX;
             obstacles[index].y = newY;
             return true;
@@ -255,27 +279,33 @@ function pushObstacle(index, dx, dy) {
 function pushMob(index, dx, dy) {
     let newX = mob[index].x + dx;
     let newY = mob[index].y + dy;
-    let doorIndex = door.findIndex(d => d.x === newX && d.y === newY);
+    let mobIndex = getMobIndex(newX, newY);
 
-    if (doorIndex !== -1) {
-        // Empêche l'obstacle de se déplacer si le nouvel emplacement est la porte
-        return false;
-    }
-
-    // Vérifie les autres conditions pour déplacer le mob
+    // Vérifie si le nouvel emplacement est valide
     if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height) {
-        let mobAtNewLocationIndex = mob.findIndex(o => o.x === newX && o.y === newY);
+        let obstacleAtNewLocationIndex = obstacles.findIndex(o => o.x === newX && o.y === newY);
         let immobileObstacleAtNewLocationIndex = obstacles_immobiles.findIndex(o => o.x === newX && o.y === newY);
-        // Empêche le déplacement si un autre obstacle se trouve déjà à l'emplacement cible,
-        // ou si c'est un obstacle immobile
-        if (mobAtNewLocationIndex === -1 && immobileObstacleAtNewLocationIndex === -1) {
+        let mobAtNewLocationIndex = mob.findIndex(m => m.x === newX && m.y === newY);
+        let doorAtNewLocationIndex = door.findIndex(d => d.x === newX && d.y === newY);
+
+        // Empêche le déplacement si un autre mob, obstacle, ou la porte se trouve déjà à l'emplacement cible
+        if (obstacleAtNewLocationIndex === -1 && immobileObstacleAtNewLocationIndex === -1 && mobAtNewLocationIndex === -1 && doorAtNewLocationIndex === -1) {
             mob[index].x = newX;
             mob[index].y = newY;
             return true;
+        } else {
+            pushing = true; // Le personnage pousse un bloc
+            setTimeout(() => {
+                pushing = false; // Arrêtez de montrer l'image de poussée
+                draw(); // Redessinez avec l'image normale
+            }, 250); // Délai pour afficher l'image de poussée
+            mob.splice(mobIndex,1)
         }
     }
     return false;
 }
+
+
 
 function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -309,7 +339,6 @@ function draw() {
     context.drawImage(imageToDraw, PJ[0].x, PJ[0].y, boxSize, boxSize);
 }
 
-    
 // Assurez-vous que toutes les images sont chargées avant de dessiner
 Promise.all([
     new Promise(resolve => { image_personnage.onload = resolve; }),
@@ -322,6 +351,3 @@ Promise.all([
 ]).then(() => {
     draw(); // Initialiser le dessin une fois que toutes les images sont chargées
 });
-
-
-
