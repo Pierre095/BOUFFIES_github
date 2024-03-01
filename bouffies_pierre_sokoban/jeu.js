@@ -14,39 +14,40 @@ let door = [] // 5
 let finish = [] // 6
 let mob = [] // 7
 
-// const map = [
-//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-//     [1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
-//     [1, 1, 1, 2, 5, 2, 1, 1, 1, 1],
-//     [1, 2, 1, 2, 0, 0, 1, 0, 1, 1],
-//     [2, 0, 0, 2, 2, 2, 0, 0, 4, 1],
-//     [0, 2, 2, 2, 0, 0, 2, 2, 0, 1],
-//     [1, 3, 0, 2, 0, 0, 2, 0, 1, 1],
-//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-//     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-// ];
+const map2 = [
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 0, 0, 0, 1, 1, 1, 1],
+    [1, 1, 1, 2, 5, 2, 1, 1, 1, 1],
+    [1, 2, 1, 2, 0, 0, 1, 0, 1, 1],
+    [2, 0, 0, 2, 2, 2, 0, 0, 4, 1],
+    [0, 2, 2, 2, 0, 0, 2, 2, 0, 1],
+    [1, 3, 0, 2, 0, 0, 2, 0, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+];
 
 
 
 
 const map = [
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 7, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [3, 0, 0, 5, 6, 1, 1, 1, 1, 1],
     [4, 0, 7, 4, 1, 1, 1, 1, 1, 1],
+    [1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],        
 ];
 
 canvas.width = map[0].length * boxSize;
 canvas.height = map.length * boxSize;
 
-const image_personnage = new Image();
+const image_personnage_1 = new Image();
+const image_personnage_2 = new Image();
 const image_obstacle = new Image();
 const image_personnage_coup = new Image();
 const image_key = new Image();
@@ -54,15 +55,31 @@ const image_door = new Image();
 const image_finish = new Image();
 const image_mob = new Image();
 
-image_personnage.src = 'PJ2.png'; // Assurez-vous que le chemin d'accès est correct
-image_obstacle.src = 'bloc.png'; // Assurez-vous que le chemin d'accès est correct
-image_personnage_coup.src = 'PJ_coup.png'; // Assurez-vous que le chemin d'accès est correct
+image_personnage_1.src = 'PJ1.png';
+image_personnage_2.src = 'PJ2.png';
+image_obstacle.src = 'bloc.png';
+image_personnage_coup.src = 'PJ_coup.png';
 image_key.src = "key.png"
 image_door.src = "door.png"
 image_finish.src = "finish.png"
 image_mob.src = "mob.png"
 
+let currentCharacterImage = image_personnage_1;
 let pushing = false;
+if (pushing === false) {
+    setInterval(() => {
+        currentCharacterImage = (currentCharacterImage === image_personnage_1) ? image_personnage_2 : image_personnage_1;
+        draw(); // Redessinez le jeu pour mettre à jour l'image du personnage
+    }, 500); // Change l'image toutes les 500 millisecondes
+
+} else if (pushing === true) {
+    setTimeout(() => {
+        pushing = false; // Arrêtez de montrer l'image de poussée
+        draw(); // Redessinez avec l'image normale
+    }, 250); // Délai pour afficher l'image de poussée
+}
+
+
 
 function generateObstacles(map) {
     for (let row = 0; row < map.length; row++) {
@@ -150,10 +167,6 @@ function movePlayer() {
         // Si un mob est présent, tentez de le pousser
         if (pushMob(mobIndex, dx, dy)) {
             pushing = true; // Le personnage pousse un bloc
-            setTimeout(() => {
-                pushing = false; // Arrêtez de montrer l'image de poussée
-                draw(); // Redessinez avec l'image normale
-            }, 250); // Délai pour afficher l'image de poussée
         }
         // Si le mob ne peut pas être poussé, le joueur reste sur place (ne faites rien)
     } else if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && doorIndex === -1) {
@@ -165,10 +178,6 @@ function movePlayer() {
             // Tentative de pousser un obstacle
             if (pushObstacle(obstacleIndex, dx, dy)) {
                 pushing = true; // Le personnage pousse un bloc
-                setTimeout(() => {
-                    pushing = false; // Arrêtez de montrer l'image de poussée
-                    draw(); // Redessinez avec l'image normale
-                }, 250); // Délai pour afficher l'image de poussée
             }
         }
     }
@@ -254,7 +263,7 @@ function getMobIndex(x, y) {
 function pushObstacle(index, dx, dy) {
     let newX = obstacles[index].x + dx;
     let newY = obstacles[index].y + dy;
-    
+
 
     if (doorIndex !== -1) {
         // Empêche l'obstacle de se déplacer si le nouvel emplacement est la porte
@@ -299,7 +308,7 @@ function pushMob(index, dx, dy) {
                 pushing = false; // Arrêtez de montrer l'image de poussée
                 draw(); // Redessinez avec l'image normale
             }, 250); // Délai pour afficher l'image de poussée
-            mob.splice(mobIndex,1)
+            mob.splice(mobIndex, 1)
         }
     }
     return false;
@@ -335,13 +344,15 @@ function draw() {
         context.drawImage(image_mob, mob[i].x, mob[i].y, boxSize, boxSize);
     }
 
-    const imageToDraw = pushing ? image_personnage_coup : image_personnage;
-    context.drawImage(imageToDraw, PJ[0].x, PJ[0].y, boxSize, boxSize);
+    if (PJ.length > 0) {
+        context.drawImage(currentCharacterImage, PJ[0].x, PJ[0].y, boxSize, boxSize);
+    }
 }
 
 // Assurez-vous que toutes les images sont chargées avant de dessiner
 Promise.all([
-    new Promise(resolve => { image_personnage.onload = resolve; }),
+    new Promise(resolve => { image_personnage_1.onload = resolve; }),
+    new Promise(resolve => { image_personnage_2.onload = resolve; }),
     new Promise(resolve => { image_obstacle.onload = resolve; }),
     new Promise(resolve => { image_personnage_coup.onload = resolve; }),
     new Promise(resolve => { image_key.onload = resolve; }),
