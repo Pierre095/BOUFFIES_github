@@ -12,26 +12,14 @@
 </head>
 
 <body>
-
-    <div class="background-menu">
-        <div class="menu">
-            <div class="menu-titre">
-                <li class="lien"><a href="page_accueil.html"><i class="fa-solid fa-house" href="page_accueil.html"></i> Menu</a></li>
-            </div>
-            <div class="menu-titre">
-                <li class="lien"><a href="choix_niveau.html"><i class="fa-solid fa-list" href="choix_niveau.html"></i>
-                        Niveaux</a></li>
-            </div>
-            <div class="menu-titre">
-                <li class="lien"><a href="compte.html"><i class="fa-solid fa-user" href="compte.html"></i> Compte</a>
-                </li>
-            </div>
-        </div>
+    <div class="accueil">
+        <a class="choix_accueil" onclick="startGame()" >Commencer le Jeu</a>
+        <a class="choix_accueil" href="choix_niveau.html">Niveaux</a>
+        <a class="choix_accueil" href="compte.html">Compte</a>
     </div>
-
-    <div class="zone_jeu">
+    <div class="zone_jeu_hide">
         <canvas></canvas>
     </div>
+    <div id="moveCount" class="moveCount_hide">0</div>
 </body>
-<script src="app.js"></script>
 <script src="jeu.js"></script>
