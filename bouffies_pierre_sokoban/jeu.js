@@ -13,7 +13,7 @@ const moveLimits = {
     map3: 25,//32
     map4: 21,//23
     map5: 23,//23
-    map6: 43,//43
+    map6: 40,//43
     map7: 32,//32
     map8: 33,//33
     // Ajoutez d'autres niveaux au besoin
@@ -236,21 +236,68 @@ function generateObstacles(map) {
 
 document.addEventListener("keydown", moov);
 let d;
+
 function moov(event) {
     let key = event.keyCode;
+    let validMove = false; // Ajout pour indiquer si le mouvement est valide
+
     if (key == 90 || key == 38) { // Z
         d = "UP";
+        validMove = true;
     } else if (key == 81 || key == 37) { // Q
         d = "LEFT";
+        validMove = true;
     } else if (key == 83 || key == 40) { // S
         d = "DOWN";
+        validMove = true;
     } else if (key == 68 || key == 39) { // D
         d = "RIGHT";
+        validMove = true;
     }
-    move_count -= 1;
+
+    if (validMove) {
+        movePlayer(d); // Déplacer le joueur seulement si une touche valide est pressée
+    }
+
+    if (key == 82) { //permet de réinitialiser la map
+        key_game_check = false;
+        if (map_count === 1) {
+            setTimeout(() => {
+                generateObstacles(map1);
+            }, 10);
+        } else if (map_count === 2) {
+            setTimeout(() => {
+                generateObstacles(map2);
+            },10);
+        } else if (map_count === 3) {
+            setTimeout(() => {
+                generateObstacles(map3);
+            }, 10);
+        } else if (map_count === 4) {
+            setTimeout(() => {
+                generateObstacles(map4);
+            }, 10);
+        } else if (map_count === 5) {
+            setTimeout(() => {
+                generateObstacles(map5);
+            }, 10);
+        } else if (map_count === 6) {
+            setTimeout(() => {
+                generateObstacles(map6);
+            }, 10);
+        } else if (map_count === 7) {
+            setTimeout(() => {
+                generateObstacles(map7);
+            }, 10);
+        } else if (map_count === 8) {
+            setTimeout(() => {
+                generateObstacles(map8);
+            }, 10);
+        }
+    }
+
     updateMoveCountDisplay();
-    moveCount()
-    movePlayer(d);
+    moveCount();
 
     // console.log(move_count);
 }
@@ -273,7 +320,7 @@ function movePlayer() {
             dx = boxSize;
             break;
     }
-    
+
 
     // if (move_count <= 0) {
     //     alert("Dommage ! Vous avez dépassé le nombre de mouvements autorisés. Recommencez !");
@@ -295,16 +342,15 @@ function movePlayer() {
 
 
 
-    if (finishIndex !== -1) {
+    if (finishIndex !== -1 && move_count !== 0) { //vérifie si la fin est réglementaire
         PJ[0].x = newX; // Met à jour la position du joueur pour être sur la fin
         PJ[0].y = newY;
         // Le joueur a atteint la case d'arrivée
-        finish.splice(doorIndex, 1);
+        finish.splice(finishIndex, 1);
         // Ici, vous pouvez ajouter toute logique nécessaire pour gérer la victoire,
         // comme arrêter le jeu, afficher un écran de victoire, etc.
         // Par exemple, pour arrêter de déplacer le joueur après la victoire :
         end = true;
-        map_count += 1;
         if (end === true && map_count === 9) {
             setTimeout(() => {
                 alert("Félicitations ! Vous avez fini le jeu !");
@@ -319,6 +365,7 @@ function movePlayer() {
                 movecount.classList.remove('moveCount');
             }, 250);
         } else if (end === true) {
+            map_count += 1;
             setTimeout(() => {
                 alert("Félicitations ! Voulez-vous aller au niveau suivant ?");
                 if (map_count === 2) {
@@ -356,13 +403,16 @@ function movePlayer() {
 
     // Ouvrir la porte si le joueur a la clé
     if (doorIndex !== -1 && key_game_check === true) {
+        move_count -= 1;
         door.splice(doorIndex, 1); // Supprime la porte de l'array
         PJ[0].x = newX; // Met à jour la position du joueur pour être sur la porte
         PJ[0].y = newY;
+        key_game_check = false;
     } else if (mobIndex !== -1) {
         // Si un mob est présent, tentez de le pousser
         if (pushMob(mobIndex, dx, dy)) {
-            pushing = true; // Le personnage pousse un bloc
+            move_count -= 1;
+            pushing = true; // Le personnage pousse un mob
             if (pushing === true) {
                 setTimeout(() => {
                     pushing = false; // Arrêtez de montrer l'image de poussée
@@ -373,12 +423,14 @@ function movePlayer() {
         // Si le mob ne peut pas être poussé, le joueur reste sur place (ne faites rien)
     } else if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && doorIndex === -1) {
         if (obstacleIndex === -1) {
+            move_count -= 1;
             // Si aucun obstacle n'est sur le chemin, déplacez le joueur
             PJ[0].x = newX;
             PJ[0].y = newY;
         } else {
             // Tentative de pousser un obstacle
             if (pushObstacle(obstacleIndex, dx, dy)) {
+                move_count -= 1;
                 pushing = true; // Le personnage pousse un bloc
                 if (pushing === true) {
                     setTimeout(() => {
@@ -387,6 +439,7 @@ function movePlayer() {
                     }, 250); // Délai pour afficher l'image de poussée
                 }
             } else {//fait l'animation de pousser même si c'est pas possible
+                move_count -= 1;
                 pushing = true;
                 if (pushing === true) {
                     setTimeout(() => {
