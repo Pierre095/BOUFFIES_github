@@ -1,0 +1,286 @@
+/*common*/
+
+.background{
+    background-color: rgb(30, 30, 30);
+    color : white;
+}
+
+.logo{
+    background-color: rgba(30, 30, 30, 0.233);
+}
+
+.background .menu .menu-titre .lien a{
+    color: rgb(255, 255, 255);
+}
+
+.background .menu .menu-titre .lien a:hover {
+    color: rgb(229, 233, 2);
+}
+
+.background-menu.scroll{
+    background-color: rgb(30, 30, 30);
+    box-shadow: 0px 3px 3px rgb(55, 55, 55);
+}
+
+.prenom_nom{
+    color: rgb(255, 255, 255);
+}
+
+.background .menu.menu-titre .lien a:active {
+    color: rgb(114, 114, 114);
+}
+
+.titre_fin{
+    color : rgb(229, 233, 2);
+}
+
+.mot-page{
+    color : rgb(229, 233, 2);
+}
+
+.mot_page_typing{
+    color : rgb(229, 233, 2);
+}
+
+.icon .social-links a{
+    background-color: rgb(40, 40, 40);
+}
+
+.icon .social-links a:hover {
+    color:  #24242b;
+    background-color: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*index*/
+.presentation{
+    color : white;
+}
+
+.presentation_moi{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+.info_bloc{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+.container-skillbar {
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+.skillbar{
+    background-color: black;
+}
+
+.presentation_moi .text_presentation .cv {
+    color: rgb(255, 255, 255);
+}
+
+.presentation_moi .text_presentation .cv:before{
+    background-color: rgb(255, 255, 255);
+}
+.presentation_moi .text_presentation .cv:hover{
+    color:rgb(0, 0, 0); 
+}
+
+.presentation_moi .text_presentation .cv:active{
+    color: rgb(114, 114, 114);
+    border : none;
+}
+
+.parcour{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+.certification{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+.bloc-certification .certification .titre .lien_certification {
+    color: rgb(255, 255, 255);
+}
+
+.bloc-certification .certification .titre .lien_certification:before{
+    background-color: rgb(255, 255, 255);
+}
+.bloc-certification .certification .titre .lien_certification:hover{
+    color:rgb(0, 0, 0); 
+}
+
+.bloc-certification .certification .titre .lien_certification:active{
+    color: rgb(114, 114, 114);
+    border : none;
+}
+
+
+
+
+
+
+
+
+
+
+/*entreprise*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*réalisation*/
+.select_veille{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+    color : rgb(255, 255, 255)
+}
+
+
+.projet{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+.projet:hover{
+    background-color: rgb(24, 24, 24);
+    box-shadow: 3px 3px 3px 3px rgb(0, 0, 0);
+}
+
+.projet .titre{
+    color:white;
+}
+
+
+.fleche_retour_show{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+
+.projet_details_show{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+    border : solid 50px rgb(40, 40, 40);
+}
+
+.fa-brands{
+    color : #ffffff;
+}
+
+.projet_details_show .file .button {
+    color: rgb(255, 255, 255);
+}
+
+.projet_details_show .file .button:before{
+    background-color: rgb(255, 255, 255);
+}
+.projet_details_show .file .button:hover{
+    color:rgb(0, 0, 0); 
+}
+
+.projet_details_show .file .button:active{
+    color: rgb(114, 114, 114);
+    border : none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*veille*/
+
+.select_veille{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+    color : rgb(255, 255, 255)
+}
+
+.select_veille:hover{
+    background-color: rgb(24, 24, 24);
+    box-shadow: 3px 3px 3px 3px rgb(0, 0, 0);
+}
+
+
+
+.article{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+.article:hover{
+    background-color: rgb(24, 24, 24);
+    box-shadow: 3px 3px 3px 3px rgb(0, 0, 0);
+}
+
+.titre_article_detail{
+    color : rgb(255, 255, 255);
+}
+
+.fleche_retour_show{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+
+.article_details_show{
+    background-color: rgb(40, 40, 40);
+    box-shadow: 3px 3px 3px 3px rgb(55, 55, 55);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*bilan*/
+
+
+
+
+
+
+
+
+/*responsive*/

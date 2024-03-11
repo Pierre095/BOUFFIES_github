@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HellTaker</title>
+    <link rel="icon" type="image/png" href="IMG/logo/Logo_fondnoir.png">
+    <script src="https://kit.fontawesome.com/acc6f5edeb.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="Sokoban/style.css">
+    <link rel="stylesheet" href="CSS/common.css">
+</head>
+
+<body>
+
+    <div class="background-menu">
+        <div class="titre">
+            <div>
+                <a href="index.html"><img id="picture" class="logo" src="IMG/logo/logo_sans-fond-blanc.png">
+            </div>
+        </div>
+        <div class="menu">
+            <div class="menu-titre">
+                <li class="lien"><a href="index.html"><i class="fa-solid fa-house" href="index.html"></i> Accueil</a>
+                </li>
+                <li class="lien-mobile"><a href="index.html"><i class="fa-solid fa-house" href="index.html"></i></a>
+                </li>
+            </div>
+            <div class="menu-titre">
+                <li class="lien"><a href="entreprise.html"><i class="fa-solid fa-building" href="entreprise.html"></i>
+                        Entreprise</a></li>
+                <li class="lien-mobile"><a href="entreprise.html"><i class="fa-solid fa-building"
+                            href="entreprise.html"></i></a></li>
+
+            </div>
+            <div class="menu-titre">
+                <li class="lien"><a href="realisation.html"><i class="fa-solid fa-pen-to-square"
+                            href="realisation.html"></i> Realisations</a></li>
+                <li class="lien-mobile"><a href="realisation.html"><i class="fa-solid fa-pen-to-square"
+                            href="realisation.html"></i></a></li>
+            </div>
+            <div class="menu-titre">
+                <li class="lien"><a href="veille.html"><i class="fa-solid fa-lightbulb" href="veille.html"></i>
+                        Veille</a></li>
+                <li class="lien-mobile"><a href="veille.html"><i class="fa-solid fa-lightbulb"
+                            href="veille.html"></i></a></li>
+            </div>
+            <div class="menu-titre">
+                <li class="lien"><a href="bilan.html"><i class="fa-solid fa-chart-simple" href="bilan.html"></i>
+                        Bilan</a></li>
+                <li class="lien-mobile"><a href="bilan.html"><i class="fa-solid fa-chart-simple"
+                            href="bilan.html"></i></a></li>
+            </div>
+        </div>
+    </div>
+
+        <div class="accueil">
+            <a class="choix_accueil" onclick="startGame()" >Commencer le Jeu</a>
+        </div>
+        <div class="zone_jeu_hide">
+            <canvas></canvas>
+        </div>
+        <div id="moveCount" class="moveCount_hide">0</div>
+    </body>
+<script src="Sokoban/jeu.js"></script>

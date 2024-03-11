@@ -1,0 +1,29 @@
+html{
+    Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
+}
+
+.bloc {
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    gap : 5%;
+    margin : 5%;
+}
+
+.titre-paragraphe{
+    text-align:justify;
+    width : 40%;
+}
+
+.img-entreprise{
+    width:25%;
+    border-radius: 20px;
+}
+
+.img-entreprise_organigramme{
+    width:100%;
+    border-radius: 30px;
+}
+
+
+
