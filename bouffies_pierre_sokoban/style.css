@@ -94,10 +94,19 @@ body {
     display: flex;
     align-items: center;
     font-size : 300%;
+    bottom : 10px;
 }
 
 canvas{
     width : 800px;
     height : 800px;
     border:2px solid;
+}
+
+@media screen and (max-width: 845px) {
+    canvas{
+        width : 400px;
+        height : 400px;
+        border:2px solid;
+    }
 }
