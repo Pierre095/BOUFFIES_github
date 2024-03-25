@@ -9,7 +9,6 @@ map_count = 1;
 right = true;
 left = false;
 start = false;
-ontrap = false;
 
 const moveLimits = {
     map1: 23,//23
@@ -47,7 +46,7 @@ const map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const map1 = [
+const maptest = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 0, 3, 1, 1],
@@ -151,10 +150,10 @@ const map8 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const maptest = [
-    [1, 0, 7, 1, 1, 1, 1, 1, 1, 1],
+const map1 = [
     [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
-    [3, 0, 0, 2, 6, 1, 1, 1, 1, 1],
+    [1, 7, 2, 1, 1, 1, 1, 1, 1, 1],
+    [3, 0, 8, 2, 6, 1, 1, 1, 1, 1],
     [0, 2, 7, 4, 5, 0, 0, 1, 1, 1],
     [1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -201,6 +200,7 @@ image_trap.src = "IMG/ASSET/piege.png";
 //Animation personnage (statique / push)
 let currentCharacterImage = image_personnage_1;
 let pushing = false;
+let pushing_check = false;
 if (pushing === false) {
     setInterval(() => {
         currentCharacterImage = (currentCharacterImage === image_personnage_1) ? image_personnage_2 : image_personnage_1;
@@ -327,14 +327,13 @@ function moov(event) {
 
     updateMoveCountDisplay();
     moveCount();
-    console.log("ontrap : ",ontrap);
 }
 
 function movePlayer() {
     let dx = 0;
     let dy = 0;
 
-
+    
     switch (d) {
         case "UP":
             dy = -boxSize;
@@ -353,10 +352,6 @@ function movePlayer() {
     start = true;
 
 
-    // if (move_count <= 0) {
-    //     alert("Dommage ! Vous avez dépassé le nombre de mouvements autorisés. Recommencez !");
-    //     // Vous pouvez ici réinitialiser le niveau ou effectuer d'autres actions nécessaires
-    // }
 
 
 
@@ -371,7 +366,6 @@ function movePlayer() {
     let mobIndex = getMobIndex(newX, newY);
     let finishIndex = getFinishIndex(newX, newY);
     let trapIndex = getTrapIndex(newX, newY);
-
 
 
     if (finishIndex !== -1 && move_count !== 0) { //vérifie si la fin est réglementaire
@@ -433,10 +427,9 @@ function movePlayer() {
         key_game_check = true; // Le joueur a maintenant la clé
     }
 
-    if (trapIndex !== -1 ) {
+    if (trapIndex !== -1 && !isObstacleOnTrap(trap[trapIndex])) {
         move_count -= 1;
-        ontrap = true;
-        }
+    }
 
     // Ouvrir la porte si le joueur a la clé
     if (doorIndex !== -1 && key_game_check === true) {
@@ -447,9 +440,18 @@ function movePlayer() {
         key_game_check = false;
     } else if (mobIndex !== -1) {
         // Si un mob est présent, tentez de le pousser
+        trapIndex = getTrapIndex(PJ[0].x, PJ[0].y);
+        ontrap = trapIndex !== -1;
+
+        if(ontrap === true){
+            move_count -= 1        
+        }
+        
         if (pushMob(mobIndex, dx, dy)) {
+            
             move_count -= 1;
             pushing = true; // Le personnage pousse un mob
+            pushing_check = true
             if (pushing === true) {
                 setTimeout(() => {
                     pushing = false; // Arrêtez de montrer l'image de poussée
@@ -459,20 +461,16 @@ function movePlayer() {
         }
         // Si le mob ne peut pas être poussé, le joueur reste sur place (ne faites rien)
     } else if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && doorIndex === -1) {
+        
         if (obstacleIndex === -1) {
-            move_count -= 1;
             // Si aucun obstacle n'est sur le chemin, déplacez le joueur
             PJ[0].x = newX;
             PJ[0].y = newY;
         } else {
             // Tentative de pousser un obstacle
             if (pushObstacle(obstacleIndex, dx, dy)) {
-                if(ontrap === true){
-                    move_count -= 2 ;
-                } else {
-                    move_count -= 1;
-                }
                 pushing = true; // Le personnage pousse un bloc
+                pushing_check = true;
                 if (pushing === true) {
                     setTimeout(() => {
                         pushing = false; // Arrêtez de montrer l'image de poussée
@@ -480,8 +478,8 @@ function movePlayer() {
                     }, 250); // Délai pour afficher l'image de poussée
                 }
             } else {//fait l'animation de pousser même si c'est pas possible
-                move_count -= 1;
                 pushing = true;
+                pushing_check = true;
                 if (pushing === true) {
                     setTimeout(() => {
                         pushing = false; // Arrêtez de montrer l'image de poussée
@@ -492,7 +490,15 @@ function movePlayer() {
             }
 
         }
+        trapIndex = getTrapIndex(PJ[0].x, PJ[0].y);
+        ontrap = trapIndex !== -1;
+        if(ontrap === true && pushing_check === true){
+            move_count -= 2 ;       
+        } else {
+            move_count -= 1;
+        }
     }
+    pushing_check = false;
     draw(); // Redessinez l'état actuel du jeu
 }
 
@@ -633,9 +639,27 @@ function isMobOnKey(keyPosition) {
     return false; // Aucun obstacle sur la clé
 }
 
+function isObstacleOnTrap(trapPosition) {
+    for (let i = 0; i < obstacles.length; i++) {
+        if (obstacles[i].x === trapPosition.x && obstacles[i].y === trapPosition.y) {
+            return true; // Un obstacle est sur la clé
+        }
+    }
+    return false; // Aucun obstacle sur la clé
+}
+
+function isMobOnTrap(trapPosition) {
+    for (let i = 0; i < obstacles.length; i++) {
+        if (mob[i].x === trapPosition.x && obstacles[i].y === trapPosition.y) {
+            return true; // Un obstacle est sur la clé
+        }
+    }
+    return false; // Aucun obstacle sur la clé
+}
+
 function moveCount() {
     if (map_count === 1) {
-        if (move_count === -1) {
+        if (move_count < 0) {
             alert("Dommage ! Recommence !");
             move_count = 23;
             initializeMoveCount()
@@ -644,7 +668,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 2) {
-        if (move_count === -1) {
+        if (move_count <= 0) {
             alert("Dommage ! Recommence !");
             move_count = 24;
             initializeMoveCount()
@@ -653,7 +677,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 3) {
-        if (move_count === -1) {
+        if (move_count <= 0) {
             alert("Dommage ! Recommence !");
             move_count = 32;
             initializeMoveCount()
@@ -662,7 +686,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 4) {
-        if (move_count === -1) {
+        if (move_count <= 0) {
             alert("Dommage ! Recommence !");
             move_count = 23;
             initializeMoveCount()
@@ -671,7 +695,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 5) {
-        if (move_count === -1) {
+        if (move_count <= 0) {
             alert("Dommage ! Recommence !");
             move_count = 23;
             initializeMoveCount()
@@ -680,7 +704,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 6) {
-        if (move_count === -1) {
+        if (move_count <= 0) {
             alert("Dommage ! Recommence !");
             move_count = 43;
             initializeMoveCount()
@@ -689,7 +713,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 7) {
-        if (move_count === -1) {
+        if (move_count <= 0) {
             alert("Dommage ! Recommence !");
             move_count = 32;
             initializeMoveCount()
@@ -698,7 +722,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 8) {
-        if (move_count === -1) {
+        if (move_count <= 0) {
             alert("Dommage ! Recommence !");
             move_count = 33;
             initializeMoveCount()
