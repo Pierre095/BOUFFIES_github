@@ -18,7 +18,7 @@ const moveLimits = {
     map3: 32,//32
     map4: 23,//23
     map5: 23,//23
-    map6: 40,//43
+    map6: 43,//43
     map7: 32,//32
     map8: 33,//33
     // Ajoutez d'autres niveaux au besoin
@@ -118,7 +118,7 @@ const map6 = [
     [1, 1, 0, 3, 0, 1, 1, 1, 1, 1],
     [1, 1, 2, 2, 2, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 4, 1, 1, 1, 1, 1],
-    [1, 1, 0, 2, 0, 0, 1, 1, 1, 1],
+    [1, 1, 8, 2, 0, 0, 1, 1, 1, 1],
     [1, 1, 7, 1, 2, 2, 0, 0, 1, 1],
     [1, 1, 0, 0, 2, 0, 7, 1, 1, 1],
     [1, 1, 1, 1, 1, 5, 2, 0, 1, 1],
@@ -182,6 +182,7 @@ const image_finish = new Image();
 const image_mob = new Image();
 const image_mob_dead = new Image();
 const image_trap = new Image();
+const image_notrap = new Image();
 
 image_personnage_1.src = "IMG/ASSET/PJ1.png";
 image_personnage_2.src = "IMG/ASSET/PJ2.png";
@@ -196,6 +197,7 @@ image_finish.src = "IMG/ASSET/finish.png"
 image_mob.src = "IMG/ASSET/mob.png"
 image_mob_dead.src = "IMG/ASSET/mob_dead.png"
 image_trap.src = "IMG/ASSET/piege.png";
+image_notrap.src = "IMG/ASSET/nopiege.png";
 
 
 
@@ -226,6 +228,11 @@ if (pushing === false) {
         currentCharacterImage_gauche = image_personnage_coup_gauche;
         draw();
     }, 250); // 
+}
+
+if (trap_switch === false) {
+    switching_trap = (switching_trap === image_trap) ? image_notrap : image_trap;
+    draw();
 }
 
 
@@ -263,8 +270,6 @@ function generateObstacles(map) {
         }
     }
     initializeMoveCount();
-    moov_trap = 0;
-
 }
 
 
@@ -289,7 +294,8 @@ function moov(event) {
         d = "RIGHT";
         validMove = true;
     }
-    SwitchTrap();
+
+
 
     if (validMove) {
         movePlayer(d); // Déplacer le joueur seulement si une touche valide est pressée
@@ -297,7 +303,6 @@ function moov(event) {
 
     if (key == 82) { //permet de réinitialiser la map
         key_game_check = false;
-        trap_switch = true;
         if (map_count === 1) {
             setTimeout(() => {
                 generateObstacles(map1);
@@ -335,6 +340,10 @@ function moov(event) {
 
     updateMoveCountDisplay();
     moveCount();
+    trap_switch = true;
+    if (map_count === 1 || map_count === 5 || map_count === 6) {
+        SwitchTrap();
+    }
 }
 
 function movePlayer() {
@@ -438,8 +447,10 @@ function movePlayer() {
 
     if (trapIndex !== -1 && !isObstacleOnTrap(trap[trapIndex]) && trap_switch === true) {
         move_count -= 1;
-        // Alternez l'état du piège, qu'il ait été actif ou non
+        // Alternez l'état du piège ici, en supposant que vous ayez une fonction ou une logique pour le faire
     }
+
+
 
     // Ouvrir la porte si le joueur a la clé
     if (doorIndex !== -1 && key_game_check === true) {
@@ -512,19 +523,28 @@ function movePlayer() {
             moov_trap += 1;
         }
     }
+    trap.forEach((trapItem) => {
+        if (isMobOnTrap(trapItem) && trap_switch === true) {
+            // Si un mob est sur un piège, trouvez ce mob et retirez-le
+            let mobIndex = mob.findIndex(m => m.x === trapItem.x && m.y === trapItem.y);
+            if (mobIndex !== -1) {
+                mob.splice(mobIndex, 1); // Supprime le mob
+            }
+        }
+    });
     pushing_check = false;
     console.log(moov_trap);
+    console.log(map_count)
     draw(); // Redessinez l'état actuel du jeu
 }
 
 function SwitchTrap() {
     if (moov_trap % 2 !== 0) {
         trap_switch = false;
-        image_trap.src = "IMG/ASSET/nopiege.png";
     } else {
         trap_switch = true;
-        image_trap.src = "IMG/ASSET/piege.png";
     }
+
     console.log(trap_switch);
 }
 
@@ -674,16 +694,28 @@ function isObstacleOnTrap(trapPosition) {
 }
 
 function isMobOnTrap(trapPosition) {
-    let newX = mob[index].x + dx;
-    let newY = mob[index].y + dy;
-
-    for (let i = 0; i < obstacles.length; i++) {
-        if (mob[i].x === trapPosition.x && obstacles[i].y === trapPosition.y && trap_switch === true) {
-            return true;
-            mob.splice(index, 1); // Un obstacle est sur la clé
+    for (let i = 0; i < mob.length; i++) {
+        if (mob[i].x === trapPosition.x && mob[i].y === trapPosition.y) {
+            return true; // Un mob est sur le piège
         }
     }
-    return false; // Aucun obstacle sur la clé
+    return false; // Aucun mob sur le piège
+}
+
+function removeMobsOnTraps() {
+    // Itérer à travers le tableau des pièges
+    trap.forEach((trap, index) => {
+        // Utiliser la fonction isMobOnTrap pour vérifier si un mob est sur le piège
+        if (isMobOnTrap(trap)) {
+            // Si un mob est sur un piège, il est supprimé
+            // La fonction isMobOnTrap devrait retourner l'index du mob sur le piège, si présent
+            let mobIndex = mob.findIndex(m => m.x === trap.x && m.y === trap.y);
+            if (mobIndex !== -1) {
+                // Supprimer le mob de l'array des mobs
+                mob.splice(mobIndex, 1);
+            }
+        }
+    });
 }
 
 function moveCount() {
@@ -877,7 +909,8 @@ Promise.all([
     new Promise(resolve => { image_finish.onload = resolve; }),
     new Promise(resolve => { image_mob.onload = resolve; }),
     new Promise(resolve => { image_mob_dead.onload = resolve; }),
-    new Promise(resolve => { image_trap.onload = resolve; })
+    new Promise(resolve => { image_trap.onload = resolve; }),
+    new Promise(resolve => { image_notrap.onload = resolve; })
 ]).then(() => {
     draw(); // Initialiser le dessin une fois que toutes les images sont chargées
 });
