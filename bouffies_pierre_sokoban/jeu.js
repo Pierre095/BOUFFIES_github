@@ -11,6 +11,7 @@ left = false;
 start = false;
 moov_trap = 0;
 trap_switch = true;
+map_check = false;
 
 const moveLimits = {
     map1: 23,//23
@@ -48,7 +49,7 @@ const map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const maptest = [
+const map1 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 0, 3, 1, 1],
@@ -66,7 +67,7 @@ const map2 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
     [1, 1, 7, 1, 8, 8, 0, 0, 1, 1],
-    [1, 0, 8, 1, 1, 2, 2, 2, 1, 1],
+    [1, 0, 8, 1, 1, 10, 10, 2, 1, 1],
     [1, 0, 0, 1, 1, 0, 8, 0, 1, 1],
     [1, 3, 0, 1, 1, 6, 7, 0, 1, 1],
     [1, 1, 1, 1, 1, 1, 0, 7, 1, 1],
@@ -91,7 +92,7 @@ const map4 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 3, 1, 4, 0, 2, 1, 1, 1, 1],
-    [1, 0, 2, 8, 2, 0, 5, 0, 1, 1],
+    [1, 0, 2, 8, 10, 0, 5, 0, 1, 1],
     [1, 2, 0, 2, 0, 2, 2, 6, 0, 1],
     [1, 0, 2, 0, 2, 0, 2, 2, 0, 1],
     [1, 1, 0, 2, 0, 2, 0, 1, 1, 1],
@@ -102,7 +103,7 @@ const map4 = [
 
 const map5 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    [1, 1, 1, 1, 1, 6, 0, 1, 1, 1],
+    [1, 1, 1, 1, 1, 6, 1, 1, 1, 1],
     [1, 1, 1, 1, 0, 5, 2, 0, 1, 1],
     [1, 1, 3, 1, 8, 0, 2, 0, 1, 1],
     [1, 1, 0, 1, 0, 8, 0, 8, 1, 1],
@@ -118,7 +119,7 @@ const map6 = [
     [1, 1, 0, 3, 0, 1, 1, 1, 1, 1],
     [1, 1, 2, 2, 2, 1, 1, 1, 1, 1],
     [1, 0, 0, 0, 4, 1, 1, 1, 1, 1],
-    [1, 1, 8, 2, 0, 0, 1, 1, 1, 1],
+    [1, 1, 8, 10, 0, 0, 1, 1, 1, 1],
     [1, 1, 7, 1, 2, 2, 0, 0, 1, 1],
     [1, 1, 0, 0, 2, 0, 7, 1, 1, 1],
     [1, 1, 1, 1, 1, 5, 2, 0, 1, 1],
@@ -133,8 +134,8 @@ const map7 = [
     [1, 1, 0, 4, 1, 2, 2, 2, 1, 1],
     [1, 1, 7, 2, 0, 7, 2, 0, 1, 1],
     [1, 1, 0, 1, 7, 0, 0, 3, 1, 1],
-    [1, 1, 0, 1, 1, 0, 1, 1, 1, 1],
-    [1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+    [1, 1, 9, 1, 1, 8, 1, 1, 1, 1],
+    [1, 1, 8, 9, 8, 9, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
@@ -152,11 +153,11 @@ const map8 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const map1 = [
+const maptest = [
     [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 7, 1, 1, 1, 1, 1, 1, 1],
     [3, 0, 8, 2, 6, 1, 1, 1, 1, 1],
-    [0, 0, 7, 4, 5, 0, 0, 1, 1, 1],
+    [0, 0, 9, 4, 5, 0, 0, 1, 1, 1],
     [1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -230,10 +231,7 @@ if (pushing === false) {
     }, 250); // 
 }
 
-if (trap_switch === false) {
-    switching_trap = (switching_trap === image_trap) ? image_notrap : image_trap;
-    draw();
-}
+
 
 
 
@@ -266,10 +264,27 @@ function generateObstacles(map) {
                 mob.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 8) { // Trap
                 trap.push({ x: col * boxSize, y: row * boxSize });
+            } else if (map[row][col] === 9) { // Trap
+                trap.push({ x: col * boxSize, y: row * boxSize });
+            } else if (map[row][col] === 10) { // Trap
+                trap.push({ x: col * boxSize, y: row * boxSize });
+                obstacles.push({ x: col * boxSize, y: row * boxSize });
             }
         }
     }
+    if (map_count === 1 || map_count === 5  || map_count === 6 || map_count === 7) {
+        map_check = true;
+    } else {
+        map_check = false
+    }
     initializeMoveCount();
+    if (map_check === true) {
+        trap_switch = false;
+        SwitchTrap()
+    } else if (map_check === false) {
+        trap_switch = true;
+        image_trap.src = "IMG/ASSET/piege.png";
+    }
 }
 
 
@@ -295,7 +310,9 @@ function moov(event) {
         validMove = true;
     }
 
-
+    if (moov_trap === 0) {
+        moov_trap += 1;
+    }
 
     if (validMove) {
         movePlayer(d); // Déplacer le joueur seulement si une touche valide est pressée
@@ -336,14 +353,20 @@ function moov(event) {
                 generateObstacles(map8);
             }, 10);
         }
+
+        if (map_check === true) {
+            trap_switch = false;
+        }
+        if (map_check === true) {
+            SwitchTrap();
+        }
+
+
+        moov_trap = 0;
     }
 
     updateMoveCountDisplay();
     moveCount();
-    trap_switch = true;
-    if (map_count === 1 || map_count === 5 || map_count === 6) {
-        SwitchTrap();
-    }
 }
 
 function movePlayer() {
@@ -369,7 +392,10 @@ function movePlayer() {
     start = true;
 
 
-
+    if (map_check === true) {
+        trap_switch = false;
+        SwitchTrap();
+    }
 
 
 
@@ -431,7 +457,6 @@ function movePlayer() {
                 initializeMoveCount();
                 // Ajoutez ici toute autre logique de victoire, comme recharger le jeu ou passer au niveau suivant
             }, 250);
-            console.log(map_count)
         }
 
     }
@@ -533,20 +558,22 @@ function movePlayer() {
         }
     });
     pushing_check = false;
-    console.log(moov_trap);
-    console.log(map_count)
     draw(); // Redessinez l'état actuel du jeu
 }
 
 function SwitchTrap() {
-    if (moov_trap % 2 !== 0) {
+    if (moov_trap % 2 === 0 || moov_trap === 0) {
         trap_switch = false;
+        image_trap.src = "IMG/ASSET/nopiege.png";
     } else {
         trap_switch = true;
+        image_trap.src = "IMG/ASSET/piege.png";
     }
 
-    console.log(trap_switch);
+    draw();
 }
+
+
 
 function getObstacleIndex(x, y) {
     for (let i = 0; i < obstacles.length; i++) {
