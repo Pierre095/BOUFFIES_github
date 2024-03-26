@@ -9,12 +9,14 @@ map_count = 1;
 right = true;
 left = false;
 start = false;
+moov_trap = 0;
+trap_switch = true;
 
 const moveLimits = {
     map1: 23,//23
-    map2: 20,//24
-    map3: 25,//32
-    map4: 21,//23
+    map2: 24,//24
+    map3: 32,//32
+    map4: 23,//23
     map5: 23,//23
     map6: 40,//43
     map7: 32,//32
@@ -102,10 +104,10 @@ const map5 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 6, 0, 1, 1, 1],
     [1, 1, 1, 1, 0, 5, 2, 0, 1, 1],
-    [1, 1, 3, 1, 0, 0, 2, 0, 1, 1],
-    [1, 1, 0, 1, 0, 0, 0, 0, 1, 1],
+    [1, 1, 3, 1, 8, 0, 2, 0, 1, 1],
+    [1, 1, 0, 1, 0, 8, 0, 8, 1, 1],
     [1, 1, 7, 1, 2, 2, 2, 2, 1, 1],
-    [1, 1, 0, 0, 0, 0, 0, 0, 1, 1],
+    [1, 1, 8, 0, 8, 0, 0, 8, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 4, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -152,9 +154,9 @@ const map8 = [
 
 const map1 = [
     [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
-    [1, 7, 2, 1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 7, 1, 1, 1, 1, 1, 1, 1],
     [3, 0, 8, 2, 6, 1, 1, 1, 1, 1],
-    [0, 2, 7, 4, 5, 0, 0, 1, 1, 1],
+    [0, 0, 7, 4, 5, 0, 0, 1, 1, 1],
     [1, 2, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -183,16 +185,16 @@ const image_trap = new Image();
 
 image_personnage_1.src = "IMG/ASSET/PJ1.png";
 image_personnage_2.src = "IMG/ASSET/PJ2.png";
+image_personnage_coup.src = "IMG/ASSET/PJ_coup.png";
 image_personnage_1_gauche.src = "IMG/ASSET/PJ1_gauche.png";
 image_personnage_2_gauche.src = "IMG/ASSET/PJ2_gauche.png";
-image_personnage_coup.src = "IMG/ASSET/PJ_coup.png";
 image_personnage_coup_gauche.src = "IMG/ASSET/PJ_coup_gauche.png";
 image_obstacle.src = "IMG/ASSET/bloc.png";
-image_key.src = "IMG/ASSET/key.png";
-image_door.src = "IMG/ASSET/door.png";
-image_finish.src = "IMG/ASSET/finish.png";
-image_mob.src = "IMG/ASSET/mob.png";
-image_mob_dead.src = "IMG/ASSET/mob_dead.png";
+image_key.src = "IMG/ASSET/key.png"
+image_door.src = "IMG/ASSET/door.png"
+image_finish.src = "IMG/ASSET/finish.png"
+image_mob.src = "IMG/ASSET/mob.png"
+image_mob_dead.src = "IMG/ASSET/mob_dead.png"
 image_trap.src = "IMG/ASSET/piege.png";
 
 
@@ -255,13 +257,17 @@ function generateObstacles(map) {
                 finish.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 7) { // Mob
                 mob.push({ x: col * boxSize, y: row * boxSize });
-            } else if (map[row][col] === 8) { // Mob
+            } else if (map[row][col] === 8) { // Trap
                 trap.push({ x: col * boxSize, y: row * boxSize });
             }
         }
     }
     initializeMoveCount();
+    moov_trap = 0;
+
 }
+
+
 
 document.addEventListener("keydown", moov);
 let d;
@@ -283,6 +289,7 @@ function moov(event) {
         d = "RIGHT";
         validMove = true;
     }
+    SwitchTrap();
 
     if (validMove) {
         movePlayer(d); // Déplacer le joueur seulement si une touche valide est pressée
@@ -290,6 +297,7 @@ function moov(event) {
 
     if (key == 82) { //permet de réinitialiser la map
         key_game_check = false;
+        trap_switch = true;
         if (map_count === 1) {
             setTimeout(() => {
                 generateObstacles(map1);
@@ -333,7 +341,7 @@ function movePlayer() {
     let dx = 0;
     let dy = 0;
 
-    
+
     switch (d) {
         case "UP":
             dy = -boxSize;
@@ -410,6 +418,7 @@ function movePlayer() {
                     generateObstacles(map8);
                 }
                 move_count = 0;
+                moov_trap = 0;
                 initializeMoveCount();
                 // Ajoutez ici toute autre logique de victoire, comme recharger le jeu ou passer au niveau suivant
             }, 250);
@@ -427,13 +436,15 @@ function movePlayer() {
         key_game_check = true; // Le joueur a maintenant la clé
     }
 
-    if (trapIndex !== -1 && !isObstacleOnTrap(trap[trapIndex])) {
+    if (trapIndex !== -1 && !isObstacleOnTrap(trap[trapIndex]) && trap_switch === true) {
         move_count -= 1;
+        // Alternez l'état du piège, qu'il ait été actif ou non
     }
 
     // Ouvrir la porte si le joueur a la clé
     if (doorIndex !== -1 && key_game_check === true) {
         move_count -= 1;
+        moov_trap += 1;
         door.splice(doorIndex, 1); // Supprime la porte de l'array
         PJ[0].x = newX; // Met à jour la position du joueur pour être sur la porte
         PJ[0].y = newY;
@@ -443,13 +454,14 @@ function movePlayer() {
         trapIndex = getTrapIndex(PJ[0].x, PJ[0].y);
         ontrap = trapIndex !== -1;
 
-        if(ontrap === true){
-            move_count -= 1        
+        if (ontrap === true && trap_switch === true) {
+            move_count -= 1
         }
-        
+
         if (pushMob(mobIndex, dx, dy)) {
-            
+
             move_count -= 1;
+            moov_trap += 1;
             pushing = true; // Le personnage pousse un mob
             pushing_check = true
             if (pushing === true) {
@@ -461,7 +473,7 @@ function movePlayer() {
         }
         // Si le mob ne peut pas être poussé, le joueur reste sur place (ne faites rien)
     } else if (newX >= 0 && newX < canvas.width && newY >= 0 && newY < canvas.height && obstacleIndexImmobile === -1 && doorIndex === -1) {
-        
+
         if (obstacleIndex === -1) {
             // Si aucun obstacle n'est sur le chemin, déplacez le joueur
             PJ[0].x = newX;
@@ -492,16 +504,29 @@ function movePlayer() {
         }
         trapIndex = getTrapIndex(PJ[0].x, PJ[0].y);
         ontrap = trapIndex !== -1;
-        if(ontrap === true && pushing_check === true){
-            move_count -= 2 ;       
+        if (ontrap === true && pushing_check === true && trap_switch === true) {
+            move_count -= 2;
+            moov_trap += 1;
         } else {
             move_count -= 1;
+            moov_trap += 1;
         }
     }
     pushing_check = false;
+    console.log(moov_trap);
     draw(); // Redessinez l'état actuel du jeu
 }
 
+function SwitchTrap() {
+    if (moov_trap % 2 !== 0) {
+        trap_switch = false;
+        image_trap.src = "IMG/ASSET/nopiege.png";
+    } else {
+        trap_switch = true;
+        image_trap.src = "IMG/ASSET/piege.png";
+    }
+    console.log(trap_switch);
+}
 
 function getObstacleIndex(x, y) {
     for (let i = 0; i < obstacles.length; i++) {
@@ -649,9 +674,13 @@ function isObstacleOnTrap(trapPosition) {
 }
 
 function isMobOnTrap(trapPosition) {
+    let newX = mob[index].x + dx;
+    let newY = mob[index].y + dy;
+
     for (let i = 0; i < obstacles.length; i++) {
-        if (mob[i].x === trapPosition.x && obstacles[i].y === trapPosition.y) {
-            return true; // Un obstacle est sur la clé
+        if (mob[i].x === trapPosition.x && obstacles[i].y === trapPosition.y && trap_switch === true) {
+            return true;
+            mob.splice(index, 1); // Un obstacle est sur la clé
         }
     }
     return false; // Aucun obstacle sur la clé
@@ -659,7 +688,7 @@ function isMobOnTrap(trapPosition) {
 
 function moveCount() {
     if (map_count === 1) {
-        if (move_count < 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 23;
             initializeMoveCount()
@@ -668,7 +697,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 2) {
-        if (move_count <= 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 24;
             initializeMoveCount()
@@ -677,7 +706,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 3) {
-        if (move_count <= 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 32;
             initializeMoveCount()
@@ -686,7 +715,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 4) {
-        if (move_count <= 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 23;
             initializeMoveCount()
@@ -695,7 +724,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 5) {
-        if (move_count <= 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 23;
             initializeMoveCount()
@@ -704,7 +733,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 6) {
-        if (move_count <= 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 43;
             initializeMoveCount()
@@ -713,7 +742,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 7) {
-        if (move_count <= 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 32;
             initializeMoveCount()
@@ -722,7 +751,7 @@ function moveCount() {
             }, 250);
         }
     } else if (map_count === 8) {
-        if (move_count <= 0) {
+        if (move_count <= -1) {
             alert("Dommage ! Recommence !");
             move_count = 33;
             initializeMoveCount()
@@ -783,7 +812,7 @@ function draw() {
     if (start === false) {
         context.drawImage(currentCharacterImage, PJ[0].x, PJ[0].y, boxSize, boxSize);
     }
-    if (PJ.length > 0 && pushing === false) {
+    if (PJ.length > 0 && pushing === false && start === true) {
         if (d === "RIGHT") {
             context.drawImage(currentCharacterImage, PJ[0].x, PJ[0].y, boxSize, boxSize);
             right = true;
