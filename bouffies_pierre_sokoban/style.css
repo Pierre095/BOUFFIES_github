@@ -1,6 +1,6 @@
 html {
     Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 body {
@@ -12,18 +12,21 @@ body {
     background-attachment: fixed;
 }
 
-.logo {
-    background-color: rgba(240, 240, 240, 0.164);
-    border-radius: 30px;;
-    position: fixed;
-    width: 6%;
-    top: 0px;
-    padding : 5px;    
+.nom-jeu{
+    position : fixed;
+    margin-left : 10px;
 }
 
-.accueil_hide{
-    display:none;
+.nom-jeu a{
+    text-decoration: none;
+    color : black;
 }
+
+.nom-niveau{
+display: flex;
+justify-content: center;
+}
+
 .accueil{
     display : flex;
     justify-content: center;
@@ -74,27 +77,30 @@ body {
     border: solid 2px rgb(104, 104, 104); 
 }
 
-.zone_jeu_hide{
-    display : none
+.move-map-timer{
+    display: flex;
+    justify-content: center;
+    gap : 5%;
+    align-items: center;
+}
+
+.timer{
+    text-align: center;
+    font-size : 300%;
+    width : 120px;
 }
 
 .zone_jeu{
-    margin-top : 3%;
     position : relative ;
     display : flex;
     justify-content: center;
     align-items: center;
 }
 
-.moveCount_hide{
-    display: none;
-}
-
 .moveCount{
-    display: flex;
-    align-items: center;
+    text-align: center;
     font-size : 300%;
-    bottom : 10px;
+    width : 120px;
 }
 
 canvas{
@@ -103,7 +109,7 @@ canvas{
     border:2px solid;
 }
 
-@media screen and (max-width: 845px) {
+@media screen and (max-width: 1000px) {
     canvas{
         width : 400px;
         height : 400px;
