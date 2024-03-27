@@ -49,7 +49,7 @@ const map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const map1 = [
+const maptest = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 0, 3, 1, 1],
@@ -153,7 +153,7 @@ const map8 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const maptest = [
+const map1 = [
     [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 7, 1, 1, 1, 1, 1, 1, 1],
     [3, 0, 8, 2, 6, 1, 1, 1, 1, 1],
@@ -356,9 +356,6 @@ function moov(event) {
 
         if (map_check === true) {
             trap_switch = false;
-        }
-        if (map_check === true) {
-            SwitchTrap();
         }
 
 

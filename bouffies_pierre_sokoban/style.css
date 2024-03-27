@@ -12,6 +12,8 @@ body {
     background-attachment: fixed;
 }
 
+
+/* common */
 .nom-jeu{
     position : fixed;
     margin-left : 10px;
@@ -22,11 +24,8 @@ body {
     color : black;
 }
 
-.nom-niveau{
-display: flex;
-justify-content: center;
-}
 
+/* page accueil */
 .accueil{
     display : flex;
     justify-content: center;
@@ -77,6 +76,14 @@ justify-content: center;
     border: solid 2px rgb(104, 104, 104); 
 }
 
+
+
+/* jeu */
+.nom-niveau{
+    display: flex;
+    justify-content: center;
+    }
+
 .move-map-timer{
     display: flex;
     justify-content: center;
@@ -108,6 +115,75 @@ canvas{
     height : 800px;
     border:2px solid;
 }
+
+
+
+/* choix nom-niveau */
+
+.scolaire-pro{
+    position : relative ;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width : 100%;
+}
+
+.article-list {
+    display: flex;
+    flex-wrap:wrap;
+    gap : 9%;
+    justify-content: space-around;
+    
+
+}
+
+.article {
+    position :static;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(230, 230, 230);
+    box-shadow: 3px 3px 3px 3px rgb(186, 186, 186);
+    border-radius: 20px;
+    margin-bottom: 3%;
+    width: 300px;
+    height : 300px;
+    padding: 1%;
+    transition : all 0.25s ease;
+}
+
+.article:hover{
+    background-color: rgb(199, 199, 199);
+    box-shadow: 3px 3px 3px 3px rgb(122, 122, 122);
+}
+
+.article .titre {
+    display: flex;
+    justify-content: space-around;
+    gap: 50px;
+    text-align: center;
+    list-style: none;
+}
+
+.img-veille {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 5%;
+    border-radius: 20px;
+    width : 60%;
+}
+
+.date_note {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+
 
 @media screen and (max-width: 1000px) {
     canvas{
