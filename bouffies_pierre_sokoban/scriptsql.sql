@@ -28,3 +28,5 @@ CREATE TABLE Score (
 -- npm install express mysql
 -- npm install mysql
 -- npm install bcrypt
+-- npm install express-session
+

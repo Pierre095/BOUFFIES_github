@@ -12,6 +12,52 @@ start = false;
 moov_trap = 0;
 trap_switch = true;
 map_check = false;
+timer = false;
+validtimer = false;
+
+let startTime;
+let timerInterval;
+
+function startTimer() {
+    startTime = Date.now();
+    timerInterval = setInterval(updateTimer, 10); // Mise à jour toutes les secondes
+}
+
+function updateTimer() {
+    const elapsedTime = Date.now() - startTime;
+    document.getElementById('timer').innerText = formatTime(elapsedTime);
+}
+
+function formatTime(timeInMillis) {
+    let milliseconds = timeInMillis % 1000;
+    let seconds = Math.floor(timeInMillis / 1000);
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    // Formatte le temps au format MM:SS:SSS
+    return `${pad(minutes)}:${pad(seconds)}:${padMilliseconds(milliseconds)}`;
+}
+
+function pad(number) {
+    return number < 10 ? '0' + number : number;
+}
+
+function formatTime(timeInMillis) {
+    let milliseconds = Math.floor((timeInMillis % 1000) / 10); // Arrondir aux deux chiffres les plus significatifs
+    let seconds = Math.floor(timeInMillis / 1000);
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    // Formatte le temps au format MM:SS:MS
+    return `${pad(minutes)}:${pad(seconds)}:${pad(milliseconds)}`;
+}
+
+function pad(number) {
+    return number < 10 ? '0' + number : number;
+}
+
+
+function stopTimer() {
+    clearInterval(timerInterval);
+}
 
 const moveLimits = {
     map1: 23,//23
@@ -20,7 +66,7 @@ const moveLimits = {
     map4: 23,//23
     map5: 23,//23
     map6: 43,//43
-    map7: 32,//32
+    map7: 34,//32
     map8: 33,//33
     // Ajoutez d'autres niveaux au besoin
 };
@@ -275,9 +321,10 @@ function generateObstacles(map) {
     if (map_count === 1 || map_count === 5  || map_count === 6 || map_count === 7) {
         map_check = true;
     } else {
-        map_check = false
+        map_check = false;
     }
     initializeMoveCount();
+    
     if (map_check === true) {
         trap_switch = false;
         SwitchTrap()
@@ -285,6 +332,7 @@ function generateObstacles(map) {
         trap_switch = true;
         image_trap.src = "IMG/ASSET/piege.png";
     }
+    
 }
 
 
@@ -310,8 +358,13 @@ function moov(event) {
         validMove = true;
     }
 
-    if (moov_trap === 0) {
+    if (moov_trap === 0 && validMove === true) {
         moov_trap += 1;
+        validtimer = false;
+    }
+
+    if (validtimer === true){
+        startTimer()
     }
 
     if (validMove) {
@@ -418,20 +471,21 @@ function movePlayer() {
         // Par exemple, pour arrêter de déplacer le joueur après la victoire :
         end = true;
         if (end === true && map_count === 8) {
+            stopTimer()
             setTimeout(() => {
-                alert("Félicitations ! Vous avez fini le jeu !");
-                const zone_jeu = document.querySelector('.zone_jeu');
-                const accueil = document.querySelector('.accueil_hide');
-                const movecount = document.querySelector('.moveCount');
-                zone_jeu.classList.add('zone_jeu_hide');
-                zone_jeu.classList.remove('zone_jeu');
-                accueil.classList.add('accueil');
-                accueil.classList.remove('accueil_hide');
-                movecount.classList.add('moveCount_hide');
-                movecount.classList.remove('moveCount');
+                const win = document.querySelector('.win_hide');
+                win.classList.add('win');
+                win.classList.remove('win_hide');
+                console.log('finish')
+            }, 250);
+            setTimeout(() => {
+                const win = document.querySelector('.win');
+                win.classList.remove('win');
+                win.classList.add('win_hide');
             }, 250);
         } else if (end === true) {
             map_count += 1;
+            stopTimer()
             setTimeout(() => {
                 alert("Félicitations ! Voulez-vous aller au niveau suivant ?");
                 if (map_count === 2) {
@@ -449,6 +503,7 @@ function movePlayer() {
                 } else if (map_count === 8) {
                     generateObstacles(map8);
                 }
+                validtimer = false;
                 move_count = 0;
                 moov_trap = 0;
                 initializeMoveCount();
@@ -944,11 +999,56 @@ Promise.all([
 
 // Assurez-vous que toutes les images sont chargées avant de dessiner
 
-function startGame() {
-    // Retire l'écran de démarrage et lance le jeu
-    generateObstacles(map1); // Exemple de fonction qui pourrait être appelée pour initialiser le jeu
+function startGame(arg) {
+    const jeu = document.querySelector('.move-map-timer');
+    const niveaux = document.querySelector('.niveaux');
+    const noscroll = document.querySelector('html');
+    noscroll.style.overflow = 'hidden';
+    
+    jeu.classList.remove=('jeu_hide');
+    jeu.classList.add=('jeu');
+    niveaux.classList.add=('niveaux_hide');
+    niveaux.classList.remove=('niveaux');
+    niveaux.style.display='none';
+    jeu.style.display='flex';
+
+    
+
+    if(arg==='niveau1'){
+        generateObstacles(map1);
+        map_count = 1;
+        initializeMoveCount();
+    } else if(arg==='niveau2'){
+        generateObstacles(map2);
+        map_count = 2;
+        initializeMoveCount();
+    } else if(arg==='niveau3'){
+        generateObstacles(map3);
+        map_count = 3;
+        initializeMoveCount();
+    } else if(arg==='niveau4'){
+        generateObstacles(map4);
+        map_count = 4;
+        initializeMoveCount();
+    } else if(arg==='niveau5'){
+        generateObstacles(map5);
+        map_count = 5;
+        initializeMoveCount();
+    } else if(arg==='niveau6'){
+        generateObstacles(map6);
+        map_count = 6;
+        initializeMoveCount();
+    } else if(arg==='niveau7'){
+        generateObstacles(map7);
+        map_count = 7;
+        initializeMoveCount();
+    } else if(arg==='niveau8'){
+        generateObstacles(map8);
+        map_count = 8;
+        initializeMoveCount();
+    }
+
+    
     draw(); // Redessine le canvas avec le jeu en cours
 
 }
-
-startGame();

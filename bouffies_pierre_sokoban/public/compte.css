@@ -13,9 +13,9 @@ body {
 }
 
 .nom-jeu{
-  position : fixed;
+  position : static;
   margin-left : 10px;
-  top : 10px;
+  margin-top : 10px;
 }
 
 .nom-jeu a{

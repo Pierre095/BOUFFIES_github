@@ -13,9 +13,9 @@ body {
 }
 
 .nom-jeu{
-    position : fixed;
+    position : static;
     margin-left : 10px;
-    top : 10px;
+    margin-top : 10px;
 }
 
 .nom-jeu a{
@@ -24,15 +24,15 @@ body {
 }
 
 
-.scolaire-pro{
+.niveaux{
     position : relative ;
     display : flex;
     justify-content: center;
     align-items: center;
-    top : 100px
+    top : 50px
 }
 
-.article-list {
+.niveau-list {
     display: flex;
     flex-wrap:wrap;
     gap : 9%;
@@ -41,7 +41,7 @@ body {
 
 }
 
-.article {
+.niveau {
     position :static;
     cursor: pointer;
     display: flex;
@@ -58,12 +58,12 @@ body {
     transition : all 0.25s ease;
 }
 
-.article:hover{
+.niveau:hover{
     background-color: rgb(199, 199, 199);
     box-shadow: 3px 3px 3px 3px rgb(122, 122, 122);
 }
 
-.article .titre {
+.niveau .titre {
     display: flex;
     justify-content: space-around;
     gap: 50px;
@@ -83,5 +83,5 @@ body {
 .date_note {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
 }

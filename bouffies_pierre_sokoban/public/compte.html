@@ -15,14 +15,18 @@
     <h1 class="nom-jeu">
         <a href="index.html">Diamond Master</a>
     </h1>
-    <div class="accueil">
-        <a class="choix_accueil" href="jeu.html">Commencer le Jeu</a>
-        <a class="choix_accueil" href="jeu.html">Niveaux</a>
-        <a class="choix_accueil" href="#" id="choixCompte">Compte</a>
+    Compte
+    <button id="boutonDeconnexion">Déconnexion</button>
 
-    </div>
+    <div>Bonjour, <span id="nomUtilisateur"></span>!</div>
 </body>
 
-<script src="./app.js"></script>
 <script src="./login.js"></script>
-
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('nomUtilisateur').textContent = username;
+        }
+    });
+</script>

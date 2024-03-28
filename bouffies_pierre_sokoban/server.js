@@ -1,21 +1,27 @@
 const express = require('express');
 const mysql = require('mysql');
-const bcrypt = require('bcrypt'); // Ajout pour le hashage des mots de passe
-
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 const app = express();
 
-// Middleware pour parser le contenu JSON des requêtes entrantes
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Création d'une connexion à la base de données MySQL
+// Configuration de express-session
+app.use(session({
+  secret: 'secret très secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // `true` en production avec HTTPS
+}));
+
 const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'admin', // Remplacez par votre mot de passe réel
+  password: 'admin',
   database: 'diamond_master'
 });
 
-// Établissement de la connexion à la base de données
 connection.connect(err => {
   if (err) {
     console.error('Erreur de connexion à la base de données:', err);
@@ -24,21 +30,14 @@ connection.connect(err => {
   console.log('Connecté à MySQL');
 });
 
-// Middleware pour servir les fichiers statiques. 'public' est le dossier contenant vos fichiers HTML, JS, CSS, images, etc.
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
 
-// Gestionnaire de route pour traiter les données du formulaire d'inscription envoyées en POST
 app.post('/inscription', async (req, res) => {
-  const { username, password, confirm_password } = req.body; // Assurez-vous d'inclure confirm_password dans les données envoyées
-
-  if(password !== confirm_password) {
+  const { username, password, confirm_password } = req.body;
+  if (password !== confirm_password) {
     return res.status(400).send('Les mots de passe ne correspondent pas.');
   }
   try {
-    const { username, password } = req.body;
-    
-    // Hashage du mot de passe avant de l'insérer dans la base de données
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     
@@ -46,14 +45,16 @@ app.post('/inscription', async (req, res) => {
     connection.query(query, [username, hashedPassword], (err, results) => {
       if (err) {
         console.error('Erreur lors de l\'insertion:', err);
-        // Gérer les erreurs spécifiques, par exemple, un nom d'utilisateur déjà pris
         if (err.code === 'ER_DUP_ENTRY') {
           return res.status(400).send('Ce nom d\'utilisateur est déjà pris.');
         } else {
           return res.status(500).send('Erreur lors de l\'inscription.');
         }
       }
-      res.send('Inscription réussie !');
+      req.session.userId = results.insertId;
+      req.session.username = username; // Stocker le nom d'utilisateur dans la session
+      req.session.isLoggedIn = true;
+      res.redirect('/connexion-reussie.html'); // Assurez-vous que cette route existe et qu'elle est correctement gérée par votre serveur
     });
   } catch (error) {
     console.error('Erreur lors du hashage du mot de passe:', error);
@@ -63,9 +64,7 @@ app.post('/inscription', async (req, res) => {
 
 app.post('/connexion', (req, res) => {
   const { username, password } = req.body;
-
-  // Recherche de l'utilisateur par son nom d'utilisateur
-  const query = 'SELECT Password FROM Player WHERE Username = ?';
+  const query = 'SELECT PlayerID, Password FROM Player WHERE Username = ?';
   connection.query(query, [username], (err, results) => {
     if (err) {
       console.error('Erreur lors de la recherche de l\'utilisateur:', err);
@@ -73,19 +72,14 @@ app.post('/connexion', (req, res) => {
     }
 
     if (results.length > 0) {
-      // Comparaison du mot de passe soumis avec le mot de passe hashé stocké
-      const hashedPassword = results[0].Password;
+      const { PlayerID, Password: hashedPassword } = results[0];
       bcrypt.compare(password, hashedPassword, (err, isMatch) => {
-        if (err) {
-          console.error('Erreur lors de la comparaison des mots de passe:', err);
-          return res.status(500).json({ message: 'Erreur serveur.' });
-        }
-
         if (isMatch) {
-          // Connexion réussie
-          res.json({ success: true });
+          req.session.userId = PlayerID;
+          req.session.username = username; // Stocker le nom d'utilisateur dans la session
+          req.session.isLoggedIn = true;
+          res.redirect('/connexion-reussie.html'); // Assurez-vous que cette route existe et qu'elle est correctement gérée par votre serveur
         } else {
-          // Échec de la connexion
           res.status(401).json({ success: false, message: 'Nom d’utilisateur ou mot de passe incorrect' });
         }
       });
@@ -95,7 +89,6 @@ app.post('/connexion', (req, res) => {
   });
 });
 
-// Démarrage du serveur sur le port spécifié
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
