@@ -110,33 +110,53 @@ app.get('/api/get-username', (req, res) => {
 });
 
 app.post('/api/enregistrer-temps', (req, res) => {
-  // Vérifier si l'utilisateur est connecté
+  console.log(`Réception du serveur - Niveau ID: ${req.body.niveauId}, MeilleurTemps: ${req.body.temps}, TempsTotal: ${req.body.total}`); // Ajoute cette ligne
   if (!req.session.userId) {
-      return res.status(401).send({ message: 'Utilisateur non connecté' });
+    return res.status(401).send({ message: 'Veuillez vous connecter pour enregistrer votre temps.' });
   }
 
-  const temps = req.body.temps;
-  const userId = req.session.userId;
-  const niveauId = req.body.niveauId; // Supposons que vous envoyez également l'ID du niveau depuis le client
+  const { niveauId, temps, total } = req.body;
 
-  // Construire votre requête SQL pour insérer ou mettre à jour le meilleur temps
-  // Voici un exemple basique pour insérer un nouveau score
-  // Vous devriez ajouter une logique pour vérifier si c'est un meilleur temps pour ce niveau
   const query = `
-      INSERT INTO Score (PlayerID, NiveauID, MeilleurTemps)
-      VALUES (?, ?, ?)
-      ON DUPLICATE KEY UPDATE MeilleurTemps = LEAST(MeilleurTemps, VALUES(MeilleurTemps))
+    INSERT INTO Score (PlayerID, NiveauID, MeilleurTemps, TempsTotal)
+    VALUES (?, ?, ?, ?)
   `;
 
-  connection.query(query, [userId, niveauId, temps], (error, results) => {
-      if (error) {
-          console.error('Erreur lors de l\'enregistrement du temps :', error);
-          return res.status(500).send({ message: 'Erreur lors de l\'enregistrement du temps' });
-      }
-      res.send({ success: true, message: 'Temps enregistré avec succès' });
+  connection.query(query, [req.session.userId, niveauId, temps, total], (err) => {
+    if (err) {
+      console.error('Erreur lors de l\'enregistrement du temps:', err);
+      return res.status(500).send({ message: 'Erreur lors de l\'enregistrement du temps.' });
+    }
+    res.send({ message: 'Temps enregistré avec succès.' });
   });
 });
 
+app.get('/api/dernier-temps', (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).send({ message: 'Veuillez vous connecter pour accéder à cette information.' });
+  }
+
+  const { niveauId } = req.query; // Récupère l'ID du niveau depuis les paramètres de requête
+
+  const query = `
+    SELECT MeilleurTemps, TempsTotal FROM Score
+    WHERE PlayerID = ? AND NiveauID = ?
+    ORDER BY ScoreID DESC
+    LIMIT 1;
+  `;
+
+  connection.query(query, [req.session.userId, niveauId], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération du dernier temps:', err);
+      return res.status(500).send({ message: 'Erreur lors de la récupération des données.' });
+    }
+    if (results.length > 0) {
+      res.json(results[0]); // Renvoie le dernier temps enregistré
+    } else {
+      res.status(404).send({ message: 'Aucun temps trouvé pour ce niveau.' });
+    }
+  });
+});
 
 
 const PORT = process.env.PORT || 3000;

@@ -18,6 +18,15 @@ validtimer = false;
 let startTime;
 let timerInterval;
 
+let timer_niveau1 = 0;
+let timer_niveau2 = 0;
+let timer_niveau3 = 0;
+let timer_niveau4 = 0;
+let timer_niveau5 = 0;
+let timer_niveau6 = 0;
+let timer_niveau7 = 0;
+let timer_niveau8 = 0;
+
 function startTimer() {
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 10); // Mise à jour toutes les secondes
@@ -56,24 +65,84 @@ function pad(number) {
 
 
 function stopTimer() {
-    clearInterval(timerInterval); // Suppose que `timerInterval` est votre intervalle de timer
-    let tempsFinal = Date.now() - startTime; // Calcul du temps écoulé en millisecondes
-    envoyerTemps(tempsFinal); // Envoyer le temps au serveur
+    clearInterval(timerInterval); // Arrête le timer
+
+    const elapsedTime = Date.now() - startTime; // Calcule le temps écoulé depuis le début du timer
+    const totalSeconds = elapsedTime / 1000; // Convertit le temps écoulé en secondes
+    const formattedTime = totalSeconds.toFixed(2); 
+
+    // Utilise des 'if' pour enregistrer le temps écoulé dans la variable correspondante en fonction de `map_count`
+    if (map_count === 1) {
+        timer_niveau1 = formattedTime;
+        recupererDernierTemps(1);
+    } else if (map_count === 2) {
+        timer_niveau2 = formattedTime;
+        envoyerTempsNiveau(2, timer_niveau2);
+    } else if (map_count === 3) {
+        timer_niveau3 = formattedTime;
+        envoyerTempsNiveau(3, timer_niveau3);
+    } else if (map_count === 4) {
+        timer_niveau4 = formattedTime;
+        envoyerTempsNiveau(4, timer_niveau4);
+    } else if (map_count === 5) {
+        timer_niveau5 = formattedTime;
+        envoyerTempsNiveau(5, timer_niveau5);
+    } else if (map_count === 6) {
+        timer_niveau6 = formattedTime;
+        envoyerTempsNiveau(6, timer_niveau6);
+    } else if (map_count === 7) {
+        timer_niveau7 = formattedTime;
+        envoyerTempsNiveau(7, timer_niveau7);
+    } else if (map_count === 8) {
+        timer_niveau8 = formattedTime;
+        envoyerTempsNiveau(8, timer_niveau8);
+    }
 }
 
-
-function envoyerTemps(temps, niveauId) {
+function envoyerTempsNiveau(niveauId, temps, total) {
+    console.log(`Envoi au serveur - Niveau ID: ${niveauId}, MeilleurTemps: ${temps}, TempsTotal: ${total}`); // Ajoute cette ligne
     fetch('/api/enregistrer-temps', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ temps: temps, niveauId: niveauId }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        niveauId,
+        temps,
+        total,
+      }),
     })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch((error) => console.error('Erreur:', error));
-}
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Échec de l’enregistrement du temps');
+      }
+      return response.json();
+    })
+    .then(data => console.log('Succès:', data))
+    .catch(error => console.error('Erreur:', error));
+  }
+  
+  function recupererDernierTemps(niveauId) {
+    fetch(`/api/dernier-temps?niveauId=${niveauId}`)
+      .then(response => {
+        if (!response.ok) {
+            envoyerTempsNiveau(niveauId, timer_niveau1, total)
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Dernier temps récupéré:', data);
+        total = data.TempsTotal + timer_niveau1
+        if(data.MeilleurTemps <= timer_niveau1){
+            envoyerTempsNiveau(niveauId, data.MeilleurTemps, total)
+        } else {
+            envoyerTempsNiveau(niveauId, timer_niveau1, total)
+        } 
+      })
+      .catch(error => console.error('Erreur:', error));
+  }
+  
+  
 
 
 
@@ -500,8 +569,8 @@ function movePlayer() {
 
 
         } else if (end === true) {
-            map_count += 1;
             stopTimer()
+            map_count += 1;
             setTimeout(() => {
                 setTimeout(() => {
                     winScreen();
@@ -854,7 +923,7 @@ function moveCount() {
             }, 150);
             setTimeout(() => {
                 nodeadScreen();
-            }, 1500); 
+            }, 1500);
             move_count = 32;
             initializeMoveCount()
             setTimeout(() => {
@@ -868,7 +937,7 @@ function moveCount() {
             }, 150);
             setTimeout(() => {
                 nodeadScreen();
-            }, 1500); 
+            }, 1500);
             move_count = 23;
             initializeMoveCount()
             setTimeout(() => {
@@ -882,7 +951,7 @@ function moveCount() {
             }, 150);
             setTimeout(() => {
                 nodeadScreen();
-            }, 1500); 
+            }, 1500);
             move_count = 23;
             initializeMoveCount()
             setTimeout(() => {
@@ -896,7 +965,7 @@ function moveCount() {
             }, 150);
             setTimeout(() => {
                 nodeadScreen();
-            }, 1500); 
+            }, 1500);
             move_count = 43;
             initializeMoveCount()
             setTimeout(() => {
@@ -910,7 +979,7 @@ function moveCount() {
             }, 150);
             setTimeout(() => {
                 nodeadScreen();
-            }, 1500); 
+            }, 1500);
             move_count = 32;
             initializeMoveCount()
             setTimeout(() => {
@@ -924,7 +993,7 @@ function moveCount() {
             }, 150);
             setTimeout(() => {
                 nodeadScreen();
-            }, 1500); 
+            }, 1500);
             move_count = 33;
             initializeMoveCount()
             setTimeout(() => {
