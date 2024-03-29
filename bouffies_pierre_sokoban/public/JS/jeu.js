@@ -383,6 +383,7 @@ function moov(event) {
 
     if (validtimer === true) {
         startTimer()
+        validtimer = false;
     }
 
     if (validMove) {
