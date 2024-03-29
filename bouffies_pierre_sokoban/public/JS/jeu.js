@@ -126,7 +126,7 @@ function envoyerTempsNiveau(niveauId, temps, total) {
     fetch(`/api/dernier-temps?niveauId=${niveauId}`)
       .then(response => {
         if (!response.ok) {
-            envoyerTempsNiveau(niveauId, timer_niveau1, total)
+          envoyerTempsNiveau(niveauId, timer_niveau1, total)
         }
         return response.json();
       })
