@@ -56,8 +56,26 @@ function pad(number) {
 
 
 function stopTimer() {
-    clearInterval(timerInterval);
+    clearInterval(timerInterval); // Suppose que `timerInterval` est votre intervalle de timer
+    let tempsFinal = Date.now() - startTime; // Calcul du temps écoulé en millisecondes
+    envoyerTemps(tempsFinal); // Envoyer le temps au serveur
 }
+
+
+function envoyerTemps(temps, niveauId) {
+    fetch('/api/enregistrer-temps', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ temps: temps, niveauId: niveauId }),
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch((error) => console.error('Erreur:', error));
+}
+
+
 
 const moveLimits = {
     map1: 23,//23
@@ -66,7 +84,7 @@ const moveLimits = {
     map4: 23,//23
     map5: 23,//23
     map6: 43,//43
-    map7: 34,//32
+    map7: 35,//32
     map8: 33,//33
     // Ajoutez d'autres niveaux au besoin
 };
@@ -95,7 +113,7 @@ const map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const maptest = [
+const map1 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 1, 1, 1, 0, 3, 1, 1],
@@ -199,7 +217,7 @@ const map8 = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
 ];
 
-const map1 = [
+const maptest = [
     [1, 0, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 7, 1, 1, 1, 1, 1, 1, 1],
     [3, 0, 8, 2, 6, 1, 1, 1, 1, 1],
@@ -318,13 +336,13 @@ function generateObstacles(map) {
             }
         }
     }
-    if (map_count === 1 || map_count === 5  || map_count === 6 || map_count === 7) {
+    if (map_count === 5 || map_count === 6 || map_count === 7) {
         map_check = true;
     } else {
         map_check = false;
     }
     initializeMoveCount();
-    
+
     if (map_check === true) {
         trap_switch = false;
         SwitchTrap()
@@ -332,7 +350,7 @@ function generateObstacles(map) {
         trap_switch = true;
         image_trap.src = "IMG/ASSET/piege.png";
     }
-    
+
 }
 
 
@@ -360,10 +378,10 @@ function moov(event) {
 
     if (moov_trap === 0 && validMove === true) {
         moov_trap += 1;
-        validtimer = false;
+        validtimer = true;
     }
 
-    if (validtimer === true){
+    if (validtimer === true) {
         startTimer()
     }
 
@@ -473,21 +491,23 @@ function movePlayer() {
         if (end === true && map_count === 8) {
             stopTimer()
             setTimeout(() => {
-                const win = document.querySelector('.win_hide');
-                win.classList.add('win');
-                win.classList.remove('win_hide');
-                console.log('finish')
-            }, 250);
+                winScreen();
+            }, 150);
             setTimeout(() => {
-                const win = document.querySelector('.win');
-                win.classList.remove('win');
-                win.classList.add('win_hide');
-            }, 250);
+                window.location.href = './jeu.html';
+            }, 1500);
+
+
         } else if (end === true) {
             map_count += 1;
             stopTimer()
             setTimeout(() => {
-                alert("Félicitations ! Voulez-vous aller au niveau suivant ?");
+                setTimeout(() => {
+                    winScreen();
+                }, 150);
+                setTimeout(() => {
+                    nowinScreen();
+                }, 1500);
                 if (map_count === 2) {
                     generateObstacles(map2);
                 } else if (map_count === 3) {
@@ -800,7 +820,12 @@ function removeMobsOnTraps() {
 function moveCount() {
     if (map_count === 1) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500);
             move_count = 23;
             initializeMoveCount()
             setTimeout(() => {
@@ -809,7 +834,12 @@ function moveCount() {
         }
     } else if (map_count === 2) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500);
             move_count = 24;
             initializeMoveCount()
             setTimeout(() => {
@@ -818,7 +848,12 @@ function moveCount() {
         }
     } else if (map_count === 3) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500); 
             move_count = 32;
             initializeMoveCount()
             setTimeout(() => {
@@ -827,7 +862,12 @@ function moveCount() {
         }
     } else if (map_count === 4) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500); 
             move_count = 23;
             initializeMoveCount()
             setTimeout(() => {
@@ -836,7 +876,12 @@ function moveCount() {
         }
     } else if (map_count === 5) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500); 
             move_count = 23;
             initializeMoveCount()
             setTimeout(() => {
@@ -845,7 +890,12 @@ function moveCount() {
         }
     } else if (map_count === 6) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500); 
             move_count = 43;
             initializeMoveCount()
             setTimeout(() => {
@@ -854,7 +904,12 @@ function moveCount() {
         }
     } else if (map_count === 7) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500); 
             move_count = 32;
             initializeMoveCount()
             setTimeout(() => {
@@ -863,7 +918,12 @@ function moveCount() {
         }
     } else if (map_count === 8) {
         if (move_count <= -1) {
-            alert("Dommage ! Recommence !");
+            setTimeout(() => {
+                deadScreen();
+            }, 150);
+            setTimeout(() => {
+                nodeadScreen();
+            }, 1500); 
             move_count = 33;
             initializeMoveCount()
             setTimeout(() => {
@@ -883,7 +943,29 @@ function updateMoveCountDisplay() {
     document.getElementById('moveCount').innerText = `${move_count}`;
 }
 
+function winScreen() {
+    const win = document.querySelector('.win_hide');
+    win.classList.add('win');
+    win.classList.remove('win_hide');
+}
 
+function nowinScreen() {
+    const win = document.querySelector('.win');
+    win.classList.add('win_hide');
+    win.classList.remove('win');
+}
+
+function deadScreen() {
+    const dead = document.querySelector('.death_hide');
+    dead.classList.add('death');
+    dead.classList.remove('death_hide');
+}
+
+function nodeadScreen() {
+    const dead = document.querySelector('.death');
+    dead.classList.add('death_hide');
+    dead.classList.remove('death');
+}
 
 
 
@@ -1004,51 +1086,50 @@ function startGame(arg) {
     const niveaux = document.querySelector('.niveaux');
     const noscroll = document.querySelector('html');
     noscroll.style.overflow = 'hidden';
-    
-    jeu.classList.remove=('jeu_hide');
-    jeu.classList.add=('jeu');
-    niveaux.classList.add=('niveaux_hide');
-    niveaux.classList.remove=('niveaux');
-    niveaux.style.display='none';
-    jeu.style.display='flex';
 
-    
+    jeu.classList.remove = ('jeu_hide');
+    jeu.classList.add = ('jeu');
+    niveaux.classList.add = ('niveaux_hide');
+    niveaux.classList.remove = ('niveaux');
+    niveaux.style.display = 'none';
+    jeu.style.display = 'flex';
 
-    if(arg==='niveau1'){
-        generateObstacles(map1);
+
+
+    if (arg === 'niveau1') {
         map_count = 1;
+        generateObstacles(map1);
         initializeMoveCount();
-    } else if(arg==='niveau2'){
-        generateObstacles(map2);
+    } else if (arg === 'niveau2') {
         map_count = 2;
+        generateObstacles(map2);
         initializeMoveCount();
-    } else if(arg==='niveau3'){
-        generateObstacles(map3);
+    } else if (arg === 'niveau3') {
         map_count = 3;
+        generateObstacles(map3);
         initializeMoveCount();
-    } else if(arg==='niveau4'){
-        generateObstacles(map4);
+    } else if (arg === 'niveau4') {
         map_count = 4;
+        generateObstacles(map4);
         initializeMoveCount();
-    } else if(arg==='niveau5'){
-        generateObstacles(map5);
+    } else if (arg === 'niveau5') {
         map_count = 5;
+        generateObstacles(map5);
         initializeMoveCount();
-    } else if(arg==='niveau6'){
-        generateObstacles(map6);
+    } else if (arg === 'niveau6') {
         map_count = 6;
+        generateObstacles(map6);
         initializeMoveCount();
-    } else if(arg==='niveau7'){
-        generateObstacles(map7);
+    } else if (arg === 'niveau7') {
         map_count = 7;
+        generateObstacles(map7);
         initializeMoveCount();
-    } else if(arg==='niveau8'){
-        generateObstacles(map8);
+    } else if (arg === 'niveau8') {
         map_count = 8;
+        generateObstacles(map8);
         initializeMoveCount();
     }
 
-    
     draw(); // Redessine le canvas avec le jeu en cours
 
 }

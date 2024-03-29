@@ -8,25 +8,26 @@
     <title>HellTaker</title>
     <link rel="icon" type="image/png" href="IMG/logo/Logo_fondnoir.png">
     <script src="https://kit.fontawesome.com/acc6f5edeb.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./CSS/compte.css">
 </head>
 
 <body>
     <h1 class="nom-jeu">
         <a href="index.html">Diamond Master</a>
-    </h1>
-    Compte
-    <button id="boutonDeconnexion">Déconnexion</button>
 
-    <div>Bonjour, <span id="nomUtilisateur"></span>!</div>
+        <h1 class="nom-niveau">Mon Compte</h1>
+
+    </h1>
+
+    <div class="presentation_utilisateur">
+        <div class="text_presentation">
+            <h1 class="nom_utilisateur"><span id="nomUtilisateur"></span></h1>
+            <a id="boutonDeconnexion">Déconnexion <i class="fa-solid fa-right-from-bracket"></i></a>
+        </div>
+        <img class="image_perso" src="./IMG/ASSET/PJ1.png">
+    </div>
 </body>
 
-<script src="./login.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const username = localStorage.getItem('username');
-        if (username) {
-            document.getElementById('nomUtilisateur').textContent = username;
-        }
-    });
-</script>
+<script src="./JS/login.js"></script>
+<script src="./JS/compte.js"></script>

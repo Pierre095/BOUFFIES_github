@@ -34,6 +34,7 @@ app.use(express.static('public'));
 
 app.post('/inscription', async (req, res) => {
   const { username, password, confirm_password } = req.body;
+
   if (password !== confirm_password) {
     return res.status(400).send('Les mots de passe ne correspondent pas.');
   }
@@ -88,6 +89,55 @@ app.post('/connexion', (req, res) => {
     }
   });
 });
+
+
+app.get('/api/get-username', (req, res) => {
+    if (!req.session.userId) {
+        return res.status(401).send({ error: 'Utilisateur non connecté' });
+    }
+    const query = 'SELECT Username FROM Player WHERE PlayerID = ?';
+    connection.query(query, [req.session.userId], (err, results) => {
+        if (err) {
+            console.error('Erreur lors de la récupération du username:', err);
+            return res.status(500).send({ error: 'Erreur serveur' });
+        }
+        if (results.length > 0) {
+            return res.json({ username: results[0].Username });
+        } else {
+            return res.status(404).send({ error: 'Utilisateur non trouvé' });
+        }
+    });
+});
+
+app.post('/api/enregistrer-temps', (req, res) => {
+  // Vérifier si l'utilisateur est connecté
+  if (!req.session.userId) {
+      return res.status(401).send({ message: 'Utilisateur non connecté' });
+  }
+
+  const temps = req.body.temps;
+  const userId = req.session.userId;
+  const niveauId = req.body.niveauId; // Supposons que vous envoyez également l'ID du niveau depuis le client
+
+  // Construire votre requête SQL pour insérer ou mettre à jour le meilleur temps
+  // Voici un exemple basique pour insérer un nouveau score
+  // Vous devriez ajouter une logique pour vérifier si c'est un meilleur temps pour ce niveau
+  const query = `
+      INSERT INTO Score (PlayerID, NiveauID, MeilleurTemps)
+      VALUES (?, ?, ?)
+      ON DUPLICATE KEY UPDATE MeilleurTemps = LEAST(MeilleurTemps, VALUES(MeilleurTemps))
+  `;
+
+  connection.query(query, [userId, niveauId, temps], (error, results) => {
+      if (error) {
+          console.error('Erreur lors de l\'enregistrement du temps :', error);
+          return res.status(500).send({ message: 'Erreur lors de l\'enregistrement du temps' });
+      }
+      res.send({ success: true, message: 'Temps enregistré avec succès' });
+  });
+});
+
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

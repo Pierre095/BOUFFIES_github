@@ -29,10 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('isLoggedIn');
         
         // Redirection immédiate vers la page de déconnexion réussie
-        window.location.href = '/index.html';
+        window.location.href = './index.html';
     });
 });
-
-
 
 
