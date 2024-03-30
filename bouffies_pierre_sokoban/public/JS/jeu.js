@@ -74,28 +74,28 @@ function stopTimer() {
     // Utilise des 'if' pour enregistrer le temps écoulé dans la variable correspondante en fonction de `map_count`
     if (map_count === 1) {
         timer_niveau1 = formattedTime;
-        recupererDernierTemps(1);
+        recupererDernierTemps(1, timer_niveau1);
     } else if (map_count === 2) {
         timer_niveau2 = formattedTime;
-        envoyerTempsNiveau(2, timer_niveau2);
+        recupererDernierTemps(2, timer_niveau2);
     } else if (map_count === 3) {
         timer_niveau3 = formattedTime;
-        envoyerTempsNiveau(3, timer_niveau3);
+        recupererDernierTemps(3, timer_niveau3);
     } else if (map_count === 4) {
         timer_niveau4 = formattedTime;
-        envoyerTempsNiveau(4, timer_niveau4);
+        recupererDernierTemps(4, timer_niveau4);
     } else if (map_count === 5) {
         timer_niveau5 = formattedTime;
-        envoyerTempsNiveau(5, timer_niveau5);
+        recupererDernierTemps(5, timer_niveau5);
     } else if (map_count === 6) {
         timer_niveau6 = formattedTime;
-        envoyerTempsNiveau(6, timer_niveau6);
+        recupererDernierTemps(6, timer_niveau6);
     } else if (map_count === 7) {
         timer_niveau7 = formattedTime;
-        envoyerTempsNiveau(7, timer_niveau7);
+        recupererDernierTemps(7, timer_niveau7);
     } else if (map_count === 8) {
         timer_niveau8 = formattedTime;
-        envoyerTempsNiveau(8, timer_niveau8);
+        recupererDernierTemps(8, timer_niveau8);
     }
 }
 
@@ -120,23 +120,23 @@ function envoyerTempsNiveau(niveauId, temps, total) {
     })
     .then(data => console.log('Succès:', data))
     .catch(error => console.error('Erreur:', error));
-  }
+}
   
-  function recupererDernierTemps(niveauId) {
+  function recupererDernierTemps(niveauId, temps) {
     fetch(`/api/dernier-temps?niveauId=${niveauId}`)
       .then(response => {
         if (!response.ok) {
-          envoyerTempsNiveau(niveauId, timer_niveau1, total)
+          envoyerTempsNiveau(niveauId, temps, total)
         }
         return response.json();
       })
       .then(data => {
         console.log('Dernier temps récupéré:', data);
-        total = data.TempsTotal + timer_niveau1
-        if(data.MeilleurTemps <= timer_niveau1){
+        total = data.TempsTotal + temps
+        if(data.MeilleurTemps <= temps){
             envoyerTempsNiveau(niveauId, data.MeilleurTemps, total)
         } else {
-            envoyerTempsNiveau(niveauId, timer_niveau1, total)
+            envoyerTempsNiveau(niveauId, temps, total)
         } 
       })
       .catch(error => console.error('Erreur:', error));

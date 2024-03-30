@@ -70,7 +70,7 @@ Difficulté au niveau :
  - gestion de l'etat actif/passif des pièges
  - gestion de l'inscription/connexion de l'utilisateur
  - récupération du timer une fois le niveau fini pour pouvoir l'afficher dans la BDD
- - 
+
 
 ## Déroulement des étapes
 

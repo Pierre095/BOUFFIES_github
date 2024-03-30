@@ -151,12 +151,18 @@ app.get('/api/dernier-temps', (req, res) => {
       return res.status(500).send({ message: 'Erreur lors de la récupération des données.' });
     }
     if (results.length > 0) {
-      res.json(results[0]); // Renvoie le dernier temps enregistré
+      // Assure que les clés MeilleurTemps et TempsTotal sont présentes même si elles sont NULL
+      const dernierTemps = {
+        MeilleurTemps: results[0].MeilleurTemps != null ? results[0].MeilleurTemps : null,
+        TempsTotal: results[0].TempsTotal != null ? results[0].TempsTotal : null,
+      };
+      res.json(dernierTemps); // Renvoie le dernier temps enregistré
     } else {
       res.status(404).send({ message: 'Aucun temps trouvé pour ce niveau.' });
     }
   });
 });
+
 
 
 const PORT = process.env.PORT || 3000;
