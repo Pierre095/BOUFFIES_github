@@ -10,6 +10,7 @@ right = true;
 left = false;
 start = false;
 moov_trap = 0;
+moov_timer = 0;
 trap_switch = true;
 map_check = false;
 timer = false;
@@ -27,9 +28,26 @@ let timer_niveau6 = 0;
 let timer_niveau7 = 0;
 let timer_niveau8 = 0;
 
+
+function PremiereConnexion() {
+    return localStorage.getItem('FirstSignUp') === 'true';
+}
+
 function startTimer() {
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 10); // Mise à jour toutes les secondes
+    if (PremiereConnexion()) {
+        console.log('premiere connexion');
+        envoyerTempsNiveau(1, 99999999.99, 0)
+        envoyerTempsNiveau(2, 99999999.99, 0)
+        envoyerTempsNiveau(3, 99999999.99, 0)
+        envoyerTempsNiveau(4, 99999999.99, 0)
+        envoyerTempsNiveau(5, 99999999.99, 0)
+        envoyerTempsNiveau(6, 99999999.99, 0)
+        envoyerTempsNiveau(7, 99999999.99, 0)
+        envoyerTempsNiveau(8, 99999999.99, 0)
+        localStorage.setItem('FirstSignUp', 'false');
+    }
 }
 
 function updateTimer() {
@@ -69,7 +87,7 @@ function stopTimer() {
 
     const elapsedTime = Date.now() - startTime; // Calcule le temps écoulé depuis le début du timer
     const totalSeconds = elapsedTime / 1000; // Convertit le temps écoulé en secondes
-    const formattedTime = totalSeconds.toFixed(2); 
+    const formattedTime = totalSeconds.toFixed(2);
 
     // Utilise des 'if' pour enregistrer le temps écoulé dans la variable correspondante en fonction de `map_count`
     if (map_count === 1) {
@@ -102,47 +120,56 @@ function stopTimer() {
 function envoyerTempsNiveau(niveauId, temps, total) {
     console.log(`Envoi au serveur - Niveau ID: ${niveauId}, MeilleurTemps: ${temps}, TempsTotal: ${total}`); // Ajoute cette ligne
     fetch('/api/enregistrer-temps', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        niveauId,
-        temps,
-        total,
-      }),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            niveauId,
+            temps,
+            total,
+        }),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Échec de l’enregistrement du temps');
-      }
-      return response.json();
-    })
-    .then(data => console.log('Succès:', data))
-    .catch(error => console.error('Erreur:', error));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Échec de l’enregistrement du temps');
+            }
+            return response.json();
+        })
+        .then(data => console.log('Succès:', data))
+        .catch(error => console.error('Erreur:', error));
 }
-  
-  function recupererDernierTemps(niveauId, temps) {
-    fetch(`/api/dernier-temps?niveauId=${niveauId}`)
-      .then(response => {
-        if (!response.ok) {
-          envoyerTempsNiveau(niveauId, temps, total)
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Dernier temps récupéré:', data);
-        total = data.TempsTotal + temps
-        if(data.MeilleurTemps <= temps){
-            envoyerTempsNiveau(niveauId, data.MeilleurTemps, total)
-        } else {
-            envoyerTempsNiveau(niveauId, temps, total)
-        } 
-      })
-      .catch(error => console.error('Erreur:', error));
-  }
-  
-  
+
+function recupererDernierTemps(niveauId, temps) {
+    let tempsActuel = parseFloat(temps);
+    fetch(`/api/temps-total`)
+        .then(response => response.json())
+        .then(data => {
+            let totalGlobal = data.TempsTotalGlobal ? parseFloat(data.TempsTotalGlobal) : 0;
+            totalGlobal += tempsActuel; // Ajoute le temps actuel au total global
+
+            fetch(`/api/dernier-temps?niveauId=${niveauId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Impossible de récupérer le dernier temps pour le niveau spécifié');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Dernier temps récupéré:', data);
+                    if (data.MeilleurTemps && parseFloat(data.MeilleurTemps) <= tempsActuel) {
+                        envoyerTempsNiveau(niveauId, data.MeilleurTemps, totalGlobal);
+                    } else {
+                        envoyerTempsNiveau(niveauId, tempsActuel, totalGlobal);
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+        })
+        .catch(error => console.error('Erreur lors de la récupération du temps total global:', error));
+}
+
+
+
 
 
 
@@ -445,9 +472,14 @@ function moov(event) {
         validMove = true;
     }
 
-    if (moov_trap === 0 && validMove === true) {
+    if (moov_timer === 0 && validMove === true) {
+        moov_timer += 1;
         moov_trap += 1;
         validtimer = true;
+    }
+
+    if (moov_trap === 0 && validMove === true) {
+        moov_trap += 1;
     }
 
     if (validtimer === true) {
@@ -596,6 +628,7 @@ function movePlayer() {
                 validtimer = false;
                 move_count = 0;
                 moov_trap = 0;
+                moov_timer = 0;
                 initializeMoveCount();
                 // Ajoutez ici toute autre logique de victoire, comme recharger le jeu ou passer au niveau suivant
             }, 250);
@@ -623,6 +656,7 @@ function movePlayer() {
     if (doorIndex !== -1 && key_game_check === true) {
         move_count -= 1;
         moov_trap += 1;
+        moov_timer += 1;
         door.splice(doorIndex, 1); // Supprime la porte de l'array
         PJ[0].x = newX; // Met à jour la position du joueur pour être sur la porte
         PJ[0].y = newY;
@@ -640,6 +674,7 @@ function movePlayer() {
 
             move_count -= 1;
             moov_trap += 1;
+            moov_timer += 1;
             pushing = true; // Le personnage pousse un mob
             pushing_check = true
             if (pushing === true) {
@@ -685,9 +720,11 @@ function movePlayer() {
         if (ontrap === true && pushing_check === true && trap_switch === true) {
             move_count -= 2;
             moov_trap += 1;
+            moov_timer += 1;
         } else {
             move_count -= 1;
             moov_trap += 1;
+            moov_timer += 1;
         }
     }
     trap.forEach((trapItem) => {

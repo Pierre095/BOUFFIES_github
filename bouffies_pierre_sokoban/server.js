@@ -55,7 +55,7 @@ app.post('/inscription', async (req, res) => {
       req.session.userId = results.insertId;
       req.session.username = username; // Stocker le nom d'utilisateur dans la session
       req.session.isLoggedIn = true;
-      res.redirect('/connexion-reussie.html'); // Assurez-vous que cette route existe et qu'elle est correctement gérée par votre serveur
+      res.redirect('/inscription-reussie.html'); // Assurez-vous que cette route existe et qu'elle est correctement gérée par votre serveur
     });
   } catch (error) {
     console.error('Erreur lors du hashage du mot de passe:', error);
@@ -162,6 +162,30 @@ app.get('/api/dernier-temps', (req, res) => {
     }
   });
 });
+
+app.get('/api/temps-total', (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).send({ message: 'Veuillez vous connecter pour accéder à cette information.' });
+  }
+
+  const query = `
+    SELECT SUM(TempsTotal) AS TempsTotalGlobal FROM Score
+    WHERE PlayerID = ?;
+  `;
+
+  connection.query(query, [req.session.userId], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération du temps total:', err);
+      return res.status(500).send({ message: 'Erreur lors de la récupération des données.' });
+    }
+    if (results.length > 0) {
+      res.json({ TempsTotalGlobal: results[0].TempsTotalGlobal || 0 });
+    } else {
+      res.status(404).send({ message: 'Aucun temps trouvé.' });
+    }
+  });
+});
+
 
 
 
