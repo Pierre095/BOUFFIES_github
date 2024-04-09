@@ -14,24 +14,31 @@
     <source src="music/music_jeu.mp3" type="audio/mp3">
 </audio>
 <header>
-    <h1 class="nom-jeu">
-        <a href="index.html">Diamond Master</a>
-    </h1>
+    <div class="nom-jeu">
+        <p class="titre-jeu">Diamond Master</p>
+    </div>
 
     <h1 class="nom-niveau">Niveau <span id="niveaux"></span></h1>
 </header>
 
 <body>
-        <div class="move-map-timer">
+    <div class="zone_jeu">
+        <canvas></canvas>
+    </div>
+    
+    <div class="move-timer">
+        <div class="deplacements">
+            <h2>Déplacements restant</h2>
             <div id="moveCount" class="moveCount">0</div>
-            <div class="zone_jeu">
-                <canvas></canvas>
-            </div>
+        </div>
+        <div class="temps">
+            <h2>Temps</h2>
             <div id="timer" class="timer">00:00:00</div>
         </div>
+    </div>
 
-        <div class="death_hide">DEAD</div>
-        <div class="win_hide">WIN</div>
+    <div class="death_hide">DEAD</div>
+    <div class="win_hide">WIN</div>
 
 
     <div class="niveaux">
@@ -165,5 +172,5 @@
 <script src="./JS/jeu.js"></script>
 <script>
     var music = document.getElementById("music")
-    music.play()
+    // music.play()
 </script>

@@ -1191,17 +1191,17 @@ Promise.all([
 // Assurez-vous que toutes les images sont chargées avant de dessiner
 
 function startGame(arg) {
-    const jeu = document.querySelector('.move-map-timer');
+    const jeu = document.querySelector('.zone_jeu');
+    const timer_move = document.querySelector('.move-timer');
     const niveaux = document.querySelector('.niveaux');
     const noscroll = document.querySelector('html');
     noscroll.style.overflow = 'hidden';
 
-    jeu.classList.remove = ('jeu_hide');
-    jeu.classList.add = ('jeu');
     niveaux.classList.add = ('niveaux_hide');
     niveaux.classList.remove = ('niveaux');
     niveaux.style.display = 'none';
     jeu.style.display = 'flex';
+    timer_move.style.display = 'flex';
 
 
 
