@@ -75,6 +75,7 @@ body {
 }
 
 .local{
+    color : black;
     display: flex;
     justify-content: center;
     width : 50%;
@@ -82,6 +83,7 @@ body {
 }
 
 .visiteur{
+    color : black;
     display: flex;
     justify-content: center;
     width : 50%;
