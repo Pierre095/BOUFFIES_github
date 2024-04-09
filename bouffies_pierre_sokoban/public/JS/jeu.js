@@ -141,32 +141,34 @@ function envoyerTempsNiveau(niveauId, temps, total) {
 }
 
 function recupererDernierTemps(niveauId, temps) {
-    let tempsActuel = parseFloat(temps);
-    fetch(`/api/temps-total`)
-        .then(response => response.json())
-        .then(data => {
-            let totalGlobal = data.TempsTotalGlobal ? parseFloat(data.TempsTotalGlobal) : 0;
-            totalGlobal += tempsActuel; // Ajoute le temps actuel au total global
-
-            fetch(`/api/dernier-temps?niveauId=${niveauId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Impossible de récupérer le dernier temps pour le niveau spécifié');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Dernier temps récupéré:', data);
-                    if (data.MeilleurTemps && parseFloat(data.MeilleurTemps) <= tempsActuel) {
-                        envoyerTempsNiveau(niveauId, data.MeilleurTemps, totalGlobal);
-                    } else {
-                        envoyerTempsNiveau(niveauId, tempsActuel, totalGlobal);
-                    }
-                })
-                .catch(error => console.error('Erreur:', error));
+    fetch(`/api/dernier-temps?niveauId=${niveauId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('La requête a échoué');
+            }
+            return response.json();
         })
-        .catch(error => console.error('Erreur lors de la récupération du temps total global:', error));
+        .then(data => {
+            console.log('Dernier temps récupéré:', data);
+            // Convertit les temps en nombres flottants avant de les additionner
+            const tempsActuel = parseFloat(temps);
+            const tempsTotalPrecedent = data.TempsTotal !== null ? parseFloat(data.TempsTotal) : 0;
+            const total = tempsTotalPrecedent + tempsActuel;
+
+            // Détermine le meilleur temps
+            const meilleurTempsPrecedent = data.MeilleurTemps !== null ? parseFloat(data.MeilleurTemps) : null;
+            const meilleurTemps = meilleurTempsPrecedent !== null && meilleurTempsPrecedent <= tempsActuel ? meilleurTempsPrecedent : tempsActuel;
+
+            envoyerTempsNiveau(niveauId, meilleurTemps, total);
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            // En cas d'erreur, considère cela comme la première tentative et envoie simplement le temps actuel
+            const tempsActuel = parseFloat(temps);
+            envoyerTempsNiveau(niveauId, tempsActuel, tempsActuel);
+        });
 }
+
 
 
 

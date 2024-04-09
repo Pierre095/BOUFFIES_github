@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Récupérer le nom d'utilisateur
     fetch('/api/get-username')
         .then(response => {
             if (!response.ok) {
@@ -7,133 +8,39 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            document.getElementById('nomUtilisateur').textContent = data.username || 'utilisateur inconnu';
+            document.getElementById('nomUtilisateur').textContent = data.username || 'Utilisateur inconnu';
         })
         .catch(error => {
             console.error(error);
             document.getElementById('nomUtilisateur').textContent = 'Erreur lors de la récupération';
         });
+
+    // Fonction pour récupérer le meilleur temps et le temps total pour un niveau donné
+    function recupererEtAfficherMeilleurTemps(niveauId) {
+        return fetch(`/api/dernier-temps?niveauId=${niveauId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`La récupération du meilleur temps pour le niveau ${niveauId} a échoué`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById(`meilleurTemps${niveauId}`).textContent = data.MeilleurTemps + 's' || 'Pas de meilleur temps';
+                // Retourne le temps total pour ce niveau, 0 si non disponible
+                return parseFloat(data.TempsTotal) || 0;
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById(`meilleurTemps${niveauId}`).textContent = 'Pas de meilleur temps';
+                return 0; // Retourne 0 en cas d'erreur
+            });
+    }
+
+    // Récupérer et afficher les meilleurs temps pour tous les niveaux
+    const niveaux = [1, 2, 3, 4, 5, 6, 7, 8]; // Supposons que vous avez 8 niveaux
+    Promise.all(niveaux.map(niveauId => recupererEtAfficherMeilleurTemps(niveauId)))
+        .then(tempsTotals => {
+            const tempsTotal = tempsTotals.reduce((acc, temps) => acc + temps, 0);
+            document.getElementById('tempsTotal').textContent = tempsTotal.toFixed(2) + 's';
+        });
 });
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch(`/api/dernier-temps?niveauId=1`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps1').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps1').textContent = 'Erreur lors de la récupération';
-            });
-
-            fetch(`/api/dernier-temps?niveauId=2`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps2').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps2').textContent = 'Erreur lors de la récupération';
-            });
-
-            fetch(`/api/dernier-temps?niveauId=3`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps3').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps3').textContent = 'Erreur lors de la récupération';
-            });
-
-            fetch(`/api/dernier-temps?niveauId=4`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps4').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps4').textContent = 'Erreur lors de la récupération';
-            });
-
-            fetch(`/api/dernier-temps?niveauId=5`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps5').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps5').textContent = 'Erreur lors de la récupération';
-            });
-
-            fetch(`/api/dernier-temps?niveauId=6`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps6').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps6').textContent = 'Erreur lors de la récupération';
-            });
-
-            fetch(`/api/dernier-temps?niveauId=7`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps7').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps7').textContent = 'Erreur lors de la récupération';
-            });
-
-            fetch(`/api/dernier-temps?niveauId=8`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('La récupération du MeilleurTemps a échoué');
-                }
-                return response.json();
-            })
-            .then(data => {
-                document.getElementById('meilleurTemps8').textContent = data.MeilleurTemps || 'Pas de meilleur temps';
-            })
-            .catch(error => {
-                console.error(error);
-                document.getElementById('meilleurTemps8').textContent = 'Erreur lors de la récupération';
-            });
-    });

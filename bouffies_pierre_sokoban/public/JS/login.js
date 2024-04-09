@@ -3,9 +3,6 @@ function estUtilisateurConnecte() {
     return localStorage.getItem('isLoggedIn') === 'true';
 }
 
-console.log(localStorage.getItem('isLoggedIn')); // Devrait afficher 'true' si connecté
-
-
 document.addEventListener('DOMContentLoaded', (event) => {
     const choixCompte = document.getElementById('choixCompte');
     if (choixCompte) { // S'assure que l'élément existe
