@@ -1192,6 +1192,8 @@ Promise.all([
 
 function startGame(arg) {
     const jeu = document.querySelector('.zone_jeu');
+    const niveau = document.querySelector('.nom-niveau');
+    const touche = document.querySelector('.touches');
     const timer_move = document.querySelector('.move-timer');
     const niveaux = document.querySelector('.niveaux');
     const noscroll = document.querySelector('html');
@@ -1201,6 +1203,8 @@ function startGame(arg) {
     niveaux.classList.remove = ('niveaux');
     niveaux.style.display = 'none';
     jeu.style.display = 'flex';
+    niveau.style.display = 'flex';
+    touche.style.display = 'flex';
     timer_move.style.display = 'flex';
 
 

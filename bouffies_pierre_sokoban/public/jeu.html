@@ -22,10 +22,16 @@
 </header>
 
 <body>
+    <div class="signin-login">
+        <a class="bouton" href="inscription.html"><i class="fa-solid fa-pen-to-square"></i> Inscription</a>
+        <a style="font-size: xx-large;"> / </a>
+        <a class="bouton" href="login.html"><i class="fa-solid fa-user"></i> Connexion</a>
+    </div>
+
     <div class="zone_jeu">
         <canvas></canvas>
     </div>
-    
+
     <div class="move-timer">
         <div class="deplacements">
             <h2>Déplacements restant</h2>
@@ -103,8 +109,9 @@
                     </span>
                 </div>
             </div>
+        </div>
 
-
+        <div class="niveau-list">
             <div class="niveau" class="niveau_1" onclick="startGame('niveau5')">
                 <p class="titre">Niveau 5</p>
                 <img class="img-veille" src="./IMG/ASSET/map/niveau5.png">
@@ -168,8 +175,31 @@
         </div>
     </div>
 </body>
+<footer class="navbar">
+    <div class="touches">
+        <h2>Touches :</h2>
+        <div class="lettre-direction">
+            <ul class="direction">
+                <li>Z</li>
+                <li>Q</li>
+                <li>S</li>
+                <li>D</li>
+            </ul>
+            <ul class="direction">
+                <li><i class="fa-solid fa-arrow-up"></i></li>
+                <li><i class="fa-solid fa-arrow-left"></i></li>
+                <li><i class="fa-solid fa-arrow-down"></i></li>
+                <li><i class="fa-solid fa-arrow-right"></i></li>
+            </ul>
+        </div>
+    </div>
+
+    <a class="bouton" href="index.html"><i class="fa-solid fa-house"></i> Menu</a>
+    <a class="bouton" id="compte" href="compte.html"><i class="fa-solid fa-user"></i> Compte</a>
+</footer>
 
 <script src="./JS/jeu.js"></script>
+<script src="./JS/login.js"></script>
 <script>
     var music = document.getElementById("music")
     // music.play()

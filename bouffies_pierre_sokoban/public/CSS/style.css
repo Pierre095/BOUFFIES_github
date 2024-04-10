@@ -1,6 +1,6 @@
 html {
     Font-family: Century Gothic, CenturyGothic, AppleGothic, sans-serif;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 body {
@@ -22,6 +22,14 @@ body {
     flex-direction: column;
 }
 
+.titre-connexion{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .bienvenue{
     font-size: 300%;
 }
@@ -30,7 +38,105 @@ body {
     font-size: 200%;
 }
 
+.signin-login{
+    position : fixed;
+    right : 50px;
+    top : 50px;
+}
 
+.navbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(192, 192, 192);
+    height: 100px;
+    width : 100%;
+}
+
+.touches{
+    position : fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    left : 50px;
+}
+
+#compte{
+    position : fixed;
+    right : 50px;
+}
+
+#boutonDeconnexion{
+    position : fixed;
+    right : 50px;
+}
+
+.direction{
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap : 10%;
+}
+
+.direction li{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width : 30px;
+    border : solid 1px;
+    border-radius:5px;
+    font-style: bold;
+    padding : 5px;
+}
+
+.bouton {
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+    position: relative;
+    text-decoration: none;
+    font-size: 115%;
+    transition: all 0.5s ease;
+    padding: 10px;
+    border: solid 2px;
+    border-radius: 10px;
+
+}
+
+.bouton:before {
+    content: '';
+    background-color: rgb(0, 0, 0);
+    top: 50%;
+    left: 50%;
+    width: 0%;
+    z-index: -1;
+    opacity: 0;
+    transition: all 0.3s;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+}
+
+.bouton:hover:before {
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+
+.bouton:hover {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    border: solid 2px transparent;
+}
+
+.bouton:active {
+    color: rgb(114, 114, 114);
+    border: none;
+}
 
 /* page accueil */
 .accueil{
@@ -94,8 +200,9 @@ body {
 }
 
 .nom-niveau{
-    display: flex;
+    display: none;
     justify-content: center;
+    margin-top: 0;
 }
 
 .move-timer{
@@ -113,7 +220,7 @@ body {
     justify-content: center;
     flex-direction: column;
     margin-bottom : 5%;
-    width : 250px;
+    width : 15%;
     height: 250px;
     padding: 2%;
     border-radius: 30px;
@@ -127,7 +234,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width : 250px;
+    width : 15%;
     height: 250px;
     padding: 2%;
     border-radius: 30px;
@@ -207,6 +314,7 @@ canvas{
     display : flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     top : 50px
 }
 
@@ -215,11 +323,8 @@ canvas{
 }
 .niveau-list {
     display: flex;
-    flex-wrap:wrap;
-    gap : 9%;
     justify-content: space-around;
-    
-
+    width : 100%;
 }
 
 .niveau {
@@ -233,8 +338,8 @@ canvas{
     box-shadow: 3px 3px 3px 3px rgb(186, 186, 186);
     border-radius: 20px;
     margin-bottom: 3%;
-    width: 300px;
-    height : 300px;
+    width: 250px;
+    height : 250px;
     padding: 1%;
     transition : all 0.25s ease;
 }

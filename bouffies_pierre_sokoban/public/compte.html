@@ -12,31 +12,44 @@
     <link rel="stylesheet" href="./CSS/compte.css">
 </head>
 
+<header>
+    <div class="nom-jeu">
+        <p class="titre-jeu">Diamond Master</p>
+    </div>
+
+    <h1 class="nom-niveau">Mon Compte<span id="niveaux"></span></h1>
+</header>
+
 <body>
-    <h1 class="nom-jeu">
-        <a href="index.html">Diamond Master</a>
-
-        <h1 class="nom-niveau">Mon Compte</h1>
-
-    </h1>
-
-    <div class="presentation_utilisateur">
-        <div class="text_presentation">
-            <h1 class="nom_utilisateur"><span id="nomUtilisateur"></span></h1>
-            <p>Temps total : <span id="tempsTotal"></span></p>
-            <p>Meilleur Temps Niveau 1 : <span id="meilleurTemps1"></span></p>
-            <p>Meilleur Temps Niveau 2 : <span id="meilleurTemps2"></span></p>
-            <p>Meilleur Temps Niveau 3 : <span id="meilleurTemps3"></span></p>
-            <p>Meilleur Temps Niveau 4 : <span id="meilleurTemps4"></span></p>
-            <p>Meilleur Temps Niveau 5 : <span id="meilleurTemps5"></span></p>
-            <p>Meilleur Temps Niveau 6 : <span id="meilleurTemps6"></span></p>
-            <p>Meilleur Temps Niveau 7 : <span id="meilleurTemps7"></span></p>
-            <p>Meilleur Temps Niveau 8 : <span id="meilleurTemps8"></span></p>
-            <a id="boutonDeconnexion">Déconnexion <i class="fa-solid fa-right-from-bracket"></i></a>
+    <div class="bloc">
+        <div class="presentation_utilisateur">
+            <div class="text_presentation">
+                <h1 class="nom_utilisateur"><span id="nomUtilisateur"></span></h1>
+            </div>
+            <h1>Skin</h1>
+            <div class="choix_skin">
+                <a> < </a><img class="image_perso" src="./IMG/ASSET/PJ1.png"><a>></a>
+            </div>
         </div>
-        <img class="image_perso" src="./IMG/ASSET/PJ1.png">
+        <div class="presentation_temps">
+            <div class="text_presentation">
+                <p>Temps total : <span id="tempsTotal"></span></p>
+                <p>Meilleur Temps Niveau 1 : <span id="meilleurTemps1"></span></p>
+                <p>Meilleur Temps Niveau 2 : <span id="meilleurTemps2"></span></p>
+                <p>Meilleur Temps Niveau 3 : <span id="meilleurTemps3"></span></p>
+                <p>Meilleur Temps Niveau 4 : <span id="meilleurTemps4"></span></p>
+                <p>Meilleur Temps Niveau 5 : <span id="meilleurTemps5"></span></p>
+                <p>Meilleur Temps Niveau 6 : <span id="meilleurTemps6"></span></p>
+                <p>Meilleur Temps Niveau 7 : <span id="meilleurTemps7"></span></p>
+                <p>Meilleur Temps Niveau 8 : <span id="meilleurTemps8"></span></p>
+            </div>
+        </div>
     </div>
 </body>
+<footer class="navbar">
+    <a class="bouton" href="index.html"><i class="fa-solid fa-house"></i> Menu</a>
+    <a class="bouton" id="boutonDeconnexion" id="compte">Déconnexion <i class="fa-solid fa-right-from-bracket"></i></a>
+</footer>
 
 <script src="./JS/login.js"></script>
 <script src="./JS/compte.js"></script>
