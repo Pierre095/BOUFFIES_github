@@ -20,19 +20,21 @@ body {
     width: 100%;
     height: 100%;
     filter: blur(10px);
+    top: -10px;
+    left: -10px;
 }
 
 .logo-menu {
     border-radius: 30px;
-    ;
     width: 400px;
     margin-top: 50px;
 }
 
 .logo {
     border-radius: 30px;
-    ;
     width: 200px;
+    margin-top: 20px;
+
 }
 
 .nom-jeu {
@@ -237,14 +239,18 @@ body {
 
 /* jeu */
 
-.nom-niveau_hide {
-    display: none;
-}
-
-.nom-niveau {
-    display: none;
+.nom-niveau{
+    display : none;
+    position : fixed;
     justify-content: center;
-    margin-top: 0;
+    bottom : 430px;
+    left : 50px;
+    color : white;
+    width: 15%;
+    padding: 2%;
+    border-radius: 30px;
+    background-color: #00151de8;
+    z-index: 5;
 }
 
 .move-timer {
@@ -256,8 +262,9 @@ body {
     height: 600px;
 }
 
+
 .deplacements {
-    color : white;
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -273,7 +280,7 @@ body {
 }
 
 .temps {
-    color : white;
+    color: white;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -303,10 +310,12 @@ body {
 }
 
 canvas {
+    position: fixed;
     width: 600px;
     height: 600px;
     border: 2px solid;
-    border-radius:30px;
+    border-radius: 30px;
+    margin-top: 10px;
 }
 
 .death_hide {

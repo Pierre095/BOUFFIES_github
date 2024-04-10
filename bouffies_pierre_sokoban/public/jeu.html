@@ -18,8 +18,6 @@
     <div class="nom-jeu">
         <img class="logo" src="IMG/logo.png">
     </div>
-
-    <h1 class="nom-niveau">Niveau <span id="niveaux"></span></h1>
 </header>
 
 <body>
@@ -29,9 +27,11 @@
         <a class="bouton" href="login.html"><i class="fa-solid fa-user"></i> Connexion</a>
     </div>
 
+
     <div class="zone_jeu">
         <canvas></canvas>
     </div>
+    <h1 class="nom-niveau">Niveau <span id="niveaux"></span></h1>
 
     <div class="move-timer">
         <div class="deplacements">
@@ -178,15 +178,15 @@
 </body>
 <footer class="navbar">
     <div class="touches">
-        <div></div>
-        <h2>Touches :</h2>
-
+            <h2>Touches :</h2>
         <div class="lettre-direction">
             <ul class="direction">
                 <li>Z</li>
                 <li>Q</li>
                 <li>S</li>
                 <li>D</li>
+                <li>R</li>
+
             </ul>
             <ul class="direction">
                 <li><i class="fa-solid fa-arrow-up"></i></li>
@@ -203,7 +203,3 @@
 
 <script src="./JS/jeu.js"></script>
 <script src="./JS/login.js"></script>
-<script>
-    var music = document.getElementById("music")
-    // music.play()
-</script>

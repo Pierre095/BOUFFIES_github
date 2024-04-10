@@ -1207,6 +1207,8 @@ Promise.all([
 // Assurez-vous que toutes les images sont chargées avant de dessiner
 
 function startGame(arg) {
+    var music = document.getElementById("music")
+    music.play()
     const jeu = document.querySelector('.zone_jeu');
     const niveau = document.querySelector('.nom-niveau');
     const touche = document.querySelector('.touches');
@@ -1215,8 +1217,6 @@ function startGame(arg) {
     const noscroll = document.querySelector('html');
     noscroll.style.overflow = 'hidden';
 
-    niveaux.classList.add = ('niveaux_hide');
-    niveaux.classList.remove = ('niveaux');
     niveaux.style.display = 'none';
     jeu.style.display = 'flex';
     niveau.style.display = 'flex';
