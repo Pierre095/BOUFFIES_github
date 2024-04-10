@@ -187,7 +187,7 @@ const moveLimits = {
     // Ajoutez d'autres niveaux au besoin
 };
 
-// Vide : 0
+let sol = []; //0
 let PJ = []; // 3
 let obstacles = []; // 2
 let obstacles_immobiles = []; // 1
@@ -336,6 +336,7 @@ const image_personnage_1 = new Image();
 const image_personnage_2 = new Image();
 const image_personnage_1_gauche = new Image();
 const image_personnage_2_gauche = new Image();
+const image_sol = new Image();
 const image_obstacle = new Image();
 const image_personnage_coup = new Image();
 const image_personnage_coup_gauche = new Image();
@@ -353,6 +354,7 @@ image_personnage_coup.src = "IMG/ASSET/PJ_coup.png";
 image_personnage_1_gauche.src = "IMG/ASSET/PJ1_gauche.png";
 image_personnage_2_gauche.src = "IMG/ASSET/PJ2_gauche.png";
 image_personnage_coup_gauche.src = "IMG/ASSET/PJ_coup_gauche.png";
+image_sol.src = "IMG/ASSET/sol.png";
 image_obstacle.src = "IMG/ASSET/bloc.png";
 image_key.src = "IMG/ASSET/key.png"
 image_door.src = "IMG/ASSET/door.png"
@@ -412,25 +414,36 @@ function generateObstacles(map) {
         for (let col = 0; col < map[row].length; col++) {
             if (map[row][col] === 2) { // Obstacle mobile
                 obstacles.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 3) { // Personnage
                 PJ.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
+            } else if (map[row][col] === 0) { // Obstacle immobile
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 1) { // Obstacle immobile
                 obstacles_immobiles.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 4) { // Clé
                 key_game.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 5) { // Porte
                 door.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 6) { // Fin
                 finish.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 7) { // Mob
                 mob.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 8) { // Trap
                 trap.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 9) { // Trap
                 trap.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             } else if (map[row][col] === 10) { // Trap
                 obstacles.push({ x: col * boxSize, y: row * boxSize });
                 trap.push({ x: col * boxSize, y: row * boxSize });
+                sol.push({ x: col * boxSize, y: row * boxSize });
             }
         }
     }
@@ -1081,7 +1094,10 @@ function nodeadScreen() {
 function draw() {
 
     context.clearRect(0, 0, canvas.width, canvas.height);
-
+    for (let i = 0; i < sol.length; i++) {
+        context.drawImage(image_sol, sol[i].x, sol[i].y, boxSize, boxSize);
+    }
+    
     for (let i = 0; i < trap.length; i++) {
         context.drawImage(image_trap, trap[i].x, trap[i].y, boxSize, boxSize);
     }

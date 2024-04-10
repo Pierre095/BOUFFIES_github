@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HellTaker</title>
-    <link rel="icon" type="image/png" href="IMG/logo/Logo_fondnoir.png">
+    <title>Diamond Master</title>
+    <link rel="icon" type="image/png" href="./IMG/ASSET/PJ1.png">
     <script src="https://kit.fontawesome.com/acc6f5edeb.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./CSS/style.css">
     <link rel="stylesheet" href="./CSS/compte.css">
 </head>
+<img class="fond_ecran" src="IMG/salle_blanche.png">
 
 <header>
     <div class="nom-jeu">
-        <p class="titre-jeu">Diamond Master</p>
+        <img class="logo" src="IMG/logo.png">
     </div>
 
     <h1 class="nom-niveau">Mon Compte<span id="niveaux"></span></h1>
@@ -33,20 +34,22 @@
         </div>
         <div class="presentation_temps">
             <div class="text_presentation">
-                <p>Temps total : <span id="tempsTotal"></span></p>
-                <p>Meilleur Temps Niveau 1 : <span id="meilleurTemps1"></span></p>
-                <p>Meilleur Temps Niveau 2 : <span id="meilleurTemps2"></span></p>
-                <p>Meilleur Temps Niveau 3 : <span id="meilleurTemps3"></span></p>
-                <p>Meilleur Temps Niveau 4 : <span id="meilleurTemps4"></span></p>
-                <p>Meilleur Temps Niveau 5 : <span id="meilleurTemps5"></span></p>
-                <p>Meilleur Temps Niveau 6 : <span id="meilleurTemps6"></span></p>
-                <p>Meilleur Temps Niveau 7 : <span id="meilleurTemps7"></span></p>
-                <p>Meilleur Temps Niveau 8 : <span id="meilleurTemps8"></span></p>
+                <h2>Temps total : <span id="tempsTotal"></span></h2>
+                <h2 style="text-decoration: underline;">Meilleur Temps :</h2>
+                <p><B>Niveau 1</B> : <span id="meilleurTemps1"></span></p>
+                <p><B>Niveau 2</B> : <span id="meilleurTemps2"></span></p>
+                <p><B>Niveau 3</B> : <span id="meilleurTemps3"></span></p>
+                <p><B>Niveau 4</B> : <span id="meilleurTemps4"></span></p>
+                <p><B>Niveau 5</B> : <span id="meilleurTemps5"></span></p>
+                <p><B>Niveau 6</B> : <span id="meilleurTemps6"></span></p>
+                <p><B>Niveau 7</B> : <span id="meilleurTemps7"></span></p>
+                <p><B>Niveau 8</B> : <span id="meilleurTemps8"></span></p>
             </div>
         </div>
     </div>
 </body>
 <footer class="navbar">
+    <a class="bouton" id="niveaux" href="jeu.html"><i class="fa-solid fa-star"></i> Niveaux</a>
     <a class="bouton" href="index.html"><i class="fa-solid fa-house"></i> Menu</a>
     <a class="bouton" id="boutonDeconnexion" id="compte">Déconnexion <i class="fa-solid fa-right-from-bracket"></i></a>
 </footer>
