@@ -184,8 +184,7 @@ body {
     flex-direction: column;
     margin-top: 50px;
     gap: 50px;
-    padding: 50px;
-    height: 300px;
+    padding: 50px; 
     border-radius: 30px;
     background-color: #00151de1;
 }
@@ -243,7 +242,7 @@ body {
     display : none;
     position : fixed;
     justify-content: center;
-    bottom : 430px;
+    bottom : 50%;
     left : 50px;
     color : white;
     width: 15%;
@@ -259,7 +258,6 @@ body {
     justify-content: center;
     flex-direction: column;
     margin-right: 10%;
-    height: 600px;
 }
 
 
@@ -271,7 +269,6 @@ body {
     flex-direction: column;
     margin-bottom: 5%;
     width: 15%;
-    height: 250px;
     padding: 2%;
     border-radius: 30px;
     background-color: #00151de8;
@@ -286,7 +283,6 @@ body {
     justify-content: center;
     flex-direction: column;
     width: 15%;
-    height: 250px;
     padding: 2%;
     border-radius: 30px;
     background-color: #00151de8;
@@ -300,8 +296,9 @@ body {
 
 .zone_jeu {
     display: none;
-    position: fixed;
-    margin-left: 34%;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
 }
 
 .moveCount {
@@ -311,11 +308,18 @@ body {
 
 canvas {
     position: fixed;
-    width: 600px;
-    height: 600px;
+    width: 35%;
     border: 2px solid;
     border-radius: 30px;
     margin-top: 10px;
+}
+
+@media screen and (min-width: 1800px) {
+    canvas {
+        width: 600px;
+        height: 600px;
+        border: 2px solid;
+    }
 }
 
 .death_hide {
@@ -393,8 +397,7 @@ canvas {
     box-shadow: 3px 3px 3px 3px rgb(186, 186, 186);
     border-radius: 20px;
     margin-top: 20px;
-    width: 250px;
-    height: 250px;
+    width: 13%;
     padding: 1%;
     transition: all 0.25s ease;
 }
