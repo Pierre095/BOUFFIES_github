@@ -64,10 +64,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         # !!! A remplacer avec vos informations de connexion !!!
-        'NAME': "orm",
-        "USER": "root",
-        "PASSWORD": "admin",
-        "HOST": "127.0.0.1",
+        'NAME': "bouffies_orm",
+        "USER": "bouffies",
+        "PASSWORD": "Handball*95640",
+        "HOST": "mysql-bouffies.alwaysdata.net",
         "PORT": "3306",
     }
 }
