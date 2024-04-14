@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://kit.fontawesome.com/acc6f5edeb.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="login.css">
+    <title>Rugby Tropical Cup 2023</title>
+</head>
+
+<body>
+    <header>
+        <img src="logo_horizontal.svg">
+    </header>
+    <p class="titre_event"><strong>Veuillez vous connecter</strong></p>
+
+
+    <div class="login-box">
+        <form id="formConnexion" action="/connexion" method="POST">
+            <div class="user-box">
+                <input type="text" id="login_username" name="username" required>
+                <label for="login_username">Nom d'utilisateur</label>
+            </div>
+            <div class="user-box">
+                <input type="password" id="login_password" name="password" required minlength="8">
+                <label for="login_password">Mot de Passe</label>
+            </div>
+            <center>
+                <center>
+                    <button type="submit">
+                        Connexion
+                        <span></span>
+                    </button>
+                </center>
+        </form>
+    </div>
+
+    <footer class="navbar">    
+        <a class="bouton" href="index.html"><i class="fa-solid fa-house"></i></a>
+        <a class="bouton" id="compte" href="compte.html"><i class="fa-solid fa-user"></i></a>
+    </footer>
+
+
+
+</body>
+<script src="app.js"></script>
+
+</html>
