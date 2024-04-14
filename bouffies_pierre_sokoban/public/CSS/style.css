@@ -133,6 +133,8 @@ body {
     padding: 10px;
     border: solid 2px;
     border-radius: 10px;
+    margin-right : 5px;
+    margin-left : 5px;
 
 }
 
@@ -408,7 +410,7 @@ canvas {
     box-shadow: 3px 3px 3px 3px rgb(122, 122, 122);
 }
 
-.niveau_lock {
+.niveau_block {
     position: static;
     cursor: pointer;
     display: flex;
@@ -419,16 +421,19 @@ canvas {
     box-shadow: 3px 3px 3px 3px rgb(186, 186, 186);
     border-radius: 20px;
     margin-top: 20px;
-    width: 250px;
-    height: 250px;
+    width: 13%;
     padding: 1%;
     transition: all 0.25s ease;
+    opacity: 0.5;
+    pointer-events: none; /* Empêche les clics */
+    cursor: not-allowed;
 }
 
-.niveau_lock:hover {
-    background-color: rgb(0, 0, 0);
-    box-shadow: 3px 3px 3px 3px rgb(122, 122, 122);
-}
+/* .niveau_block:hover {
+    opacity: 0.5;
+    pointer-events: none; /* Empêche les clics */
+    cursor: not-allowed;
+} */
 
 .titre {
     display: flex;
