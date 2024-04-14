@@ -2,9 +2,9 @@ from django.http import JsonResponse, HttpResponseNotFound
 from mainapp.models import Stadium, Event, Team, Ticket
 
 def get_stadiums(request, stadium_id):
-
     try:
         stadium = Stadium.objects.get(id=stadium_id)
+    
 
         stadium_data = {
             "ID": stadium.id,
