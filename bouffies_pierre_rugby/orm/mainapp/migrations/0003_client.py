@@ -16,6 +16,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('username', models.CharField(max_length=191, unique=True)),
                 ('password', models.CharField(max_length=255)),
+                ('ticket_id', models.CharField(max_length=255)),
             ],
         ),
     ]
