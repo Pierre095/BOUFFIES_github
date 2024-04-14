@@ -86,6 +86,8 @@ function loadEvent(uniqueClass) {
     const teamHome = itemDiv.getAttribute('data-team-home');
     const teamAway = itemDiv.getAttribute('data-team-away');
     const start = itemDiv.getAttribute('data-start');
+    const noscroll = document.querySelector('html');
+    noscroll.style.overflow = 'hidden';
 
     console.log(`Événement chargé - Stade: ${stadium}, Local: ${teamHome}, Visiteur: ${teamAway}, Heure: ${start}`);
 
@@ -113,6 +115,8 @@ function loadEvent(uniqueClass) {
 function retour() {
     const clicContentDiv = document.querySelector('.content_details_show');
     const flecheRetour = document.querySelector('.fleche_retour_show');
+    const noscroll = document.querySelector('html');
+    noscroll.style.overflowY = 'auto';
     clicContentDiv.classList.add('content_details_hide');
     clicContentDiv.classList.remove('content_details_show');
     flecheRetour.classList.add('fleche_retour_hide');
@@ -162,44 +166,4 @@ document.getElementById('formConnexion').addEventListener('submit', function (e)
 
 
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    const ticket_id = clientData.ticket_id;
-    const qrCode = document.getElementById('qrCodeImage');
-    const ticket = document.getElementById('ticket_id');
-
-    fetch(urlWithUsername)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Échec de la récupération des informations du client, statut = ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(clientData => {
-
-            ticket.innerHTML = 'voici l id du ticket', ticket_id
-
-            if (clientData.ticket_id === '22757c35-5264-4863-b936-fda521438115') {
-                qrCode.src = `IMG/qrcode.png`
-            } else if (clientData.ticket_id === '7d73929a-f6a2-4996-96c1-eb9ae2df70d3') {
-                qrCode.src = `IMG/qrcode.png`
-            } else if (clientData.ticket_id === '26d0206f-ff64-4182-aee9-1028d189ebd8') {
-                qrCode.src = `IMG/qrcode.png`
-            } else if (clientData.ticket_id === '45d75237-f682-4189-95b8-4bd5b1634b77') {
-                qrCode.src = `IMG/qrcode.png`
-            } else if (clientData.ticket_id === '01bf3108-e004-4722-8a85-d384cb2262ea') {
-                qrCode.src = `IMG/qrcode.png`
-            } else if (clientData.ticket_id === '0783f40c-1f31-4f93-aa23-63576c0e8074') {
-                qrCode.src = `IMG/qrcode.png`
-            }
-            // Ici, vous vérifieriez le mot de passe
-            // ATTENTION: Cela devrait être fait de manière sécurisée et idéalement sur le serveur!
-
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Une erreur est survenue: ' + error.message);
-        });
-
-
-});
 
