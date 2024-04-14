@@ -1,5 +1,10 @@
+function estUtilisateurConnecte() {
+    // Vérifie si la clé 'isLoggedIn' existe dans le stockage local et si elle est vraie
+    return localStorage.getItem('isLoggedIn') === 'true';
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
-    const choixCompte = document.getElementById('choixCompte'); 
+    const choixCompte = document.getElementById('choixCompte');
     if (choixCompte) { // S'assure que l'élément existe
         choixCompte.addEventListener('click', (e) => {
             e.preventDefault(); // Empêche l'action par défaut de l'élément
@@ -10,7 +15,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
             } else {
                 console.log('Utilisateur non connecté, redirection vers login.html');
                 window.location.href = 'login.html';
-            }            
+            }
         });
     }
 });
+
+const boutonDeconnexion = document.getElementById('boutonDeconnexion');
+boutonDeconnexion.addEventListener('click', () => {
+    localStorage.removeItem('isLoggedIn');
+
+    // Redirection immédiate vers la page de déconnexion réussie
+    window.location.href = 'index.html';
+});
+
+

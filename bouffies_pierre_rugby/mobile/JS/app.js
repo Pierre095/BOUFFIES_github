@@ -76,10 +76,6 @@ fetch(url_api_event)
     });
 
 
-
-
-
-
 // pas au point mais je garde pour amélioration
 
 
@@ -101,7 +97,7 @@ function loadEvent(uniqueClass) {
     flecheRetour.classList.remove('fleche_retour_hide');
     const detailsDiv = document.querySelector('.content_details_show');
 
-    
+
     detailsDiv.innerHTML = `
         <a id="map" target="_blank" class='stade'><strong>Stade</strong> : ${stadium}</a>
         <div class='match'>
@@ -111,10 +107,6 @@ function loadEvent(uniqueClass) {
         <p class='date'>Date : <strong> ${start}</strong></p>
         <p class='heure'>Heure : <strong> ${start}</strong>`;
 }
-
-
-
-
 
 // complémentaire avec la fonction loadevent
 
@@ -126,3 +118,86 @@ function retour() {
     flecheRetour.classList.add('fleche_retour_hide');
     flecheRetour.classList.remove('fleche_retour_show');
 }
+
+
+
+
+
+document.getElementById('formConnexion').addEventListener('submit', function (e) {
+    e.preventDefault(); // Empêche l'envoi traditionnel du formulaire
+
+    const username = document.getElementById('login_username').value;
+    const password = document.getElementById('login_password').value;
+
+    // Construire l'URL avec l'username
+    const urlWithUsername = `http://127.0.0.1:8000/api/client/${username}`;
+
+    // Faire une requête pour obtenir les informations du client
+    fetch(urlWithUsername)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Échec de la récupération des informations du client, statut = ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(clientData => {
+            // Ici, vous vérifieriez le mot de passe
+            // ATTENTION: Cela devrait être fait de manière sécurisée et idéalement sur le serveur!
+            if (clientData.password === password) { // Cette vérification DOIT être remplacée par une méthode plus sécurisée
+                window.location.href = 'connexion-reussi.html'; // Redirection vers la page de succès
+            } else {
+                console.log(clientData);
+                alert('Le mot de passe est incorrect.');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Une erreur est survenue: ' + error.message);
+        });
+});
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const ticket_id = clientData.ticket_id;
+    const qrCode = document.getElementById('qrCodeImage');
+    const ticket = document.getElementById('ticket_id');
+
+    fetch(urlWithUsername)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Échec de la récupération des informations du client, statut = ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(clientData => {
+
+            ticket.innerHTML = 'voici l id du ticket', ticket_id
+
+            if (clientData.ticket_id === '22757c35-5264-4863-b936-fda521438115') {
+                qrCode.src = `IMG/qrcode.png`
+            } else if (clientData.ticket_id === '7d73929a-f6a2-4996-96c1-eb9ae2df70d3') {
+                qrCode.src = `IMG/qrcode.png`
+            } else if (clientData.ticket_id === '26d0206f-ff64-4182-aee9-1028d189ebd8') {
+                qrCode.src = `IMG/qrcode.png`
+            } else if (clientData.ticket_id === '45d75237-f682-4189-95b8-4bd5b1634b77') {
+                qrCode.src = `IMG/qrcode.png`
+            } else if (clientData.ticket_id === '01bf3108-e004-4722-8a85-d384cb2262ea') {
+                qrCode.src = `IMG/qrcode.png`
+            } else if (clientData.ticket_id === '0783f40c-1f31-4f93-aa23-63576c0e8074') {
+                qrCode.src = `IMG/qrcode.png`
+            }
+            // Ici, vous vérifieriez le mot de passe
+            // ATTENTION: Cela devrait être fait de manière sécurisée et idéalement sur le serveur!
+
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Une erreur est survenue: ' + error.message);
+        });
+
+
+});
+

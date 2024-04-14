@@ -3,7 +3,7 @@ from django.urls import path
 from django.contrib import admin
 # Import des vues qui sont déclarées dans leur propre module (dossier)
 from .views import HomeView, StadiumsView, TeamsView, NewsletterView, UpdateView, MoreView, MatchsView
-from .views import get_stadiums, get_teams, get_events, get_tickets
+from .views import get_stadiums, get_teams, get_events, get_tickets, get_clients
 
 urlpatterns = (
     path("", HomeView.as_view(), name="home"),
@@ -19,4 +19,5 @@ urlpatterns = (
     path('api/events/', get_events, name='events-list'),
     path('api/teams/<team_id>', get_teams, name='teams-list'),
     path('api/tickets/<ticket_id>/', get_tickets, name='ticket'),
+    path('api/client/<username>/', get_clients, name='client'),
 )
