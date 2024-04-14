@@ -143,7 +143,9 @@ document.getElementById('formConnexion').addEventListener('submit', function (e)
         .then(clientData => {
             // Ici, vous vérifieriez le mot de passe
             // ATTENTION: Cela devrait être fait de manière sécurisée et idéalement sur le serveur!
-            if (clientData.password === password) { // Cette vérification DOIT être remplacée par une méthode plus sécurisée
+            if (clientData.password === password) {
+                localStorage.setItem('ticket_id', clientData.ticket_id);
+                // Cette vérification DOIT être remplacée par une méthode plus sécurisée
                 window.location.href = 'connexion-reussi.html'; // Redirection vers la page de succès
             } else {
                 console.log(clientData);
