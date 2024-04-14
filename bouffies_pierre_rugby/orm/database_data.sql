@@ -61,6 +61,12 @@ CREATE TABLE IF NOT EXISTS `mainapp_newsletter` (
     PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+CREATE TABLE IF NOT EXISTS `mainapp_client` (
+    `ClientID` INT AUTO_INCREMENT PRIMARY KEY,
+    `Username` VARCHAR(191) UNIQUE NOT NULL,
+    `Password` VARCHAR(255) NOT NULL
+); ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;;
+
 
 INSERT INTO `mainapp_team` (`id`, `country`, `country_alpha2`, `nickname`, `color_first`, `color_second`) VALUES (1, 'Angleterre', 'gb', 'XV de la Rose', 'FFFFFF', 'A71931');
 INSERT INTO `mainapp_team` (`id`, `country`, `country_alpha2`, `nickname`, `color_first`, `color_second`) VALUES (2, 'Fidji', 'fj', 'The Flying Fijians', 'FFFFFF', '99B7E8');
@@ -104,3 +110,13 @@ INSERT INTO `mainapp_ticket` (`id`, `event_id`, `category`, `seat`, `price`, `cu
 
 INSERT INTO `mainapp_newsletter` (`email`, `name`, `consent`) VALUES ('seblebest@mail.dev', 'Sébastien CHANAL', 1);
 INSERT INTO `mainapp_newsletter` (`email`, `name`, `consent`) VALUES ('guy@liguerugby.dev', 'Guy NODESS', 0);
+
+
+INSERT INTO `mainapp_client` (`id`, `username`, `password`) VALUES ('1', 'test1', 'passwordtest1', '22757c35-5264-4863-b936-fda521438115' );
+INSERT INTO `mainapp_client` (`id`, `username`, `password`) VALUES ('2', 'test2', 'passwordtest2', '7d73929a-f6a2-4996-96c1-eb9ae2df70d3' );
+INSERT INTO `mainapp_client` (`id`, `username`, `password`) VALUES ('3', 'test3', 'passwordtest3', '26d0206f-ff64-4182-aee9-1028d189ebd8' );
+INSERT INTO `mainapp_client` (`id`, `username`, `password`) VALUES ('4', 'test4', 'passwordtest4', '45d75237-f682-4189-95b8-4bd5b1634b77' );
+INSERT INTO `mainapp_client` (`id`, `username`, `password`) VALUES ('5', 'test5', 'passwordtest5', '01bf3108-e004-4722-8a85-d384cb2262ea' );
+INSERT INTO `mainapp_client` (`id`, `username`, `password`) VALUES ('6', 'test6', 'passwordtest6', '0783f40c-1f31-4f93-aa23-63576c0e8074' );
+
+

@@ -1,5 +1,5 @@
 from django.http import JsonResponse, HttpResponseNotFound
-from mainapp.models import Stadium, Event, Team, Ticket
+from mainapp.models import Stadium, Event, Team, Ticket, Client
 
 def get_stadiums(request, stadium_id):
     try:
@@ -20,8 +20,6 @@ def get_stadiums(request, stadium_id):
     except Team.DoesNotExist:
         return HttpResponseNotFound("Team not found")
 
-
-
 def get_events(request):
     events = Event.objects.all()
     event_list = []
@@ -38,8 +36,6 @@ def get_events(request):
     data = {"events": event_list}  
     response = JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
     return response
-
-
 
 def get_teams(request, team_id):
     try:
@@ -60,8 +56,6 @@ def get_teams(request, team_id):
     except Team.DoesNotExist:
         return HttpResponseNotFound("Team not found")
 
-
-
 def get_tickets(request, ticket_id):
     try:
         ticket = Ticket.objects.get(id=ticket_id)
@@ -79,5 +73,21 @@ def get_tickets(request, ticket_id):
         return response
     except Ticket.DoesNotExist:
         return HttpResponseNotFound("Ticket not found")
+
+def get_clients(request, username):
+    try:
+        client = Client.objects.get(username=username)
+
+        client_data = {
+            "clientID": client.id,
+            "username": client.username,
+            "password": client.password,
+            "ticket_id": client.ticket_id,
+        }
+
+        response = JsonResponse(client_data, safe=False, json_dumps_params={'indent': 2})
+        return response
+    except Client.DoesNotExist:
+        return HttpResponseNotFound("Client not found")
 
 #id ticket pour test : 0783f40c-1f31-4f93-aa23-63576c0e8074

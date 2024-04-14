@@ -30,14 +30,14 @@ function displayTicketInfo(ticketData) {
     contentDiv.innerHTML = `
         <div class='event'>
             <div class ='event-id'>
-                <p>Event ID: <strong>${ticketData.event_id}</strong></p>
+                <p>Event ID : <strong>${ticketData.event_id}</strong></p>
             </div>
             <div class ='category'>
-                <p>Categorie: <strong>${ticketData.category}</strong></p>
+                <p>Categorie : <strong>${ticketData.category}</strong></p>
             </div>
         </div>
-        <p class='seat'>Place:  <strong>${ticketData.seat}</strong></p>
-        <p class='price'>Prix : ${ticketData.price}<strong> ${ticketData.currency}</strong></p>`;
+        <p class='seat'>Place : <strong>${ticketData.seat}</strong></p>
+        <p class='price'>Prix : <strong>${ticketData.price} ${ticketData.currency}</strong></p>`;
 }
 
 
