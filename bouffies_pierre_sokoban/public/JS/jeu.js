@@ -28,26 +28,29 @@ let timer_niveau6 = 0;
 let timer_niveau7 = 0;
 let timer_niveau8 = 0;
 
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/niveaux-debloques')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(niveau => {
+                const niveauElement = document.querySelector(`#niveau${niveau.NiveauID}`);
+                if (niveau.Debloque) {
+                    niveauElement.classList.remove('niveau_block');
+                    niveauElement.classList.add('niveau');
+                    niveauElement.addEventListener('click', () => startGame(`niveau${niveau.NiveauID}`));
+                } else {
+                    niveauElement.classList.add('niveau_block');
+                    niveauElement.removeEventListener('click', () => startGame(`niveau${niveau.NiveauID}`));
+                }
+            });
+        });
+});
 
-function PremiereConnexion() {
-    return localStorage.getItem('FirstSignUp') === 'true';
-}
+
 
 function startTimer() {
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 10); // Mise à jour toutes les secondes
-    if (PremiereConnexion()) {
-        console.log('premiere connexion');
-        envoyerTempsNiveau(1, 99999999.99, 0)
-        envoyerTempsNiveau(2, 99999999.99, 0)
-        envoyerTempsNiveau(3, 99999999.99, 0)
-        envoyerTempsNiveau(4, 99999999.99, 0)
-        envoyerTempsNiveau(5, 99999999.99, 0)
-        envoyerTempsNiveau(6, 99999999.99, 0)
-        envoyerTempsNiveau(7, 99999999.99, 0)
-        envoyerTempsNiveau(8, 99999999.99, 0)
-        localStorage.setItem('FirstSignUp', 'false');
-    }
 }
 
 function updateTimer() {

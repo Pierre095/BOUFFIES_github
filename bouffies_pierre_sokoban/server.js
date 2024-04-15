@@ -16,10 +16,10 @@ app.use(session({
 }));
 
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'admin',
-  database: 'diamond_master'
+  host: 'mysql-bouffies.alwaysdata.net',
+  user: 'bouffies',
+  password: 'Handball*95640',
+  database: 'bouffies_diamond_master'
 });
 
 connection.connect(err => {
@@ -38,30 +38,69 @@ app.post('/inscription', async (req, res) => {
   if (password !== confirm_password) {
     return res.status(400).send('Les mots de passe ne correspondent pas.');
   }
+
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     
-    const query = 'INSERT INTO Player (Username, Password) VALUES (?, ?)';
-    connection.query(query, [username, hashedPassword], (err, results) => {
-      if (err) {
-        console.error('Erreur lors de l\'insertion:', err);
-        if (err.code === 'ER_DUP_ENTRY') {
-          return res.status(400).send('Ce nom d\'utilisateur est déjà pris.');
-        } else {
-          return res.status(500).send('Erreur lors de l\'inscription.');
-        }
+    connection.beginTransaction(async (err) => {
+      if (err) { 
+        throw err;
       }
-      req.session.userId = results.insertId;
-      req.session.username = username; // Stocker le nom d'utilisateur dans la session
-      req.session.isLoggedIn = true;
-      res.redirect('/inscription-reussie.html'); // Assurez-vous que cette route existe et qu'elle est correctement gérée par votre serveur
+
+      const insertUserQuery = 'INSERT INTO Player (Username, Password) VALUES (?, ?)';
+      connection.query(insertUserQuery, [username, hashedPassword], (err, results) => {
+        if (err) {
+          connection.rollback(() => {
+            console.error('Erreur lors de l\'insertion:', err);
+            if (err.code === 'ER_DUP_ENTRY') {
+              return res.status(400).send('Ce nom d\'utilisateur est déjà pris.');
+            } else {
+              return res.status(500).send('Erreur lors de l\'inscription.');
+            }
+          });
+        } else {
+          const userId = results.insertId;
+          const levels = 8;
+          let completedInserts = 0;
+
+          for (let i = 1; i <= levels; i++) {
+            const insertScoreQuery = 'INSERT INTO Score (PlayerID, NiveauID, MeilleurTemps, TempsTotal) VALUES (?, ?, 99999999.99, 0)';
+            connection.query(insertScoreQuery, [userId, i], (err) => {
+              if (err) {
+                connection.rollback(() => {
+                  console.error('Erreur lors de l\'insertion des scores:', err);
+                  return res.status(500).send('Erreur lors de l\'inscription des scores.');
+                });
+              } else {
+                completedInserts++;
+                if (completedInserts === levels) {
+                  connection.commit((err) => {
+                    if (err) {
+                      connection.rollback(() => {
+                        console.error('Erreur lors de la validation de la transaction:', err);
+                        return res.status(500).send('Erreur lors de la validation de l\'inscription.');
+                      });
+                    } else {
+                      req.session.userId = userId;
+                      req.session.username = username;
+                      req.session.isLoggedIn = true;
+                      res.redirect('/inscription-reussie.html');
+                    }
+                  });
+                }
+              }
+            });
+          }
+        }
+      });
     });
   } catch (error) {
     console.error('Erreur lors du hashage du mot de passe:', error);
     res.status(500).send('Erreur serveur.');
   }
 });
+
 
 app.post('/connexion', (req, res) => {
   const { username, password } = req.body;
@@ -185,6 +224,35 @@ app.get('/api/temps-total', (req, res) => {
     }
   });
 });
+
+
+
+app.get('/api/niveaux-debloques', (req, res) => {
+  if (!req.session.userId) {
+    return res.status(401).send('Utilisateur non connecté');
+  }
+
+  const query = `
+  SELECT n.NiveauID, n.Nom,
+        CASE 
+            WHEN n.DebloqueApresNiveauID IS NULL THEN TRUE
+            WHEN n.DebloqueApresNiveauID IN (
+                SELECT NiveauID FROM Score WHERE PlayerID = ? AND MeilleurTemps < 99999999.99
+            ) THEN TRUE
+            ELSE FALSE
+        END as Debloque
+  FROM Niveau n
+  ORDER BY n.NiveauID ASC;
+  `;
+  connection.query(query, [req.session.userId], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des niveaux débloqués:', err);
+      return res.status(500).send('Erreur serveur');
+    }
+    res.json(results);
+  });
+});
+
 
 
 
