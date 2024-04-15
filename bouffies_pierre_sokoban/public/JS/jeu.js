@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 887757790f517e8fe2b3b7e8788b5b71f3c42562
 
 
 function startTimer() {

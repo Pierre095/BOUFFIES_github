@@ -30,3 +30,4 @@ CREATE TABLE Score (
 -- npm install bcrypt
 -- npm install express-session
 
+-- rajouter une colonne dans player pour verifier la premiere connexion et initialiser les premiers temps sur les maps de 9999999.99
