@@ -42,12 +42,6 @@ app.post('/inscription', async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-<<<<<<< HEAD
-    
-    connection.beginTransaction(async (err) => {
-      if (err) { 
-        throw err;
-=======
 
     const query = 'INSERT INTO Player (Username, Password) VALUES (?, ?)';
     connection.query(query, [username, hashedPassword], (err, results) => {
@@ -58,7 +52,6 @@ app.post('/inscription', async (req, res) => {
         } else {
           return res.status(500).send('Erreur lors de l\'inscription.');
         }
->>>>>>> 887757790f517e8fe2b3b7e8788b5b71f3c42562
       }
 
       const insertUserQuery = 'INSERT INTO Player (Username, Password) VALUES (?, ?)';
