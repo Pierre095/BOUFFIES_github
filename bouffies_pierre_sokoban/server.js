@@ -42,23 +42,10 @@ app.post('/inscription', async (req, res) => {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-<<<<<<< HEAD
     
     connection.beginTransaction(async (err) => {
       if (err) { 
         throw err;
-=======
-
-    const query = 'INSERT INTO Player (Username, Password) VALUES (?, ?)';
-    connection.query(query, [username, hashedPassword], (err, results) => {
-      if (err) {
-        console.error('Erreur lors de l\'insertion:', err);
-        if (err.code === 'ER_DUP_ENTRY') {
-          return res.status(400).send('Ce nom d\'utilisateur est déjà pris.');
-        } else {
-          return res.status(500).send('Erreur lors de l\'inscription.');
-        }
->>>>>>> 887757790f517e8fe2b3b7e8788b5b71f3c42562
       }
 
       const insertUserQuery = 'INSERT INTO Player (Username, Password) VALUES (?, ?)';
@@ -113,6 +100,7 @@ app.post('/inscription', async (req, res) => {
     res.status(500).send('Erreur serveur.');
   }
 });
+
 
 
 app.post('/connexion', (req, res) => {
