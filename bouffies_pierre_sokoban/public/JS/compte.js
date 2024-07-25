@@ -25,7 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return response.json();
             })
             .then(data => {
-                document.getElementById(`meilleurTemps${niveauId}`).textContent = data.MeilleurTemps + 's' || 'Pas de meilleur temps';
+                if(data.MeilleurTemps === 99999999.99){
+                    document.getElementById(`meilleurTemps${niveauId}`).textContent = 'Pas encore de temps';
+                } else {
+                    document.getElementById(`meilleurTemps${niveauId}`).textContent = data.MeilleurTemps + 's' || 'Erreur lors de la récupération';
+                }
                 // Retourne le temps total pour ce niveau, 0 si non disponible
                 return parseFloat(data.TempsTotal) || 0;
             })

@@ -48,25 +48,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-function PremiereConnexion() {
-    return localStorage.getItem('FirstSignUp') === 'true';
-}
-
 function startTimer() {
     startTime = Date.now();
     timerInterval = setInterval(updateTimer, 10); // Mise à jour toutes les secondes
-    if (PremiereConnexion()) {
-        console.log('premiere connexion');
-        envoyerTempsNiveau(1, 99999999.99, 0)
-        envoyerTempsNiveau(2, 99999999.99, 0)
-        envoyerTempsNiveau(3, 99999999.99, 0)
-        envoyerTempsNiveau(4, 99999999.99, 0)
-        envoyerTempsNiveau(5, 99999999.99, 0)
-        envoyerTempsNiveau(6, 99999999.99, 0)
-        envoyerTempsNiveau(7, 99999999.99, 0)
-        envoyerTempsNiveau(8, 99999999.99, 0)
-        localStorage.setItem('FirstSignUp', 'false');
-    }
 }
 
 function updateTimer() {

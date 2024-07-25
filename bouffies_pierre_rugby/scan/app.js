@@ -27,7 +27,11 @@ function scan() {
 
 function displayTicketInfo(ticketData) {
     const contentDiv = document.getElementById("content");
+<<<<<<< HEAD
+    contentDiv.style.display ='block'
+=======
     contentDiv.style.display = 'block';
+>>>>>>> 887757790f517e8fe2b3b7e8788b5b71f3c42562
     contentDiv.innerHTML = `
         <div class='event'>
             <div class ='event-id'>
