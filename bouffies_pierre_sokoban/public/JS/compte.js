@@ -1,18 +1,17 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Récupérer le nom d'utilisateur
+document.addEventListener('DOMContentLoaded', function() {
     fetch('/api/get-username')
         .then(response => {
             if (!response.ok) {
-                throw new Error('La récupération du username a échoué');
+                throw new Error('Problème lors de la récupération des données');
             }
             return response.json();
         })
         .then(data => {
-            document.getElementById('nomUtilisateur').textContent = data.username || 'Utilisateur inconnu';
+            document.getElementById('nomUtilisateur').textContent = data.username;
+            document.getElementById('userId').textContent = data.PlayerID;
         })
         .catch(error => {
-            console.error(error);
-            document.getElementById('nomUtilisateur').textContent = 'Erreur lors de la récupération';
+            console.error('Erreur lors de la récupération des informations de l\'utilisateur:', error);
         });
 
     // Fonction pour récupérer le meilleur temps et le temps total pour un niveau donné

@@ -68,6 +68,17 @@ body {
     color: white;
 }
 
+.bouton-amis {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    right: 50px;
+    top: 50px;
+    color: white;
+}
+
 .navbar {
     position: fixed;
     bottom: 0;

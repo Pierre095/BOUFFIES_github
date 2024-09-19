@@ -4,14 +4,12 @@ CREATE TABLE Player (
     Password VARCHAR(255) NOT NULL
 );
 
-
 CREATE TABLE Niveau (
     NiveauID INT AUTO_INCREMENT PRIMARY KEY,
     Nom VARCHAR(255) NOT NULL,
     DebloqueApresNiveauID INT,
     FOREIGN KEY (DebloqueApresNiveauID) REFERENCES Niveau(NiveauID)
 );
-
 
 CREATE TABLE Score (
     ScoreID INT AUTO_INCREMENT PRIMARY KEY,
@@ -21,6 +19,14 @@ CREATE TABLE Score (
     TempsTotal DECIMAL(10,2),
     FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID),
     FOREIGN KEY (NiveauID) REFERENCES Niveau(NiveauID)
+);
+
+CREATE TABLE Amis (
+    PlayerID INT NOT NULL,
+    AmisID INT NOT NULL,
+    PRIMARY KEY (JoueurID, AmiJoueurID),
+    FOREIGN KEY (JoueurID) REFERENCES Player(PlayerID),
+    FOREIGN KEY (AmiJoueurID) REFERENCES Player(PlayerID)
 );
 
 
