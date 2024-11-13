@@ -26,10 +26,11 @@ app.use(session({
 const dbOptions = {
   host: 'localhost',
   user: 'root',
-  password: 'root', // Remplacez par votre mot de passe réel
+  password: 'admin', // Remplacez par votre mot de passe réel
   database: 'diamond_master'
 };
-
+// Créez une connexion MySQL
+const connection = mysql.createConnection(dbOptions);
 
 connection.connect(err => {
   if (err) {
@@ -38,6 +39,7 @@ connection.connect(err => {
   }
   console.log('Connecté à MySQL');
 });
+
 
 app.use(express.static('public'));
 
