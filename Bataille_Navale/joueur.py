@@ -7,8 +7,8 @@ from plateau import Plateau
 class Joueur:
     def __init__(self, nom: str):
         self.nom = nom
-        self.plateau = Plateau(10)  # Modification de la taille à 15
-        self.plateau_adversaire = Plateau(10)  # Modification de la taille à 15
+        self.plateau = Plateau(20)  # Modification de la taille à 15
+        self.plateau_adversaire = Plateau(20)  # Modification de la taille à 15
         self.navires_a_placer = [
             ("Porte-avions", 5),
             ("Croiseur", 4),

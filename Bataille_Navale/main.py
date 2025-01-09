@@ -3,6 +3,7 @@ from typing import Optional
 from joueur import Joueur
 from navire import Navire
 import random
+import time
 import tkinter as tk
 from tkinter import messagebox
 
@@ -91,8 +92,9 @@ class BatailleNavale:
             messagebox.showinfo("Victoire !", "Vous avez gagné !")
             self.nouvelle_partie()
             return
-            
-        self._tour_ordinateur()
+        
+        self.label_statut.configure(text="Tour de l'ordinateur...")
+        self.fenetre.after(1500, self._tour_ordinateur)
     
     def _tour_ordinateur(self):
         while True:
@@ -100,9 +102,10 @@ class BatailleNavale:
             y = random.randint(0, self.TAILLE_GRILLE - 1)
             if (x, y) not in self.joueur_ordinateur.plateau_adversaire.tirs:
                 break
-                
+            
         touche, coule = self.joueur_humain.plateau.tirer(x, y)
         bouton = self.boutons_joueur[x][y]
+
         
         if touche:
             bouton.configure(bg="red")
@@ -114,6 +117,8 @@ class BatailleNavale:
         if self._verifier_fin_partie():
             messagebox.showinfo("Défaite", "L'ordinateur a gagné !")
             self.nouvelle_partie()
+        
+
     
     def _placer_navire(self, x: int, y: int):
         if self.navire_actuel_index >= len(self.joueur_humain.navires_a_placer):
