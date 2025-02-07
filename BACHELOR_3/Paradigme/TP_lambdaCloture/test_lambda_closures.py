@@ -1,5 +1,5 @@
 import pytest
-from exercices import (carre, carres, somme, somme_totale, double, triple, mots_a, count_long_words, mots, h, filterMap, fibonacci, calculateDiscount, discount_20)
+from TP_lambdaCloture.mainS import (carre, carres, somme, somme_totale, double, triple, mots_a, count_long_words, mots, h, filterMap, fibonacci, calculateDiscount, discount_20)
 
 def test_exercice1():
     assert carre(4) == 16
