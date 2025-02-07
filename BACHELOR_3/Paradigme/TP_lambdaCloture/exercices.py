@@ -65,6 +65,7 @@ def fibonacci(n):
 
 # Exercice 8: Application pratique
 def calculateDiscount(products, discount_func):
-    return sum(discount_func(price) for price in products)
+    discounted_prices = map(discount_func, products)
+    return reduce(lambda x, y: x + y, discounted_prices)
 
 discount_20 = lambda x: x * 0.8
