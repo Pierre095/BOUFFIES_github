@@ -8,7 +8,6 @@ public class GameSettings {
     private int maxStatPoints;
     
     private GameSettings() {
-        // Valeur par défaut
         this.maxStatPoints = 50;
     }
     
