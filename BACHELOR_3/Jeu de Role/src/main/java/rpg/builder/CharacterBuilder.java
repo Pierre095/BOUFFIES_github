@@ -10,7 +10,6 @@ public class CharacterBuilder {
     private int intelligence;
 
     public CharacterBuilder() {
-        // Initialisation avec des valeurs par défaut
         this.name = "Sans nom";
         this.strength = 5;
         this.agility = 5;
@@ -40,7 +39,6 @@ public class CharacterBuilder {
     public Character build() throws IllegalStateException {
         Character character = new Character(name, strength, agility, intelligence);
         
-        // Vérifier si le personnage respecte les règles du jeu
         if (!GameSettings.getInstance().isValid(character)) {
             throw new IllegalStateException("Le personnage ne respecte pas les règles du jeu!");
         }

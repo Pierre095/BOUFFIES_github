@@ -13,17 +13,14 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Démarrage du générateur de personnages de JDR");
         
-        // Configuration des règles du jeu via le singleton
         GameSettings.getInstance().setMaxStatPoints(60);
         
-        // Création du DAO pour la persistance
+        // Création du DAO
         CharacterDAO characterDAO = new CharacterDAO();
         
-        // Création d'une équipe
         Party adventurers = new Party();
         
         try {
-            // Création de personnages avec le Builder
             Character warrior = new CharacterBuilder()
                     .setName("Aragorn")
                     .setStrength(20)
@@ -45,17 +42,14 @@ public class Main {
                     .setIntelligence(15)
                     .build();
             
-            // Ajout de capacités spéciales avec le Decorator
             Character enhancedWarrior = new FireResistance(warrior);
             Character enhancedMage = new Telepathy(new Invisibility(mage));
             Character enhancedRogue = new Invisibility(rogue);
             
-            // Sauvegarde des personnages via le DAO
             characterDAO.save(enhancedWarrior);
             characterDAO.save(enhancedMage);
             characterDAO.save(enhancedRogue);
             
-            // Création de l'équipe
             adventurers.addCharacter(enhancedWarrior);
             adventurers.addCharacter(enhancedMage);
             adventurers.addCharacter(enhancedRogue);
@@ -67,24 +61,21 @@ public class Main {
                 System.out.println("------------------------");
             }
             
-            // Tri de l'équipe par puissance
             adventurers.sortByPower();
-            System.out.println("\n=== ÉQUIPE TRIÉE PAR PUISSANCE ===");
+            System.out.println("\n=== EQUIPE TRIÉE PAR PUISSANCE ===");
             for (Character character : adventurers.getAllCharacters()) {
                 System.out.println(character.getName() + " - Puissance: " + character.getPowerLevel());
             }
             
-            // Tri de l'équipe par nom
             adventurers.sortByName();
-            System.out.println("\n=== ÉQUIPE TRIÉE PAR NOM ===");
+            System.out.println("\n=== EQUIPE TRIÉE PAR NOM ===");
             for (Character character : adventurers.getAllCharacters()) {
                 System.out.println(character.getName() + " - Puissance: " + character.getPowerLevel());
             }
             
-            // Calcul de la puissance totale de l'équipe
             System.out.println("\nPuissance totale de l'équipe: " + adventurers.getTotalPower());
             
-            // Simulation de combat simple
+            // Simulation de combat
             simulateCombat(enhancedWarrior, enhancedRogue);
             
         } catch (IllegalStateException e) {
